@@ -25,10 +25,9 @@ public class User {
 	private Integer idUser;
 	private String email;
 	@JsonIgnore
-	private String password;
+	private String passwordUser;
 	@OneToOne
-	@JoinColumn(name="fk_id_person")
+	@JoinColumn(name="fk_person")
 	private Person person;
 	
-
 }

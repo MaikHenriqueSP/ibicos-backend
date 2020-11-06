@@ -22,8 +22,10 @@ public class AdRegionArea {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private Integer idArea;
 	private String areaName;
+	
+
 	@ManyToOne
-	@JoinColumn(name="fk_id_city")
-	private AdCity idCity;	
+	@JoinColumn(name="fk_city")
+	private AdCity adCity;	
 	
 }

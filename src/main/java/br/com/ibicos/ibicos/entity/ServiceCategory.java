@@ -15,11 +15,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+public class ServiceCategory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
-	private Integer idCategory;
-	private String categoryDescription;
+	private Integer idServiceCat;
+	private String catDescription;
 	
-
 }

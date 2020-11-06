@@ -28,8 +28,9 @@ public class Address {
 	private String complement;
 	private String city;
 	private String state;
+	
 	@OneToOne
-	@JoinColumn(name="fk_id_person")
+	@JoinColumn(name="fk_person")
 	private Person person;
 
 }

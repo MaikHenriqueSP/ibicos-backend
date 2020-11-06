@@ -27,7 +27,7 @@ public class Statistics {
 	private Integer hiredServices;
 	private Integer receivedMessages;
 	@OneToOne
-	@JoinColumn(name="fk_id_user")
+	@JoinColumn(name="fk_user")
 	private User user;
 
 	

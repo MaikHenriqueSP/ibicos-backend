@@ -2,6 +2,7 @@ package br.com.ibicos.ibicos.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,11 +27,10 @@ public class AdCity {
 	private Integer idCity;
 	private String cityName;
 	private String stateAbb;
-	@ManyToOne
-	@JoinColumn(name="fk_id_ad")
+	@ManyToOne()
+	@JoinColumn(name="fk_ad")
 	private Ad ad;
 
-	@OneToMany
-	@JoinColumn(name="fk_id_area")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "adCity")
 	private List<AdRegionArea> regionArea;
 }

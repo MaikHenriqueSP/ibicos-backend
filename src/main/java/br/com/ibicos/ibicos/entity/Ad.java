@@ -2,6 +2,7 @@ package br.com.ibicos.ibicos.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,16 +27,15 @@ public class Ad {
 	private Integer idAd;	
 	private String adDescription;	
 	
-	@OneToOne
-	@JoinColumn(name="fk_id_user")
+	@OneToOne()
+	@JoinColumn(name="fk_user")
 	private User user;
 	
-	@OneToOne
+	@OneToOne()
 	@JoinColumn(name = "fk_service_cat")
-	private Category category;
+	private ServiceCategory serviceCategory;
 	
-	@OneToMany
-	@JoinColumn(name="fk_id_city")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private List<AdCity> cities;
 	
 }
