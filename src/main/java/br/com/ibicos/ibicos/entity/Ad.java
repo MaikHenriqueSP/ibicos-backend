@@ -12,13 +12,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ad {
@@ -28,11 +26,11 @@ public class Ad {
 	private String adDescription;	
 	
 	@OneToOne()
-	@JoinColumn(name="fk_user")
+	@JoinColumn(name="fk_id_user")
 	private User user;
 	
 	@OneToOne()
-	@JoinColumn(name = "fk_service_cat")
+	@JoinColumn(name = "fk_id_service_cat")
 	private ServiceCategory serviceCategory;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")

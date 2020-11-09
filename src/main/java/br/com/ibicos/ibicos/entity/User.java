@@ -10,13 +10,11 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -27,7 +25,7 @@ public class User {
 	@JsonIgnore
 	private String passwordUser;
 	@OneToOne
-	@JoinColumn(name="fk_person")
+	@JoinColumn(name="fk_id_person")
 	private Person person;
 	
 }

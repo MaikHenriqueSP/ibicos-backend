@@ -8,13 +8,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdRegionArea {
@@ -23,9 +21,8 @@ public class AdRegionArea {
 	private Integer idArea;
 	private String areaName;
 	
-
 	@ManyToOne
-	@JoinColumn(name="fk_city")
+	@JoinColumn(name="fk_id_city")
 	private AdCity adCity;	
 	
 }

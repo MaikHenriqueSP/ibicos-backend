@@ -12,13 +12,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdCity {
@@ -28,7 +26,7 @@ public class AdCity {
 	private String cityName;
 	private String stateAbb;
 	@ManyToOne()
-	@JoinColumn(name="fk_ad")
+	@JoinColumn(name="fk_id_ad")
 	private Ad ad;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "adCity")

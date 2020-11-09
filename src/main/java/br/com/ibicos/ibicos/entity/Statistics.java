@@ -8,13 +8,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Statistics {
@@ -27,7 +25,7 @@ public class Statistics {
 	private Integer hiredServices;
 	private Integer receivedMessages;
 	@OneToOne
-	@JoinColumn(name="fk_user")
+	@JoinColumn(name="fk_id_user")
 	private User user;
 
 	

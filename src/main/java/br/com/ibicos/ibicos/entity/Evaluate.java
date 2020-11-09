@@ -1,5 +1,7 @@
 package br.com.ibicos.ibicos.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,17 +17,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProviderStatistics {
+public class Evaluate {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idProviderStatistics;
-	private Integer visualizations;
+	private Integer idEvalute;
+	private LocalDate messageDate;
+	private boolean hired;
+	private boolean clienteEvaluated;
+	private boolean providerEvaluated;
 	
 	@OneToOne
-	@JoinColumn(name = "fk_id_statistics")
-	private Statistics statistics;
-	
+	@JoinColumn(name = "fk_id_client")
+	private User client;
 	@OneToOne
-	@JoinColumn(name= "fk_id_service_category")
-	private ServiceCategory category;
+	@JoinColumn(name = "fk_id_provider")
+	private User provider;
+	
 }
