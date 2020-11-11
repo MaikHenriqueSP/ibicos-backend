@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +23,8 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idUser;
 	private String email;
-	@JsonIgnore
+//	@JsonIgnore
+	@JsonIgnoreProperties
 	private String passwordUser;
 	@OneToOne
 	@JoinColumn(name="fk_id_person")
