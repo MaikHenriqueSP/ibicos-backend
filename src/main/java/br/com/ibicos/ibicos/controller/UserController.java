@@ -53,6 +53,6 @@ public class UserController {
 		String token = jwtService.generateToken(user);			
 		return ResponseEntity.ok(new TokenDTO(user.getEmail(), token));
 	}
-
+	
 }
 
