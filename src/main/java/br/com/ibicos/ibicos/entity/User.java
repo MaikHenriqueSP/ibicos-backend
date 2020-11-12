@@ -1,6 +1,6 @@
 package br.com.ibicos.ibicos.entity;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,14 +23,13 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idUser;
 	
-	@Column(unique = true)
 	private String email;
 	
 	@JsonIgnoreProperties
 	private String passwordUser;
 	
-	@OneToOne
-	@JoinColumn(name="fk_id_person")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="fk_id_person", nullable = false)
 	private Person person;
 	
 }

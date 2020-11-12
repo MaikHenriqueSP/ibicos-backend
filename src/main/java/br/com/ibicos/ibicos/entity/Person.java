@@ -2,10 +2,12 @@ package br.com.ibicos.ibicos.entity;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,5 +25,8 @@ public class Person {
 	private LocalDate birthday;
 	private String cpf;
 	private String cnpj;
+	
+	@OneToOne(mappedBy = "person", cascade = CascadeType.ALL, optional = false)
+	private Address address;
 
 }

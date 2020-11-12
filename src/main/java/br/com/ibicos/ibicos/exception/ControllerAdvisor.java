@@ -50,5 +50,16 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 		return new ResponseEntity<>(exceptionPayload, HttpStatus.UNAUTHORIZED);
 	}
 	
+	@ExceptionHandler(value = {InvalidInsertionObjectException.class})
+	public ResponseEntity<Object> handleInvalidInsertionObjectException(Exception exception) {
+		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
+			.timestamp(LocalDateTime.now())
+			.title("Invalid object structure")
+			.statusCode(HttpStatus.CONFLICT.value())
+			.description(exception.getMessage())
+			.build();
+		
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.CONFLICT);
+	}
 	
 }

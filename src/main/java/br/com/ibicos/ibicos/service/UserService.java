@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.exception.InvalidEmailFormatException;
+import br.com.ibicos.ibicos.exception.InvalidInsertionObjectException;
 import br.com.ibicos.ibicos.exception.UserAlreadyExistsException;
 import br.com.ibicos.ibicos.repository.UserRepository;
 import br.com.ibicos.ibicos.util.ValidatorEmail;
@@ -21,18 +22,25 @@ public class UserService implements IUserService {
 	
 	@Transactional(rollbackFor = {DataIntegrityViolationException.class,
 			InvalidEmailFormatException.class})	
-	public User save(User user)  {
+	public User save(User user)  {	
 		String userEmail = user.getEmail();
 		
 		if(!ValidatorEmail.isEmailValid(userEmail)) {
 			throw new InvalidEmailFormatException(userEmail);
 		}	
+				
+		boolean isUserPresent = getUserByEmail(userEmail).isPresent();
 		
 		try {
-			return userRepository.save(user);
-		} catch(DataIntegrityViolationException e) {
-			throw new UserAlreadyExistsException(userEmail);
-		}
+			return userRepository.save(user);		
+		} catch(DataIntegrityViolationException e) {		
+			if(isUserPresent) {
+				throw new UserAlreadyExistsException(userEmail);
+			}
+			throw new InvalidInsertionObjectException("The received object is in an invalid format"
+					+ ", please check the documentation for the correct one");
+		} 
+		
 	}
 	
 	public Optional<User> getUserByEmail(String email) {

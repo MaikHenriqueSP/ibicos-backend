@@ -41,8 +41,6 @@ public class UserController {
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
 	}
-		
-	
 	
 	@PostMapping("/login")
 	public  ResponseEntity<?> authenticate(@RequestBody CredentialsDTO credentials) {
