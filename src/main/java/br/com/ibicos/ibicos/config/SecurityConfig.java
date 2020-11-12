@@ -2,7 +2,6 @@ package br.com.ibicos.ibicos.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -41,19 +40,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.passwordEncoder(passwordEncoder());
 	}
 	
+	
 	protected void configure(HttpSecurity http) throws Exception {
+
 		http.csrf().disable()
-			.authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/**")
-					.permitAll()
-				.antMatchers("/api/**")
-					.permitAll()
-					.anyRequest().authenticated()
-			.and()
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-				.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+		.authorizeRequests()
+			.antMatchers("/login", "/signUp", "/recover")
+				.permitAll()
+				.anyRequest()
+				.authenticated()
+		.and()
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
+			.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 		
 	}
 }

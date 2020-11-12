@@ -1,8 +1,8 @@
 package br.com.ibicos.ibicos.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,24 +16,33 @@ import br.com.ibicos.ibicos.dto.TokenDTO;
 import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.service.JwtService;
 import br.com.ibicos.ibicos.service.UserDetailsServiceImpl;
-import lombok.RequiredArgsConstructor;
+import br.com.ibicos.ibicos.service.UserService;
 
 @RestController
-@RequestMapping("/")
-@RequiredArgsConstructor
+@RequestMapping
 public class UserController {
 	
-	private final UserDetailsServiceImpl userDetailsServiceImpl;
-	private final PasswordEncoder passwordEncoder;
-	private final JwtService jwtService;
+	@Autowired
+	private UserDetailsServiceImpl userDetailsServiceImpl;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private JwtService jwtService;
+	
+	@Autowired
+	private UserService userService;
+	
 	
 	@PostMapping("/signUp")
 	public User save(@RequestBody User user) {
-		System.out.println(user);
 		String encodedPassword = passwordEncoder.encode(user.getPasswordUser());
 		user.setPasswordUser(encodedPassword);
-		return userDetailsServiceImpl.save(user);		
+		return userService.save(user);
 	}
+		
+	
 	
 	@PostMapping("/login")
 	public TokenDTO authenticate(@RequestBody CredentialsDTO credentials) {
@@ -42,7 +51,7 @@ public class UserController {
 			user.setEmail(credentials.getEmail());
 			user.setPasswordUser(credentials.getPasswordUser());
 			
-			UserDetails authenticatedUser = userDetailsServiceImpl.authenticate(user);
+			userDetailsServiceImpl.authenticate(user);
 			String token = jwtService.generateToken(user);
 			
 			return new TokenDTO(user.getEmail(), token);
@@ -52,3 +61,4 @@ public class UserController {
 	}
 
 }
+

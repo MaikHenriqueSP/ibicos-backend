@@ -13,7 +13,7 @@ import br.com.ibicos.ibicos.entity.ServiceCategory;
 import br.com.ibicos.ibicos.service.ServiceCategoryService;
 
 @RestController
-@RequestMapping("/v1/service-category")
+@RequestMapping("/api/service-category")
 public class ServiceCategoryController {
 
 	@Autowired

@@ -1,17 +1,12 @@
 package br.com.ibicos.ibicos.service;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.repository.UserRepository;
@@ -24,12 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
-	@Transactional
-	public User save(User user) {
-		return userRepository.save(user);
-	}
-	
+		
 	public UserDetails authenticate(User user) {
 		UserDetails userDetails = loadUserByUsername(user.getEmail());
 		
