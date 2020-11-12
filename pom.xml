@@ -65,13 +65,17 @@
 			</exclusions>
 		</dependency>
 		
-
-		
 		<dependency>
 		    <groupId>io.jsonwebtoken</groupId>
 		    <artifactId>jjwt</artifactId>
 		    <version>0.9.1</version>
-		</dependency>		
+		</dependency>				
+
+		<dependency>
+		    <groupId>commons-validator</groupId>
+		    <artifactId>commons-validator</artifactId>
+		    <version>1.6</version>
+		</dependency>				
 	</dependencies>
 
 	<build>
