@@ -1,5 +1,7 @@
 package br.com.ibicos.ibicos.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +36,7 @@ public class UserController {
 	
 	
 	@PostMapping("/signUp")
-	public ResponseEntity<?> save(@RequestBody User user) {
+	public ResponseEntity<?> save(@Valid @RequestBody User user) {
 		String encodedPassword = passwordEncoder.encode(user.getPasswordUser());
 		user.setPasswordUser(encodedPassword);
 		User savedUser = userService.save(user);

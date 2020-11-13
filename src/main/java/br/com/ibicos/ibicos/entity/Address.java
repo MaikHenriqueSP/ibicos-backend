@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -26,12 +27,24 @@ public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idAddress;
+	
+	@NotBlank
 	private String cep;
+	
+	@NotBlank
 	private String street;
+	
+	@NotBlank
 	private String numberAddress;
-	private String neighborhood;
+	
+	@NotBlank
+	private String neighborhood;	
 	private String complement;
+	
+	@NotBlank
 	private String city;
+	
+	@NotBlank
 	private String state;
 	
 	@OneToOne(fetch = FetchType.LAZY)

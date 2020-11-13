@@ -1,6 +1,7 @@
 package br.com.ibicos.ibicos.exception;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,5 +17,6 @@ public class ExceptionPayload {
 	private int statusCode;
 	private String title;
 	private LocalDateTime timestamp;
-	private String description;
+	private String description;	
+	Map<String, String> fieldToMessageMap;
 }

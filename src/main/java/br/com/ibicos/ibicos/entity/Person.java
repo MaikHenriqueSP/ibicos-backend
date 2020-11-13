@@ -10,6 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -26,14 +30,25 @@ import lombok.NoArgsConstructor;
 		  generator = ObjectIdGenerators.PropertyGenerator.class, 
 		  property = "idPerson")
 public class Person {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idPerson;
+	
+	@NotBlank
 	private String namePerson;
+	
+	@NotNull
 	private LocalDate birthday;
+	
+	@NotBlank(message = "{org.hibernate.validator.constraints.br.CPF.message}")
+	@Size(min = 11, max =11, message = "CPF sizes needs to be equal to 11 characters without any special character")
 	private String cpf;
+	
+	@NotBlank(message="{org.hibernate.validator.constraints.br.CNPJ.message}")
 	private String cnpj;
 	
+	@Valid
 	@OneToOne(mappedBy = "person", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
 	private Address address;
 	
