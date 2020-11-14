@@ -16,6 +16,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ibicos.ibicos.dto.CredentialsDTO;
+import br.com.ibicos.ibicos.dto.EmailDTO;
+import br.com.ibicos.ibicos.dto.RecoveryDTO;
 import br.com.ibicos.ibicos.dto.TokenDTO;
 import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.service.IUserService;
@@ -35,10 +38,7 @@ public class UserController {
 	
 	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
-	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
+		
 	@Autowired
 	private JwtService jwtService;
 	
@@ -48,14 +48,16 @@ public class UserController {
 	
 	@PostMapping("/signUp")
 	public ResponseEntity<?> save(@Valid @RequestBody User user) {
-
-		String encodedPassword = passwordEncoder.encode(user.getPasswordUser());
-		user.setPasswordUser(encodedPassword);
-		User savedUser = userService.save(user);
-		
-		
-		
+		User savedUser = userService.save(user);				
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+	}	
+	
+	@PostMapping("/login")
+	public  ResponseEntity<?> authenticate(@RequestBody CredentialsDTO credentials) {
+		userDetailsServiceImpl.authenticate(credentials);
+		String token = jwtService.generateToken(credentials);
+		
+		return ResponseEntity.ok(new TokenDTO(credentials.getEmail(), token));
 	}
 	
 	@GetMapping("/verify")
@@ -65,16 +67,18 @@ public class UserController {
 		return new ResponseEntity<>(verifiedUser, HttpStatus.OK);
 	}
 	
-	@PostMapping("/login")
-	public  ResponseEntity<?> authenticate(@RequestBody CredentialsDTO credentials) {
-		User user = new User();
+	@PostMapping("/resetPassword/request")
+	public ResponseEntity<?> resetPasswordRequest(@RequestBody EmailDTO emailDTO) {
 		
-		user.setEmail(credentials.getEmail());
-		user.setPasswordUser(credentials.getPasswordUser());
-			
-		userDetailsServiceImpl.authenticate(user);
-		String token = jwtService.generateToken(user);			
-		return ResponseEntity.ok(new TokenDTO(user.getEmail(), token));
+		userService.resetPasswordProcessing(emailDTO.getEmail());
+		return ResponseEntity.ok().body("An email with the reset password instructions was sent to: '" + emailDTO.getEmail() 
+				+ "', please check it and follow the provided instructions to reset your email!");
+	}
+	
+	@PostMapping("/resetPassword/change")
+	public ResponseEntity<?> changeUserPassword(@RequestBody RecoveryDTO recoveryDTO) {
+		userService.changeUserPassword(recoveryDTO.getAccountRecoveryToken(), recoveryDTO.getNewPassword());
+		return ResponseEntity.ok().body("Password successfully changed");				
 	}
 	
 	

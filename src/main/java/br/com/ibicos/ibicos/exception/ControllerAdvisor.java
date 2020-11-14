@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -22,11 +24,13 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 		
 	@ExceptionHandler(value = {UserAlreadyExistsException.class})
 	public ResponseEntity<Object> handleUserAlreadyExistsExceptio(UserAlreadyExistsException exception) {
+		Map<String, String> errorsMap = Map.of("email", exception.getMessage());
 		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
 			.timestamp(LocalDateTime.now())
-			.title("User already registered")
+			.title("An error occurred while signing up")
 			.statusCode(HttpStatus.CONFLICT.value())
-			.description(exception.getMessage())
+			.description("User already registered")
+			.fieldToMessageMap(errorsMap)
 			.build();
 		
 		return new ResponseEntity<>(exceptionPayload, HttpStatus.CONFLICT);
@@ -87,6 +91,30 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 				.description(ex.getMostSpecificCause().getMessage()) 
 				.build();
 		return new ResponseEntity<>(exceptionPayload, HttpStatus.CONFLICT);
+	}
+	
+	@ExceptionHandler(value= {DataIntegrityViolationException.class})
+	protected ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+		
+		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
+				.timestamp(LocalDateTime.now())
+				.title("Invalid object field value")
+				.statusCode(HttpStatus.CONFLICT.value())
+				.description(ex.getMostSpecificCause().getMessage()) 
+				.build();
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.CONFLICT);		
+	}
+
+	@ExceptionHandler(value= {DisabledException.class})
+	protected ResponseEntity<Object> handleDisabledException(DisabledException ex) {
+		
+		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
+				.timestamp(LocalDateTime.now())
+				.title("Account not confirmed")
+				.statusCode(HttpStatus.CONFLICT.value())
+				.description(ex.getMessage()) 
+				.build();
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.UNAUTHORIZED);		
 	}
 
 }

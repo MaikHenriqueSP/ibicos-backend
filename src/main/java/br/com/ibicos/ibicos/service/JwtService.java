@@ -7,6 +7,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import br.com.ibicos.ibicos.dto.CredentialsDTO;
 import br.com.ibicos.ibicos.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -23,7 +24,7 @@ public class JwtService {
 	private String signKey;
 
 	
-	public String generateToken(User user) {
+	public String generateToken(CredentialsDTO credentials) {
 		LocalDateTime expirationDateAndTime = LocalDateTime.now()
 				.plusMinutes(Long.valueOf(expirationTime));
 		
@@ -31,7 +32,7 @@ public class JwtService {
 				from(expirationDateAndTime.atZone(ZoneId.systemDefault()).toInstant());
 		
 		return	Jwts.builder()
-				.setSubject(user.getEmail())
+				.setSubject(credentials.getEmail())
 				.setExpiration(expirationDate)
 				.signWith(SignatureAlgorithm.HS512, signKey)
 				.compact();

@@ -50,6 +50,9 @@ public class User {
 	@Column(updatable = false)
 	private String validationToken;
 	
+	@JsonIgnore
+	private String accountRecoveryToken;
+	
 	@Valid
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_id_person", nullable = false)
@@ -58,6 +61,7 @@ public class User {
 	@PrePersist	
 	private void prePersist() {
 		validationToken = RandomString.make(64);
+		accountRecoveryToken = RandomString.make(64);
 		isAccountConfirmed = false;
 	}
 	
