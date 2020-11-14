@@ -32,19 +32,6 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 		return new ResponseEntity<>(exceptionPayload, HttpStatus.CONFLICT);
 	}
 	
-	
-	@ExceptionHandler(value = {InvalidEmailFormatException.class})
-	public ResponseEntity<Object> handleException(InvalidEmailFormatException exception) {
-		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
-			.timestamp(LocalDateTime.now())
-			.title("Invalid email format")
-			.statusCode(HttpStatus.CONFLICT.value())
-			.description(exception.getMessage())
-			.build();
-		
-		return new ResponseEntity<>(exceptionPayload, HttpStatus.CONFLICT);
-	}
-	
 	@ExceptionHandler(value = {UsernameNotFoundException.class, BadCredentialsException.class})
 	public ResponseEntity<Object> handleException(Exception exception) {
 		ExceptionPayload exceptionPayload = ExceptionPayload.builder()

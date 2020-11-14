@@ -14,9 +14,14 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Data
+@EqualsAndHashCode(exclude= {"person"})
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -47,8 +52,9 @@ public class Address {
 	@NotBlank
 	private String state;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@ToString.Exclude
 	@JoinColumn(name="fk_id_person")
+	@OneToOne(fetch = FetchType.LAZY)
 	private Person person;
 
 }

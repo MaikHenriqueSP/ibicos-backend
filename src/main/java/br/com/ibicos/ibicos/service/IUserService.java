@@ -8,5 +8,6 @@ import br.com.ibicos.ibicos.exception.UserAlreadyExistsException;
 public interface IUserService {
 
 	User save(User user) throws UserAlreadyExistsException;
-	 Optional<User> getUserByEmail(String email);
+	Optional<User> findUserByEmail(String email);
+	User verifyAccount(String verificationToken);
 }
