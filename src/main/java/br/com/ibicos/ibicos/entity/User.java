@@ -54,6 +54,7 @@ public class User {
 	private String accountRecoveryToken;
 	
 	@Valid
+	@NotNull
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_id_person", nullable = false)
 	private Person person;

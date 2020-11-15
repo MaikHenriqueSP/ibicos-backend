@@ -21,9 +21,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @EqualsAndHashCode(exclude= {"address"})
@@ -53,6 +51,7 @@ public class Person {
 	private String cnpj;
 	
 	@Valid
+	@NotNull
 	@OneToOne(mappedBy = "person", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
 	private Address address;
 	

@@ -20,40 +20,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
-		
+
 	@Autowired
 	private JwtService jwtService;
-	
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	public OncePerRequestFilter jwtFilter() {
 		return new JwtAuthFilter(jwtService, userDetailsServiceImpl);
 	}
-	
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception { 
-		auth
-			.userDetailsService(userDetailsServiceImpl)			
-			.passwordEncoder(passwordEncoder());
+
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
 	}
-	
-	
+
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.csrf().disable()
-		.authorizeRequests()
-			.antMatchers("/login", "/signUp", "/recover", "/verify", "/resetPassword/**")
-				.permitAll()
-				.anyRequest()
-				.authenticated()
-		.and()
-			.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and()
-			.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
-		
+		http.csrf().disable().authorizeRequests()
+				.antMatchers("/login", "/signUp", "/recover", "/verify", "/resetPassword/**").permitAll().anyRequest()
+				.authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+
 	}
 }

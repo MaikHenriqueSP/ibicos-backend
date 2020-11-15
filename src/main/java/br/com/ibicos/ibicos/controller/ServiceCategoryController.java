@@ -16,6 +16,8 @@ import br.com.ibicos.ibicos.service.ServiceCategoryService;
 @RequestMapping("/api/service-category")
 public class ServiceCategoryController {
 
+
+	
 	@Autowired
 	private ServiceCategoryService serviceCategoryService;
 	
@@ -24,4 +26,7 @@ public class ServiceCategoryController {
 		List<ServiceCategory> servicesCategories = serviceCategoryService.listAllServicesCategories();
 		return ResponseEntity.status(HttpStatus.OK).body(servicesCategories);
 	} 
+	
+	
+
 }

@@ -23,7 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 		
 	@ExceptionHandler(value = {UserAlreadyExistsException.class})
-	public ResponseEntity<Object> handleUserAlreadyExistsExceptio(UserAlreadyExistsException exception) {
+	protected ResponseEntity<Object> handleUserAlreadyExistsExceptio(UserAlreadyExistsException exception) {
 		Map<String, String> errorsMap = Map.of("email", exception.getMessage());
 		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
 			.timestamp(LocalDateTime.now())
@@ -37,7 +37,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 	}
 	
 	@ExceptionHandler(value = {UsernameNotFoundException.class, BadCredentialsException.class})
-	public ResponseEntity<Object> handleException(Exception exception) {
+	protected ResponseEntity<Object> handleException(Exception exception) {
 		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
 			.timestamp(LocalDateTime.now())
 			.title("A problem occurred while authenticating")
@@ -49,7 +49,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 	}
 	
 	@ExceptionHandler(value = {InvalidInsertionObjectException.class})
-	public ResponseEntity<Object> handleInvalidInsertionObjectException(Exception exception) {
+	protected ResponseEntity<Object> handleInvalidInsertionObjectException(Exception exception) {
 		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
 			.timestamp(LocalDateTime.now())
 			.title("Invalid object structure")
@@ -116,5 +116,29 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 				.build();
 		return new ResponseEntity<>(exceptionPayload, HttpStatus.UNAUTHORIZED);		
 	}
-
+	
+	@ExceptionHandler(value= {EmailSendingException.class})
+	protected ResponseEntity<Object> handleEmailSendingException(EmailSendingException ex) {
+		
+		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
+				.timestamp(LocalDateTime.now())
+				.title("Error while sending email")
+				.statusCode(HttpStatus.CONFLICT.value())
+				.description(ex.getMessage()) 
+				.build();
+		
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.UNAUTHORIZED);		
+	}
+	
+	@ExceptionHandler(value = {InvalidTokenException.class})
+	protected ResponseEntity<Object> handleInvalidTokenException(InvalidTokenException ex) {
+		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
+				.timestamp(LocalDateTime.now())
+				.title("Invalid token")
+				.statusCode(HttpStatus.CONFLICT.value())
+				.description(ex.getMessage()) 
+				.build();
+		
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.UNAUTHORIZED);
+	}
 }
