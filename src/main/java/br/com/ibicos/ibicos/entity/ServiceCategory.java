@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class ServiceCategory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
-	private Integer idServiceCat;
-	private String catDescription;
+	private Integer idServiceCategory;
+	private String categoryName;
 	
 }
