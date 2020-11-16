@@ -24,7 +24,7 @@ public class Evaluate {
 	private Integer idEvalute;
 	private LocalDate messageDate;
 	private boolean hired;
-	private boolean customerEvaluated;
+	private boolean clienteEvaluated;
 	private boolean providerEvaluated;
 	
 	@OneToOne

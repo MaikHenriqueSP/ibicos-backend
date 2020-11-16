@@ -19,11 +19,11 @@ public class Statistics {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idStatistics;
-	private Float evaluation;
-	private Integer viewsCounter;
-	private Integer evaluationsCounter;
-	private Integer hiredServicesCounter;
-	private Integer messagesCounter;
+	private Integer viewsNumber;
+	private Float evaluations;
+	private Integer evaluationsNumber;
+	private Integer hiredServices;
+	private Integer receivedMessages;
 	@OneToOne
 	@JoinColumn(name="fk_id_user")
 	private User user;
