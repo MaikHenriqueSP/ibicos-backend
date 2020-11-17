@@ -1,5 +1,6 @@
 package br.com.ibicos.ibicos.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +17,8 @@ import lombok.NoArgsConstructor;
 public class ServiceCategory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
-	private Integer idServiceCategory;
+	@Column(name = "id_service_category")
+	private Integer id;
 	private String categoryName;
 	
 }

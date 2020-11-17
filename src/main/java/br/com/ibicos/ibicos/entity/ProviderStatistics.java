@@ -1,5 +1,6 @@
 package br.com.ibicos.ibicos.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,7 +19,8 @@ import lombok.NoArgsConstructor;
 public class ProviderStatistics {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idProviderStatistics;
+	@Column(name = "id_provider_statistics")
+	private Integer id;
 	private Integer visualizations;
 	
 	@OneToOne
