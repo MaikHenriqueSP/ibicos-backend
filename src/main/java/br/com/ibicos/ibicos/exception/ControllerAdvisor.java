@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
-		
+
 	@ExceptionHandler(value = {UserAlreadyExistsException.class})
 	protected ResponseEntity<Object> handleUserAlreadyExistsExceptio(UserAlreadyExistsException exception) {
 		Map<String, String> errorsMap = Map.of("email", exception.getMessage());
@@ -41,7 +41,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
 			.timestamp(LocalDateTime.now())
 			.title("A problem occurred while authenticating")
-			.statusCode(HttpStatus.CONFLICT.value())
+			.statusCode(HttpStatus.UNAUTHORIZED.value())
 			.description(exception.getMessage())
 			.build();
 		
@@ -111,7 +111,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
 				.timestamp(LocalDateTime.now())
 				.title("Account not confirmed")
-				.statusCode(HttpStatus.CONFLICT.value())
+				.statusCode(HttpStatus.UNAUTHORIZED.value())
 				.description(ex.getMessage()) 
 				.build();
 		return new ResponseEntity<>(exceptionPayload, HttpStatus.UNAUTHORIZED);		
@@ -123,11 +123,11 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
 				.timestamp(LocalDateTime.now())
 				.title("Error while sending email")
-				.statusCode(HttpStatus.CONFLICT.value())
+				.statusCode(HttpStatus.BAD_REQUEST.value())
 				.description(ex.getMessage()) 
 				.build();
 		
-		return new ResponseEntity<>(exceptionPayload, HttpStatus.UNAUTHORIZED);		
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.BAD_REQUEST);		
 	}
 	
 	@ExceptionHandler(value = {InvalidTokenException.class})
@@ -139,6 +139,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 				.description(ex.getMessage()) 
 				.build();
 		
-		return new ResponseEntity<>(exceptionPayload, HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.CONFLICT);
 	}
+		
 }

@@ -78,58 +78,5 @@ public class EmailService {
 		sendEmailTokenTemplate(emailTokenConfigDTO);
 	}
 
-//	public void sendValidationToken(String name, String token, String email) {
-//		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-//		MimeMessageHelper mimeMessageHelper;
-//		try {
-//			mimeMessageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-//					StandardCharsets.UTF_8.name());
-//
-//			Context context = new Context();
-//			context.setVariable("nome", name);
-//			context.setVariable("token", token);
-//
-//			String html = springTemplateEngine.process("email-validation", context);
-//
-//			mimeMessageHelper.setTo(email);
-//
-//			mimeMessageHelper.setText(html, true);
-//			mimeMessageHelper.setSubject("iBicos - Confirmação de cadastro");
-//			mimeMessageHelper.setFrom("ibicos.classificados@gmail.com", "iBicos - Suporte");
-//		} catch (MessagingException | UnsupportedEncodingException e) {
-//			throw new EmailSendingException("An error occurred while sending email, please try again");
-//		}
-//
-//		javaMailSender.send(mimeMessage);
-//	}
-
-	
-	
-	
-//	public void sendRecoveryEmail(String name, String email, String accountRecoveryToken) {
-//		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-//		MimeMessageHelper mimeMessageHelper;
-//		try {
-//			mimeMessageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-//					StandardCharsets.UTF_8.name());
-//
-//			Context context = new Context();
-//			context.setVariable("nome", name);
-//			context.setVariable("token", accountRecoveryToken);
-//
-//			String html = springTemplateEngine.process("email-recover", context);
-//
-//			mimeMessageHelper.setTo(email);
-//
-//			mimeMessageHelper.setText(html, true);
-//			mimeMessageHelper.setSubject("iBicos - Redefinição de senha");
-//			mimeMessageHelper.setFrom("ibicos.classificados@gmail.com", "iBicos - Suporte");
-//		} catch (MessagingException | UnsupportedEncodingException e) {
-//			throw new EmailSendingException("An error occurred while sending email, please try again");
-//		}
-//
-//		javaMailSender.send(mimeMessage);
-//
-//	}
 
 }
