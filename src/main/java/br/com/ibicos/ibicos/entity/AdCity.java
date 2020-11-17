@@ -11,6 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.DynamicUpdate;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicUpdate
 public class AdCity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
@@ -27,8 +32,10 @@ public class AdCity {
 	private String stateAbb;
 	@ManyToOne()
 	@JoinColumn(name="fk_id_ad")
+	@JsonIgnoreProperties(value = "cities")
 	private Ad ad;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "adCity")
+	@JsonIgnoreProperties(value = "adCity")
 	private List<AdRegionArea> regionArea;
 }
