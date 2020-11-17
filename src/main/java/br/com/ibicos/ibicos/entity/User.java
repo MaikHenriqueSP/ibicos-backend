@@ -31,7 +31,8 @@ import net.bytebuddy.utility.RandomString;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idUser;
+	@Column(name = "id_user")
+	private Integer id;
 	
 	@Email	
 	@NotBlank
