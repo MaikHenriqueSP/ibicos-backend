@@ -49,7 +49,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 	}
 	
 	@ExceptionHandler(value = {InvalidInsertionObjectException.class})
-	protected ResponseEntity<Object> handleInvalidInsertionObjectException(Exception exception) {
+	protected ResponseEntity<Object> handleInvalidInsertionObjectException(InvalidInsertionObjectException exception) {
 		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
 			.timestamp(LocalDateTime.now())
 			.title("Invalid object structure")

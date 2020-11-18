@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ibicos.ibicos.email.EmailService;
+import br.com.ibicos.ibicos.entity.Address;
+import br.com.ibicos.ibicos.entity.Person;
 import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.exception.EmailSendingException;
 import br.com.ibicos.ibicos.exception.InvalidInsertionObjectException;
@@ -73,11 +75,6 @@ public class UserService implements IUserService {
 		updateUser(user);
 	}
 
-	public User updateUser(User user) {
-		userRepository.save(user);
-		return user;
-	}
-
 	@Override
 	public void resetPasswordRequestHandler(String email) {
 		Optional<User> userOptional = userRepository.findByEmail(email);
@@ -113,5 +110,55 @@ public class UserService implements IUserService {
 		user.setAccountRecoveryToken(RandomString.make(64));
 		userRepository.save(user);
 	}
+
+	@Override
+	public User findUserById(Integer idUser) {
+		Optional<User> optionalUser = userRepository.findById(idUser);
+		
+		if (optionalUser.isEmpty()) {
+			// TODO: change to a more suitable exception
+			throw new UsernameNotFoundException("We did not find any user with the provided ID");
+		}		
+		return optionalUser.get();		
+	}
+	
+	@Override
+	public User updateUser(User user) {			
+		Optional<User> optionalUser = userRepository.findById(user.getId());
+		
+		if (optionalUser.isEmpty()) {
+			throw new UsernameNotFoundException("We did not find any user with the provided ID");
+		}
+		
+		User oldUser = optionalUser.get();
+		oldUser.setNotice(user.getNotice());
+		
+		Person newPerson = user.getPerson();
+		Person oldPerson = oldUser.getPerson();
+		
+		if (newPerson.getCnpj() != null) {
+			oldPerson.setCnpj(newPerson.getCnpj());
+		}
+		
+		Address oldAddress = oldPerson.getAddress();
+		Address newAddress = newPerson.getAddress();
+		
+		oldAddress.setCep(newAddress.getCep());
+		oldAddress.setCity(newAddress.getCity());
+		
+		if (newAddress.getComplement() != null) { 
+			oldAddress.setComplement(newAddress.getComplement());
+		}
+		
+		oldAddress.setNeighborhood(newAddress.getNeighborhood());
+		oldAddress.setNumberAddress(newAddress.getNumberAddress());
+		
+		oldAddress.setState(newAddress.getState());
+		oldAddress.setStreet(newAddress.getStreet());
+		
+		return userRepository.save(oldUser);
+	}
+	
+	
 
 }

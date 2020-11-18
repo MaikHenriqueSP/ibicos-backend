@@ -11,6 +11,7 @@ import br.com.ibicos.ibicos.entity.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 	Optional<User> findByEmail(String email);
 	Optional<User> findUserByValidationToken(String validationToken);
-	Optional<User> findByAccountRecoveryToken(String accountRecoveryToken);
+	Optional<User> findByAccountRecoveryToken(String accountRecoveryToken);	
+//	Optional<User> findBy__idUser(Integer idUser);
 
 }

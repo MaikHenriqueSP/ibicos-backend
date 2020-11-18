@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,10 +71,25 @@ public class UserController {
 						+ "', please check it and follow the provided instructions to reset your email!"));
 	}
 
-	@PostMapping("/resetPassword/change")
+	@PutMapping("/resetPassword/change")
 	public ResponseEntity<?> changeUserPassword(@RequestBody RecoveryDTO recoveryDTO) {
 		userService.changeUserPassword(recoveryDTO.getAccountRecoveryToken(), recoveryDTO.getNewPassword());
 		return ResponseEntity.ok().body(Map.of("message", "Password successfully changed"));
+	}
+	
+	@GetMapping("api/v1/user/profile/{idUser}")
+	public ResponseEntity<?> showUserProfile(@PathVariable Integer idUser) {
+		User user = userService.findUserById(idUser);
+		return ResponseEntity.ok().body(
+				Map.of("message", "User found with success",
+						"user", user,
+						"status", HttpStatus.OK.value())				
+				);		
+	} 
+	
+	@PutMapping("api/v1/user/profile/update")
+	public ResponseEntity<?> updateUserProfile(@RequestBody User user) {
+		return ResponseEntity.ok(userService.updateUser(user));
 	}
 
 }
