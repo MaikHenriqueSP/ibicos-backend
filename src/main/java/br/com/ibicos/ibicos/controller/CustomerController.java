@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import br.com.ibicos.ibicos.dto.EvaluationDTO;
 import br.com.ibicos.ibicos.entity.Statistics;
 import br.com.ibicos.ibicos.service.CustomerService;
 import br.com.ibicos.ibicos.service.EvaluateService;
@@ -40,9 +39,11 @@ public class CustomerController {
 	}
 	
 	@PutMapping("/evaluate/provider")
-	public ResponseEntity<?> evaluateProvider(@RequestBody EvaluationDTO evaluationDTO) {
+	public ResponseEntity<?> evaluateProvider(@RequestBody ObjectNode objectNode) {
+		Integer idEvaluate = objectNode.get("id_evaluate").asInt();
+		Float evaluation = objectNode.get("evaluation").floatValue();
 
-		evaluateService.evaluateProvider(evaluationDTO);
+		evaluateService.evaluateProvider(idEvaluate, evaluation);
 		return ResponseEntity.ok().body(Map.of(
 					"message", "Provider successfully evaluated",
 					"status", HttpStatus.OK.value()
@@ -52,8 +53,8 @@ public class CustomerController {
 	@PutMapping("/evaluate/provider/confirmHiring")
 	public ResponseEntity<?> evaluateProviderJobConfirmation(@RequestBody ObjectNode objectNode) {
 		Integer idEvaluate = objectNode.get("id_evaluate").asInt();
-		Integer idServiceCategory = objectNode.get("id_service_category").asInt();
-		evaluateService.evaluateProviderJobConfirmation(idEvaluate, idServiceCategory);
+
+		evaluateService.evaluateProviderJobConfirmation(idEvaluate);
 		return ResponseEntity.ok().body(
 				Map.of("message", "Job hiring successfully confirmed",
 						"status", HttpStatus.OK.value())

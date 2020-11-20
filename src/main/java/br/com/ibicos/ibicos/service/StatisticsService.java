@@ -28,4 +28,19 @@ public class StatisticsService {
 	public Optional<Statistics> showStatistics(Integer id) {
 		return statisticsRepository.findById(id);
 	}
+	
+	
+	public Optional<Statistics> findProviderStatisticsByIdProviderAndIdServiceCategory(Integer idProvider, 
+			Integer idCategory) {
+		return statisticsRepository.findProviderStatisticByProviderIdAndCategoryId(
+				idProvider, idCategory);
+	}
+	
+	public Optional<Statistics> findCustomerStatistic(Integer idCustomer) {
+		return statisticsRepository.findCustomerStatistic(idCustomer);
+	}
+	
+	public Statistics save(Statistics statistics) {
+		return statisticsRepository.save(statistics);
+	}
 }
