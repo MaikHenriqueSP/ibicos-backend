@@ -17,6 +17,7 @@ import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.exception.EmailSendingException;
 import br.com.ibicos.ibicos.exception.InvalidInsertionObjectException;
 import br.com.ibicos.ibicos.exception.InvalidTokenException;
+import br.com.ibicos.ibicos.exception.ResourceNotFoundException;
 import br.com.ibicos.ibicos.exception.UserAlreadyExistsException;
 import br.com.ibicos.ibicos.repository.UserRepository;
 import net.bytebuddy.utility.RandomString;
@@ -116,8 +117,7 @@ public class UserService implements IUserService {
 		Optional<User> optionalUser = userRepository.findById(idUser);
 		
 		if (optionalUser.isEmpty()) {
-			// TODO: change to a more suitable exception
-			throw new UsernameNotFoundException("We did not find any user with the provided ID");
+			throw new ResourceNotFoundException("We did not find any user with the provided ID");
 		}		
 		return optionalUser.get();		
 	}
@@ -127,7 +127,7 @@ public class UserService implements IUserService {
 		Optional<User> optionalUser = userRepository.findById(user.getId());
 		
 		if (optionalUser.isEmpty()) {
-			throw new UsernameNotFoundException("We did not find any user with the provided ID");
+			throw new ResourceNotFoundException("We did not find any user with the provided ID");
 		}
 		
 		User oldUser = optionalUser.get();
