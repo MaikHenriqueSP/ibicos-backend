@@ -23,7 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 
 	@ExceptionHandler(value = {UserAlreadyExistsException.class})
-	protected ResponseEntity<Object> handleUserAlreadyExistsExceptio(UserAlreadyExistsException exception) {
+	protected ResponseEntity<Object> handleUserAlreadyExistsException(UserAlreadyExistsException exception) {
 		Map<String, String> errorsMap = Map.of("email", exception.getMessage());
 		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
 			.timestamp(LocalDateTime.now())
@@ -49,7 +49,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 	}
 	
 	@ExceptionHandler(value = {InvalidInsertionObjectException.class})
-	protected ResponseEntity<Object> handleInvalidInsertionObjectException(Exception exception) {
+	protected ResponseEntity<Object> handleInvalidInsertionObjectException(InvalidInsertionObjectException exception) {
 		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
 			.timestamp(LocalDateTime.now())
 			.title("Invalid object structure")
@@ -140,6 +140,31 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 				.build();
 		
 		return new ResponseEntity<>(exceptionPayload, HttpStatus.CONFLICT);
+	}
+	
+	
+	@ExceptionHandler(value = {ResourceNotFoundException.class})
+	protected ResponseEntity<Object> handleInvalidTokenException(ResourceNotFoundException ex) {
+		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
+				.timestamp(LocalDateTime.now())
+				.title("Resource not found")
+				.statusCode(HttpStatus.NOT_FOUND.value())
+				.description(ex.getMessage()) 
+				.build();
+		
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(value = {RuntimeException.class})
+	protected ResponseEntity<Object> handleRuntimeException(RuntimeException exception) {
+		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
+			.timestamp(LocalDateTime.now())
+			.title("An error occurred while processing the request")
+			.statusCode(HttpStatus.BAD_REQUEST.value())
+			.description(exception.getMessage())
+			.build();
+		
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.BAD_REQUEST);
 	}
 		
 }

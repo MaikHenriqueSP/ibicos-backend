@@ -15,4 +15,6 @@ public interface ProviderStatisticsRepository extends JpaRepository<ProviderStat
 	Page<ProviderStatistics> findByCategoryId(Integer serviceCategoryId, Pageable pageable);
 	Optional<ProviderStatistics> findByIdAndCategoryId(Integer providerStatisticsId, Integer serviceCategoryId);
 	Optional<ProviderStatistics> findByIdAndStatisticsId(Integer providerStatisticsId, Integer statisticsId);
+	
+	
 }
