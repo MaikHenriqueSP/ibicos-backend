@@ -9,7 +9,6 @@ import br.com.ibicos.ibicos.entity.Evaluate;
 import br.com.ibicos.ibicos.entity.Statistics;
 import br.com.ibicos.ibicos.exception.ResourceNotFoundException;
 import br.com.ibicos.ibicos.repository.EvaluateRepository;
-import br.com.ibicos.ibicos.repository.StatisticsRepository;
 
 @Service
 public class EvaluateService {
