@@ -58,11 +58,7 @@ public class EvaluateService {
 		Integer idProvider = evaluate.getProvider().getId();
 		Integer idClient = evaluate.getClient().getId();
 
-		System.out.println(idProvider);
-		System.out.println(idClient);
-		System.out.println(idServiceCategory);
 		Statistics customerStatistics = findCustomerStatisticsOrElseThrowRuntimeException(idClient);
-		System.out.println(customerStatistics);
 		Statistics providerStatistics = findProviderStatisticsByIdProviderAndIdServiceCategoryOrElseThrowRuntimeException(
 				idProvider, idServiceCategory);
 
