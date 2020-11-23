@@ -51,7 +51,7 @@ public class UserController {
 		userDetailsServiceImpl.authenticate(credentials);
 		String token = jwtService.generateToken(credentials);
 
-		return ResponseEntity.ok(new TokenDTO(credentials.getEmail(), token));
+		return ResponseEntity.ok(new TokenDTO(token));
 	}
 
 	@GetMapping("/verify")
