@@ -12,4 +12,8 @@ public interface IUserService {
 	void resetPasswordRequestHandler(String email);
 
 	void changeUserPassword(String accountRecoveryToken, String newPassword);
+	
+	User findUserById(Integer idUser);
+	
+	User updateUser(User user);
 }

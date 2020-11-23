@@ -7,5 +7,6 @@ import br.com.ibicos.ibicos.entity.Evaluate;
 
 @Repository
 public interface EvaluateRepository extends JpaRepository<Evaluate, Integer> {
+	
 
 }
