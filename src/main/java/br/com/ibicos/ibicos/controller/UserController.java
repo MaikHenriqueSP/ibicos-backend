@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import br.com.ibicos.ibicos.dto.CredentialsDTO;
-import br.com.ibicos.ibicos.dto.EmailDTO;
 import br.com.ibicos.ibicos.dto.RecoveryDTO;
-import br.com.ibicos.ibicos.dto.TokenDTO;
 import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.service.IUserService;
 import br.com.ibicos.ibicos.service.JwtService;
@@ -53,7 +53,7 @@ public class UserController {
 		userDetailsServiceImpl.authenticate(credentials);
 		String token = jwtService.generateToken(credentials);
 
-		return ResponseEntity.ok(new TokenDTO(token));
+		return ResponseEntity.ok(Map.of("token", token));
 	}
 
 	@GetMapping("/verify")
@@ -63,11 +63,13 @@ public class UserController {
 	}
 
 	@PostMapping("/resetPassword/request")
-	public ResponseEntity<?> resetPasswordRequestHandler(@RequestBody EmailDTO emailDTO) {
+	public ResponseEntity<?> resetPasswordRequestHandler(@RequestBody ObjectNode objectNode) {
+		String email = objectNode.get("email").asText();
+		System.out.println(email);
 
-		userService.resetPasswordRequestHandler(emailDTO.getEmail());
+		userService.resetPasswordRequestHandler(email);
 		return ResponseEntity.ok().body(
-				Map.of("message", "An email with the reset password instructions was sent to: '" + emailDTO.getEmail()
+				Map.of("message", "An email with the reset password instructions was sent to: '" + email
 						+ "', please check it and follow the provided instructions to reset your email!"));
 	}
 
