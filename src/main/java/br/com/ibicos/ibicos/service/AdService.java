@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +46,11 @@ public class AdService {
 		Ad updatedAd = adRepository.save(oldAd);
 		
 		return updatedAd;
+	}
+	
+	public Page<Ad> listAdsByFilters(String categoryName, String cityName, String areaName, int page, int size) {
+		Pageable pagingSort = PageRequest.of(page, size);
+		Page<Ad> pageableAdsList = adRepository.findByAndSortByMultiQueryFilter(categoryName, cityName, areaName, pagingSort);
+		return pageableAdsList;
 	}
 }
