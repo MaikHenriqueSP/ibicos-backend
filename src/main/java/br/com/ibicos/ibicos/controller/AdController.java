@@ -26,11 +26,12 @@ public class AdController {
 	@GetMapping("/list/ad/filter")
 	public ResponseEntity<?> listAdsByFilters(
 			@RequestParam(defaultValue = "") String categoryName,
+			@RequestParam(defaultValue = "") String stateName,
 			@RequestParam(defaultValue = "") String cityName,
 			@RequestParam(defaultValue = "") String areaName,
 			@RequestParam(defaultValue = "0") int page,
 	        @RequestParam(defaultValue = "8") int size) {
-		Page<Ad> pageableAdsList = adService.listAdsByFilters(categoryName, cityName, areaName, page, size);
+		Page<Ad> pageableAdsList = adService.listAdsByFilters(categoryName, stateName, cityName, areaName, page, size);
 		return ResponseEntity.ok(pageableAdsList);
 	}
 }

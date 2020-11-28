@@ -48,9 +48,9 @@ public class AdService {
 		return updatedAd;
 	}
 	
-	public Page<Ad> listAdsByFilters(String categoryName, String cityName, String areaName, int page, int size) {
+	public Page<Ad> listAdsByFilters(String categoryName, String stateName, String cityName, String areaName, int page, int size) {
 		Pageable pagingSort = PageRequest.of(page, size);
-		Page<Ad> pageableAdsList = adRepository.findByAndSortByMultiQueryFilter(categoryName, cityName, areaName, pagingSort);
+		Page<Ad> pageableAdsList = adRepository.findByAndSortByMultiQueryFilter(categoryName, stateName, cityName, areaName, pagingSort);
 		return pageableAdsList;
 	}
 }
