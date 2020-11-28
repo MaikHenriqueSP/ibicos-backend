@@ -44,8 +44,20 @@ public class UserController {
 
 		Map<String, Object> responseMap = Map.of("message",
 				"Your account was successfully signed up, but before using it you need to confirm it using your email so please check it!",
-				"savedUser", savedUser);
+				"savedUser", savedUser,
+				"statusCode", HttpStatus.CREATED.value());
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseMap);
+	}
+	
+	@GetMapping("/checkEmailInUser")
+	public ResponseEntity<?> isEmailInUse(@RequestBody ObjectNode objectNode) {
+		String email = objectNode.asText("email");
+		Boolean isEmailInUse = userService.isEmailInUse(email);
+		return isEmailInUse ? ResponseEntity.status(HttpStatus.CONFLICT)
+				.body(Map.of("message", "Email already in use")) : 
+					ResponseEntity.status(HttpStatus.OK)
+					.body(Map.of("message", "Email free to use"));
+		
 	}
 
 	@PostMapping("/login")
@@ -65,7 +77,6 @@ public class UserController {
 	@PostMapping("/resetPassword/request")
 	public ResponseEntity<?> resetPasswordRequestHandler(@RequestBody ObjectNode objectNode) {
 		String email = objectNode.get("email").asText();
-		System.out.println(email);
 
 		userService.resetPasswordRequestHandler(email);
 		return ResponseEntity.ok().body(
@@ -73,7 +84,7 @@ public class UserController {
 						+ "', please check it and follow the provided instructions to reset your email!"));
 	}
 
-	@PutMapping("/resetPassword/change")
+	@PostMapping("/resetPassword/change")
 	public ResponseEntity<?> changeUserPassword(@RequestBody RecoveryDTO recoveryDTO) {
 		userService.changeUserPassword(recoveryDTO.getAccountRecoveryToken(), recoveryDTO.getNewPassword());
 		return ResponseEntity.ok().body(Map.of("message", "Password successfully changed"));

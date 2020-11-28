@@ -158,6 +158,11 @@ public class UserService implements IUserService {
 		
 		return userRepository.save(oldUser);
 	}
+
+	@Override
+	public Boolean isEmailInUse(String email) {
+		return userRepository.existsByEmail(email);
+	}
 	
 	
 
