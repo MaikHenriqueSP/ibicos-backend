@@ -1,5 +1,7 @@
 package br.com.ibicos.ibicos.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +44,7 @@ public class AdController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<?> createAd(@RequestBody Ad ad) {
+	public ResponseEntity<?> createAd(@Valid @RequestBody Ad ad) {
 		Ad savedAd = adService.createAd(ad);
 		return ResponseEntity.ok(savedAd);
 	}
