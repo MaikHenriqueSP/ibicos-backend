@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import br.com.ibicos.ibicos.entity.ProviderStatistics;
@@ -16,5 +17,12 @@ public interface ProviderStatisticsRepository extends JpaRepository<ProviderStat
 	Optional<ProviderStatistics> findByIdAndCategoryId(Integer providerStatisticsId, Integer serviceCategoryId);
 	Optional<ProviderStatistics> findByIdAndStatisticsId(Integer providerStatisticsId, Integer statisticsId);
 	
+	
+	@Query(value = "SELECT DISTINCT ps.* FROM provider_statistics as ps, statistics "
+			+ "WHERE ps.fk_id_service_category = ?1 "
+			+ "AND ps.fk_id_statistics = statistics.id_statistics "
+			+ "AND statistics.fk_id_user = ?2",
+			nativeQuery = true)
+	Optional<ProviderStatistics> findByServiceCategoryIdAndUserId(Integer serviceCategoryId, Integer userId);
 	
 }
