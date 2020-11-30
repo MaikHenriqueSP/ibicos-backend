@@ -104,5 +104,12 @@ public class UserController {
 	public ResponseEntity<?> updateUserProfile(@RequestBody User user) {
 		return ResponseEntity.ok(userService.updateUser(user));
 	}
+	
+	@GetMapping("api/v1/user/findUserByEmail")
+	public ResponseEntity<?> getUserByEmail(@RequestBody ObjectNode objectNode) {
+		String email = objectNode.get("email").asText();
+		User user = userService.findUserByEmail(email);
+		return ResponseEntity.ok(user);
+	}
 
 }

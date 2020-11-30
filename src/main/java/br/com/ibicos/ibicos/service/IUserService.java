@@ -18,4 +18,6 @@ public interface IUserService {
 	User updateUser(User user);
 	
 	Boolean isEmailInUse(String email);
+	
+	User findUserByEmail(String email);
 }

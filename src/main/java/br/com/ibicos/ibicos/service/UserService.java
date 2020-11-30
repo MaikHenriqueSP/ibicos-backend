@@ -163,6 +163,15 @@ public class UserService implements IUserService {
 	public Boolean isEmailInUse(String email) {
 		return userRepository.existsByEmail(email);
 	}
+
+	@Override
+	public User findUserByEmail(String email) {
+		Optional<User> userOptional =  userRepository.findByEmail(email);
+		if (userOptional.isEmpty()) { 
+			throw new ResourceNotFoundException("There's no user with the given email");
+		}
+		return userOptional.get();
+	}
 	
 	
 
