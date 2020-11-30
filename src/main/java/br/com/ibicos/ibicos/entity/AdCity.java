@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -50,4 +51,13 @@ public class AdCity {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "adCity")
 	@JsonIgnoreProperties(value = "adCity")
 	private List<@Valid AdRegionArea> regionArea;
+	
+	@PrePersist	
+	private void prePersist() {
+	    if(regionArea != null && regionArea.size() > 0) {
+	    	for(AdRegionArea region: regionArea) {
+	    		region.setAdCity(this);
+	    	}
+	    };
+	}
 }

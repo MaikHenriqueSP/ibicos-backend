@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import javax.persistence.PrePersist;
 
 @Data
 @Entity
@@ -58,9 +59,17 @@ public class Ad {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private List<@Valid AdCity> cities;
 	
-
 	@ManyToOne
 	@JsonProperty(access = Access.READ_ONLY)
 	@JoinColumn(name="fk_id_service_category", insertable = false, updatable = false)
 	private ProviderStatistics providerStatistics;
+	
+	@PrePersist	
+	private void prePersist() {
+	    if(cities != null && cities.size() > 0) {
+	    	for(AdCity city: cities) {
+	    		city.setAd(this);
+	    	}
+	    };
+	}
 }
