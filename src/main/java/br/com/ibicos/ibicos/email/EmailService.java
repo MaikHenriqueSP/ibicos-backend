@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
 import br.com.ibicos.ibicos.dto.EmailTokenConfigDTO;
 import br.com.ibicos.ibicos.exception.EmailSendingException;
 
@@ -76,6 +77,45 @@ public class EmailService {
 				.build();
 		
 		sendEmailTokenTemplate(emailTokenConfigDTO);
+	}
+
+	public void sendEmailToProvider(CustomerEmailToProviderDTO customerEmailToProviderDTO) {
+		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+		MimeMessageHelper mimeMessageHelper;
+		
+		String customerName = customerEmailToProviderDTO.getCustomerName();
+		String providerName = customerEmailToProviderDTO.getProviderName();
+		
+		String message = customerEmailToProviderDTO.getMessage();
+		
+		String providerEmailAddress = customerEmailToProviderDTO.getProviderEmailAddress();
+		String customerEmailAddress = customerEmailToProviderDTO.getCustomerEmailAddress();
+		
+		try {
+			mimeMessageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+					StandardCharsets.UTF_8.name());
+
+			Context context = new Context();
+			context.setVariable("customerName", customerName);
+			context.setVariable("providerName", providerName);
+			context.setVariable("message", message);
+			
+			context.setVariable("providerEmailAddress", providerEmailAddress);
+			context.setVariable("customerEmailAddress", customerEmailAddress);
+
+			String html = springTemplateEngine.process("email-message-from-customer-to-provider", context);
+
+			mimeMessageHelper.setTo(providerEmailAddress);
+
+			mimeMessageHelper.setText(html, true);
+			mimeMessageHelper.setSubject("iBicos - Mensagem do cliente");
+			mimeMessageHelper.setFrom("ibicos.classificados@gmail.com", "iBicos - Suporte");
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			throw new EmailSendingException("An error occurred while sending email, please try again");
+		}
+
+		javaMailSender.send(mimeMessage);
+		
 	}
 
 

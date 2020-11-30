@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
+import br.com.ibicos.ibicos.email.EmailService;
 import br.com.ibicos.ibicos.entity.Statistics;
 import br.com.ibicos.ibicos.repository.StatisticsRepository;
 
@@ -13,6 +15,9 @@ import br.com.ibicos.ibicos.repository.StatisticsRepository;
 public class CustomerService {
 	@Autowired
 	private StatisticsRepository statisticsRepository;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	public Statistics showCustomerStatistics(Integer customerId) {
 		Optional<Statistics> optionalStatistic = statisticsRepository
@@ -23,6 +28,11 @@ public class CustomerService {
 		}
 		
 		return optionalStatistic.get();
+	}
+
+	public void sendEmailToProvider(CustomerEmailToProviderDTO customerEmailToProviderDTO) {
+		emailService.sendEmailToProvider(customerEmailToProviderDTO);
+
 	}
 	
 }
