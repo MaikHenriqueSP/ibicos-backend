@@ -38,7 +38,7 @@ public class ProviderStatistics {
 	@JoinColumn(name= "fk_id_service_category")
 	private ServiceCategory category;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "providerStatistics")
-	private List<Ad> ad;
+//	@JsonIgnore
+//	@OneToMany(mappedBy = "providerStatistics")
+//	private List<Ad> ad;
 }

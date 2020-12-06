@@ -1,5 +1,6 @@
 package br.com.ibicos.ibicos.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.ibicos.ibicos.dto.AdWithProviderStatisticsDTO;
 import br.com.ibicos.ibicos.entity.Ad;
 import br.com.ibicos.ibicos.entity.ServiceCategory;
 import br.com.ibicos.ibicos.entity.User;
@@ -57,17 +59,28 @@ public class AdService {
 	public Page<Ad> listAdsByFilters(String categoryName, String stateName, String cityName, String areaName, int page, int size) {
 		Pageable pagingSort = PageRequest.of(page, size);
 		Page<Ad> pageableAdsList = adRepository.findByAndSortByMultiQueryFilter(categoryName, stateName, cityName, areaName, pagingSort);
+		
 		return pageableAdsList;
 	}
 	
 	@Transactional(rollbackFor = { RuntimeException.class})
 	public Ad createAd(Ad ad) {
-		Ad savedAd =  adRepository.save(ad);
+		Ad savedAd =  adRepository.save(ad);		
+		
 		User adCreator = savedAd.getUser();
 		ServiceCategory adCategory = savedAd.getServiceCategory();
 		
-		providerStatisticsService.createProviderStatisticsIfItNotExists(adCreator, adCategory);
+		providerStatisticsService.createProviderStatisticsIfItNotExists(adCreator, adCategory);		
 		
 		return savedAd;
+	}
+	
+	public void deleteAdById(Integer id) {
+		adRepository.deleteById(id);
+	}
+	
+	public List<AdWithProviderStatisticsDTO> listAdWithFiltersTest(String categoryName, String stateName, String cityName, String areaName) {
+		List<AdWithProviderStatisticsDTO> awpsDTO = adRepository.listAdWithFilters(categoryName, stateName, cityName, areaName);
+		return awpsDTO;
 	}
 }

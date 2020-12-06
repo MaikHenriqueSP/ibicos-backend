@@ -59,10 +59,9 @@ public class Ad {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private List<@Valid AdCity> cities;
 	
-	@ManyToOne
-	@JsonProperty(access = Access.READ_ONLY)
-	@JoinColumn(name="fk_id_service_category", insertable = false, updatable = false)
-	private ProviderStatistics providerStatistics;
+//	@ManyToOne
+//	@JoinColumn(name = "fk_id_service_category", insertable = false, updatable = false)
+//	private ProviderStatistics providerStatistics;
 	
 	@PrePersist	
 	private void prePersist() {

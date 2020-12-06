@@ -1,5 +1,6 @@
 package br.com.ibicos.ibicos.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import br.com.ibicos.ibicos.dto.AdWithProviderStatisticsDTO;
 import br.com.ibicos.ibicos.entity.Ad;
 
 @Repository
@@ -22,9 +24,7 @@ public interface AdRepository extends PagingAndSortingRepository<Ad, Integer>{
 			+ "service_category as category, "
 			+ "ad_region_area as area, "
 			+ "provider_statistics,"
-			+ "statistics "
-			+ 
-			
+			+ "statistics "		+ 			
 			"	WHERE " +
 			"    city.state_abb LIKE %?2%    " +
 			"    AND ad.id_ad = city.fk_id_ad " + 
@@ -42,5 +42,33 @@ public interface AdRepository extends PagingAndSortingRepository<Ad, Integer>{
 			String cityName, 
 			String areaName,
 			Pageable pageable);
+		
+	@Query(value="SELECT DISTINCT ad.id_ad as idAd, " + 
+			"				ad.ad_description as adDescription," + 
+			"                category.category_name as categoryName," + 
+			"                statistics.evaluation as evaluation," + 
+			"                statistics.evaluations_counter as evaluationsCounter," + 
+			"                provider_statistics.visualizations as visualizations," + 
+			"                statistics.fk_id_user as idUser" + 
+			"			 FROM ad, " + 
+			"			 ad_city as city, " + 
+			"			 service_category as category, " + 
+			"			 ad_region_area as area, " + 
+			"			 provider_statistics," + 
+			"			 statistics 		 			" + 
+			"				WHERE  " + 
+			"			    city.state_abb LIKE %?2%     " + 
+			"			    AND ad.id_ad = city.fk_id_ad   " + 
+			"			    AND city.city_name LIKE %?3%   " + 
+			"			    AND ad.fk_id_service_category = category.id_service_category   " + 
+			"			    AND category.category_name LIKE %?1% "+ 
+			"			    AND area.fk_id_city = city.id_city   " + 
+			"		        AND area.area_name LIKE %?4%  " + 
+			"		        AND provider_statistics.fk_id_service_category = category.id_service_category  " + 
+			"		        AND provider_statistics.fk_id_statistics = statistics.id_statistics " + 
+			"		        AND ad.fk_id_user = statistics.fk_id_user", nativeQuery = true)
+	List<AdWithProviderStatisticsDTO> listAdWithFilters(String categoryName, String stateName, String cityName, String areaName);
+	
+
 
 }

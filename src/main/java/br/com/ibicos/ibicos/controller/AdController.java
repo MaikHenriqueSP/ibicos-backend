@@ -1,18 +1,25 @@
 package br.com.ibicos.ibicos.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.ibicos.ibicos.dto.AdWithProviderStatisticsDTO;
 import br.com.ibicos.ibicos.entity.Ad;
+import br.com.ibicos.ibicos.repository.AdRepository;
 import br.com.ibicos.ibicos.service.AdService;
 import br.com.ibicos.ibicos.service.ProviderStatisticsService;
 
@@ -47,5 +54,27 @@ public class AdController {
 	public ResponseEntity<?> createAd(@Valid @RequestBody Ad ad) {
 		Ad savedAd = adService.createAd(ad);
 		return ResponseEntity.ok(savedAd);
+	}
+	
+	
+	@Autowired
+	private AdRepository adRepository;
+	@GetMapping("/list/ad/filter/test")
+	public ResponseEntity<?> listAdsByFiltersTest(
+			@RequestParam(defaultValue = "") String categoryName,
+			@RequestParam(defaultValue = "") String stateName,
+			@RequestParam(defaultValue = "") String cityName,
+			@RequestParam(defaultValue = "") String areaName,
+			@RequestParam(defaultValue = "0") int page,
+	        @RequestParam(defaultValue = "8") int size) {
+
+		List<AdWithProviderStatisticsDTO> awpsDTO =	adService.listAdWithFiltersTest(categoryName, stateName, cityName, areaName);
+		return ResponseEntity.ok(awpsDTO);
+	}
+	
+	@DeleteMapping("/ad/delete/{id}")
+	public ResponseEntity<?> deleteAd(@PathVariable Integer id) {
+		adRepository.deleteById(id);
+		return ResponseEntity.ok(Map.of("message", "ad deleted"));
 	}
 }
