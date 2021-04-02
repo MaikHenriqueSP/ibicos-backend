@@ -7,6 +7,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -83,13 +84,13 @@ public class EmailService {
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mimeMessageHelper;
 		
-		String customerName = customerEmailToProviderDTO.getCustomerName();
-		String providerName = customerEmailToProviderDTO.getProviderName();
+		String customerName = customerEmailToProviderDTO.getCustomer().getPerson().getNamePerson();
+		String providerName = customerEmailToProviderDTO.getProvider().getPerson().getNamePerson();
 		
 		String message = customerEmailToProviderDTO.getMessage();
 		
-		String providerEmailAddress = customerEmailToProviderDTO.getProviderEmailAddress();
-		String customerEmailAddress = customerEmailToProviderDTO.getCustomerEmailAddress();
+		String providerEmailAddress = customerEmailToProviderDTO.getProvider().getEmail();
+		String customerEmailAddress = customerEmailToProviderDTO.getCustomer().getEmail();
 		
 		try {
 			mimeMessageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,

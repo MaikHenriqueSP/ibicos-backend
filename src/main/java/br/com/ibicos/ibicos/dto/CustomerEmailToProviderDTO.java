@@ -1,5 +1,7 @@
 package br.com.ibicos.ibicos.dto;
 
+import br.com.ibicos.ibicos.entity.ServiceCategory;
+import br.com.ibicos.ibicos.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +12,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerEmailToProviderDTO {
-	private String providerEmailAddress;
-	private String customerEmailAddress;
-	private String customerName;
-	private String providerName;
+	private User provider;
+	private User customer;
+	private ServiceCategory serviceCategory;
 	private String message;
 
 }

@@ -12,11 +12,7 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Data
 @Entity
@@ -27,6 +23,7 @@ import lombok.ToString;
 		  generator = ObjectIdGenerators.PropertyGenerator.class, 
 		  property = "idEvaluate",
 		  scope = Evaluate.class)
+@Builder
 public class Evaluate {
 
 	@Id

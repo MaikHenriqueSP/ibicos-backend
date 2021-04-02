@@ -1,7 +1,11 @@
 package br.com.ibicos.ibicos.service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
+import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
+import br.com.ibicos.ibicos.entity.ServiceCategory;
+import br.com.ibicos.ibicos.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -94,5 +98,21 @@ public class EvaluateService {
 		evaluate.setProviderEvaluated(true);
 		statisticsService.save(providerStatistics);
 		evaluateRepository.save(evaluate);
+	}
+
+	public void registerPendingEvaluation(CustomerEmailToProviderDTO customerEmailToProviderDTO) {
+		User customer = customerEmailToProviderDTO.getCustomer();
+		User provider = customerEmailToProviderDTO.getProvider();
+
+		ServiceCategory serviceCategory = customerEmailToProviderDTO.getServiceCategory();
+
+		Evaluate pendingEvaluation = Evaluate.builder()
+				.client(customer)
+				.provider(provider)
+				.messageDate(LocalDate.now())
+				.serviceCategory(serviceCategory)
+				.build();
+
+		evaluateRepository.save(pendingEvaluation);
 	}
 }
