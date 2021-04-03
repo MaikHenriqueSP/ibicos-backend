@@ -1,6 +1,7 @@
 package br.com.ibicos.ibicos.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
@@ -115,4 +116,8 @@ public class EvaluateService {
 
 		evaluateRepository.save(pendingEvaluation);
 	}
+
+    public List<Evaluate> listEvaluationsByCustomerId(Integer customerId) {
+		return evaluateRepository.findByCustomerId(customerId);
+    }
 }

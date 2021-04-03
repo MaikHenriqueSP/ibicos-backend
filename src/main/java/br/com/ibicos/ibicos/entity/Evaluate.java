@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -29,6 +30,7 @@ public class Evaluate {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idEvaluate;
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate messageDate;
 	private boolean hired;
 	private boolean customerEvaluated;

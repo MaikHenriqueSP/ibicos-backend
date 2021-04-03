@@ -1,7 +1,9 @@
 package br.com.ibicos.ibicos.controller;
 
+import java.util.List;
 import java.util.Map;
 
+import br.com.ibicos.ibicos.entity.Evaluate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +71,12 @@ public class CustomerController {
 		customerService.sendEmailToProvider(customerEmailToProviderDTO);
 		evaluateService.registerPendingEvaluation(customerEmailToProviderDTO);
 		return ResponseEntity.ok(Map.of("message", "email successfully sent"));
+	}
+
+	@GetMapping("/evaluate/{customerId}/pending/evaluation")
+	public ResponseEntity<?> listCustomerPendingEvaluations(@PathVariable Integer customerId ) {
+		List<Evaluate> pendingEvaluations = evaluateService.listEvaluationsByCustomerId(customerId);
+		return ResponseEntity.ok(Map.of("pendingEvaluations", pendingEvaluations));
 	}
 	
 	
