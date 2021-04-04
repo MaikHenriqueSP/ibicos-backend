@@ -120,4 +120,8 @@ public class EvaluateService {
     public List<Evaluate> listEvaluationsByCustomerId(Integer customerId) {
 		return evaluateRepository.findByCustomerId(customerId);
     }
+
+	public void deleteEvaluationById(Integer idEvaluate) {
+		evaluateRepository.deleteById(idEvaluate);
+	}
 }

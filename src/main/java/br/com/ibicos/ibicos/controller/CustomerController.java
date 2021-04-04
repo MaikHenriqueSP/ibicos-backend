@@ -7,13 +7,7 @@ import br.com.ibicos.ibicos.entity.Evaluate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -64,7 +58,6 @@ public class CustomerController {
 						"status", HttpStatus.OK.value())
 				);
 	}
-	
 
 	@PostMapping("/ad/sendMessage")
 	public ResponseEntity<?> sendEmailToCustomer(@RequestBody CustomerEmailToProviderDTO customerEmailToProviderDTO ) { 
@@ -77,6 +70,12 @@ public class CustomerController {
 	public ResponseEntity<?> listCustomerPendingEvaluations(@PathVariable Integer customerId ) {
 		List<Evaluate> pendingEvaluations = evaluateService.listEvaluationsByCustomerId(customerId);
 		return ResponseEntity.ok(Map.of("pendingEvaluations", pendingEvaluations));
+	}
+
+	@DeleteMapping("/evaluate/delete/{idEvaluate}")
+	public ResponseEntity<?> deletePendingEvaluation(@PathVariable Integer idEvaluate) {
+		evaluateService.deleteEvaluationById(idEvaluate);
+		return ResponseEntity.ok(Map.of("message", "pending evaluation successfully deleted"));
 	}
 	
 	
