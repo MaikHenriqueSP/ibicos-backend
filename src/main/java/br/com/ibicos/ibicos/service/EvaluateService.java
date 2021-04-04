@@ -90,8 +90,7 @@ public class EvaluateService {
 		}
 
 		Integer evaluationCounter = providerStatistics.getEvaluationsCounter();
-		Float newProviderEvaluation = ((providerStatistics.getEvaluation() * evaluationCounter) + evaluation)
-				/ (evaluationCounter + 1);
+		Float newProviderEvaluation = getNewProviderEvaluation(evaluation, providerStatistics, evaluationCounter);
 
 		providerStatistics.setEvaluation(newProviderEvaluation);
 		providerStatistics.setEvaluationsCounter(evaluationCounter + 1);
@@ -99,6 +98,12 @@ public class EvaluateService {
 		evaluate.setProviderEvaluated(true);
 		statisticsService.save(providerStatistics);
 		evaluateRepository.save(evaluate);
+	}
+
+	private Float getNewProviderEvaluation(Float evaluation, Statistics providerStatistics, Integer evaluationCounter) {
+		Float newProviderEvaluation = ((providerStatistics.getEvaluation() * evaluationCounter) + evaluation)
+				/ (evaluationCounter + 1);
+		return newProviderEvaluation;
 	}
 
 	public void registerPendingEvaluation(CustomerEmailToProviderDTO customerEmailToProviderDTO) {
