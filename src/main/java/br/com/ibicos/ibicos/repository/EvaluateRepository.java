@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface EvaluateRepository extends JpaRepository<Evaluate, Integer> {
 
-    @Query(value = "SELECT DISTINCT * FROM evaluate WHERE fk_id_client = ?1", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT * FROM evaluate WHERE fk_id_client = ?1 AND provider_evaluated = 0", nativeQuery = true)
     List<Evaluate> findByCustomerId(Integer customerId);
 }
