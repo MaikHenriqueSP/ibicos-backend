@@ -16,8 +16,9 @@ public interface StatisticsRepository extends JpaRepository<Statistics, Integer>
 
 	Optional<Statistics> findByIdAndUserId(Integer statisticsId, Integer userId);
 
-	@Query(value = "SELECT s.* FROM statistics as s, provider_statistics as p" + " WHERE s.fk_id_user = ?1"
-			+ " AND s.id_statistics != p.fk_id_statistics", nativeQuery = true)
+	@Query(value = "SELECT DISTINCT s.* FROM statistics as s WHERE s.fk_id_user = ?1 AND " +
+			"s.id_statistics NOT IN (SELECT p.fk_id_statistics FROM provider_statistics as p WHERE \n" +
+			"p.fk_id_statistics = s.id_statistics);", nativeQuery = true)
 	Optional<Statistics> findCustomerStatistic(Integer customerId);
 
 	
