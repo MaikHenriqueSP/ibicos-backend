@@ -1,7 +1,10 @@
 package br.com.ibicos.ibicos.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import br.com.ibicos.ibicos.entity.Evaluate;
+import br.com.ibicos.ibicos.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +21,6 @@ import br.com.ibicos.ibicos.entity.Ad;
 import br.com.ibicos.ibicos.entity.Statistics;
 import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.repository.AdRepository;
-import br.com.ibicos.ibicos.service.AdService;
-import br.com.ibicos.ibicos.service.ProviderService;
-import br.com.ibicos.ibicos.service.ProviderStatisticsService;
-import br.com.ibicos.ibicos.service.StatisticsService;
 
 @RestController
 @RequestMapping("/api/v1/provider")
@@ -42,7 +41,9 @@ public class ProviderController {
 	@Autowired
 	private AdRepository adRepository;
 
-	// list all providers
+	@Autowired
+	private EvaluateService evaluateService;
+
 	@GetMapping
 	public ResponseEntity<?> listProviders() {
 		List<User> providers = providerService.listProviders();
@@ -50,7 +51,6 @@ public class ProviderController {
 		return ResponseEntity.status(HttpStatus.OK).body(providers);
 	}
 
-	// show ads of provider
 	@GetMapping(path = "/{providerId}/ad")
 	public ResponseEntity<?> listAds(@PathVariable("providerId") Integer providerId, Pageable pageable) {
 		Page<Ad> providerAds = adService.listProviderAds(providerId, pageable);
@@ -58,7 +58,6 @@ public class ProviderController {
 		return ResponseEntity.status(HttpStatus.OK).body(providerAds);
 	}
 
-	// show provider statistics
 	@GetMapping(path = "/{userId}/statistics")
 	public ResponseEntity<?> listProviderStatistics(@PathVariable("userId") Integer userId, Pageable pageable) {
 		Page<Statistics> userStatistics = statisticsService.listStatisticsByUserId(userId, pageable);
@@ -66,7 +65,6 @@ public class ProviderController {
 		return ResponseEntity.status(HttpStatus.OK).body(userStatistics);
 	}
 
-	// edit ad
 	@PutMapping(path = "{providerId}/ad/{adId}")
 	public ResponseEntity<?> changeProviderAd(@PathVariable("providerId") Integer providerId,
 			@PathVariable("adId") Integer adId, @RequestBody Ad ad) {
@@ -80,5 +78,11 @@ public class ProviderController {
 		}
 		
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(adService.updateAd(oldAd, ad));
+	}
+
+	@GetMapping("/evaluate/{providerId}/pending/evaluation")
+	public ResponseEntity<?> listProviderPendingEvaluations(@PathVariable Integer providerId) {
+		List<Evaluate> pendingEvaluations = evaluateService.listEvaluationsByProviderId(providerId);
+		return ResponseEntity.ok(Map.of("pendingEvaluations", pendingEvaluations));
 	}
 }

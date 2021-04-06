@@ -12,11 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Data
 @EqualsAndHashCode(exclude = {"user"})
@@ -27,6 +23,7 @@ import lombok.ToString;
 		generator = ObjectIdGenerators.PropertyGenerator.class, 
 		property = "id",
 		scope = Statistics.class)
+@Builder
 public class Statistics {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

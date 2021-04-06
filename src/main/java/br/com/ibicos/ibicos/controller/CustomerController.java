@@ -60,7 +60,7 @@ public class CustomerController {
 	}
 
 	@PostMapping("/ad/sendMessage")
-	public ResponseEntity<?> sendEmailToCustomer(@RequestBody CustomerEmailToProviderDTO customerEmailToProviderDTO ) { 
+	public ResponseEntity<?> sendEmailToProvider(@RequestBody CustomerEmailToProviderDTO customerEmailToProviderDTO ) {
 		customerService.sendEmailToProvider(customerEmailToProviderDTO);
 		evaluateService.registerPendingEvaluation(customerEmailToProviderDTO);
 		return ResponseEntity.ok(Map.of("message", "email successfully sent"));

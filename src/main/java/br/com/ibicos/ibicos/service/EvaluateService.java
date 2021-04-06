@@ -129,4 +129,8 @@ public class EvaluateService {
 	public void deleteEvaluationById(Integer idEvaluate) {
 		evaluateRepository.deleteById(idEvaluate);
 	}
+
+	public List<Evaluate> listEvaluationsByProviderId(Integer providerId) {
+		return evaluateRepository.findByProviderIdNotEvaluatedAndHired(providerId);
+	}
 }

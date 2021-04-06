@@ -35,19 +35,18 @@ public class ProviderStatisticsService {
 				providerStatisticsRepository.findByServiceCategoryIdAndUserId(adCategory.getId(), adCreator.getId());
 		
 		if(providerStatisticsOptional.isEmpty()) {
-			ProviderStatistics providerStatistics = new ProviderStatistics();
-			Statistics statistics = new Statistics();			
-			
-			statistics.setEvaluation(0f);
-			statistics.setEvaluationsCounter(0);
-			statistics.setHiredServicesCounter(0);
-			statistics.setMessagesCounter(0);
-			statistics.setViewsCounter(0);
-			statistics.setUser(adCreator);
-			
-			providerStatistics.setStatistics(statistics);
-			providerStatistics.setVisualizations(0);
-			providerStatistics.setCategory(adCategory);
+			Statistics statistics = Statistics.builder()
+					.evaluation(0f)
+					.evaluationsCounter(0)
+					.hiredServicesCounter(0)
+					.messagesCounter(0)
+					.viewsCounter(0)
+					.user(adCreator).build();
+
+			ProviderStatistics providerStatistics = ProviderStatistics.builder().
+					statistics(statistics)
+					.visualizations(0)
+					.category(adCategory).build();
 			
 			return providerStatisticsRepository.save(providerStatistics);
 		}

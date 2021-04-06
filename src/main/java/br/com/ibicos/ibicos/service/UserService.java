@@ -34,6 +34,9 @@ public class UserService implements IUserService {
 	@Autowired
 	private EmailService emailService;
 
+	@Autowired
+	private StatisticsService statisticsService;
+
 	private void encodeUserPassword(User user) {
 		String encodedPassword = passwordEncoder.encode(user.getPasswordUser());
 		user.setPasswordUser(encodedPassword);
@@ -72,8 +75,9 @@ public class UserService implements IUserService {
 
 		User user = optUser.get();
 		user.setIsAccountConfirmed(true);
+		statisticsService.createCustomerStatistics(user);
 
-		updateUser(user);
+		userRepository.save(user);
 	}
 
 	@Override
@@ -172,7 +176,5 @@ public class UserService implements IUserService {
 		}
 		return userOptional.get();
 	}
-	
-	
 
 }
