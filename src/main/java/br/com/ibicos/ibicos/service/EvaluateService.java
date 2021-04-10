@@ -40,7 +40,7 @@ public class EvaluateService {
 				.findProviderStatisticsByIdProviderAndIdServiceCategory(idProvider, idCategory);
 
 		if (optionalStatistics.isEmpty()) {
-			throw new RuntimeException("There is not such provider statistics for the given parameters");
+			throw new RuntimeException("There is no such provider statistics for the given parameters");
 		}
 
 		return optionalStatistics.get();
@@ -50,7 +50,7 @@ public class EvaluateService {
 		Optional<Statistics> optionalStatistics = statisticsService.findCustomerStatistic(idClient);
 
 		if (optionalStatistics.isEmpty()) {
-			throw new RuntimeException("There is not such customer statistics for the given parameters");
+			throw new RuntimeException("There is no such customer statistics for the given parameters");
 		}
 
 		return optionalStatistics.get();
@@ -89,19 +89,20 @@ public class EvaluateService {
 			throw new RuntimeException("The provider was already evaluated");
 		}
 
-		Integer evaluationCounter = providerStatistics.getEvaluationsCounter();
-		Float newProviderEvaluation = getNewProviderEvaluation(evaluation, providerStatistics, evaluationCounter);
+
+		Float newProviderEvaluation = calculateNewEvaluation(evaluation, providerStatistics);
 
 		providerStatistics.setEvaluation(newProviderEvaluation);
-		providerStatistics.setEvaluationsCounter(evaluationCounter + 1);
+		providerStatistics.setEvaluationsCounter(providerStatistics.getEvaluationsCounter() + 1);
 
 		evaluate.setProviderEvaluated(true);
 		statisticsService.save(providerStatistics);
-		evaluateRepository.save(evaluate);
+		updateEvaluate(evaluate);
 	}
 
-	private Float getNewProviderEvaluation(Float evaluation, Statistics providerStatistics, Integer evaluationCounter) {
-		Float newProviderEvaluation = ((providerStatistics.getEvaluation() * evaluationCounter) + evaluation)
+	private Float calculateNewEvaluation(Float evaluation, Statistics statistics) {
+		Integer evaluationCounter = statistics.getEvaluationsCounter();
+		Float newProviderEvaluation = ((statistics.getEvaluation() * evaluationCounter) + evaluation)
 				/ (evaluationCounter + 1);
 		return newProviderEvaluation;
 	}
@@ -132,5 +133,32 @@ public class EvaluateService {
 
 	public List<Evaluate> listEvaluationsByProviderId(Integer providerId) {
 		return evaluateRepository.findByProviderIdNotEvaluatedAndHired(providerId);
+	}
+
+    public void evaluateCustomer(Integer idEvaluate, Float evaluation) {
+		Evaluate evaluate = findEvaluateStatisticsByIdEvaluateOrElseThrowRuntimeException(idEvaluate);
+		Integer customerId = evaluate.getClient().getId();
+
+		Statistics customerStatistics = findCustomerStatisticsOrElseThrowRuntimeException(customerId);
+
+		Float newCustomerEvaluation = calculateNewEvaluation(evaluation, customerStatistics);
+		customerStatistics.setEvaluationsCounter(customerStatistics.getEvaluationsCounter() + 1);
+		customerStatistics.setEvaluation(newCustomerEvaluation);
+		evaluate.setCustomerEvaluated(true);
+		updateEvaluate(evaluate);
+		statisticsService.save(customerStatistics);
+    }
+
+    private void updateEvaluate(Evaluate evaluate) {
+		if (isEvaluateDeletable(evaluate)) {
+			Integer idEvaluate = evaluate.getIdEvaluate();
+			evaluateRepository.deleteById(idEvaluate);
+		} else {
+			evaluateRepository.save(evaluate);
+		}
+	}
+
+    private boolean isEvaluateDeletable(Evaluate evaluate) {
+		return evaluate.isProviderEvaluated() && evaluate.isCustomerEvaluated();
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import br.com.ibicos.ibicos.entity.Evaluate;
 import br.com.ibicos.ibicos.service.*;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -84,5 +85,17 @@ public class ProviderController {
 	public ResponseEntity<?> listProviderPendingEvaluations(@PathVariable Integer providerId) {
 		List<Evaluate> pendingEvaluations = evaluateService.listEvaluationsByProviderId(providerId);
 		return ResponseEntity.ok(Map.of("pendingEvaluations", pendingEvaluations));
+	}
+
+	@PutMapping("/evaluate/customer")
+	public ResponseEntity<?> evaluateCustomer(@RequestBody ObjectNode objectNode) {
+		Integer idEvaluate = objectNode.get("id_evaluate").asInt();
+		Float evaluation = objectNode.get("evaluation").floatValue();
+
+		evaluateService.evaluateCustomer(idEvaluate, evaluation);
+		return ResponseEntity.ok().body(Map.of(
+				"message", "Provider successfully evaluated",
+				"status", HttpStatus.OK.value()
+		));
 	}
 }
