@@ -5,12 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class AdWithProviderStatisticsDTO {
-    private AdDTO adDTO;
-    private ProviderStatisticsDTO providerStatisticsDTO;
+public class ProviderStatisticsDTO {
+    private StatisticsDTO statistics;
+    private Integer id;
+    private Integer visualizations;
+    private ServiceCategoryDTO category;
+
+
 }

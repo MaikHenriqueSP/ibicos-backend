@@ -5,12 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NegativeOrZero;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class AdWithProviderStatisticsDTO {
-    private AdDTO adDTO;
-    private ProviderStatisticsDTO providerStatisticsDTO;
+public class ServiceCategoryDTO {
+
+    private String categoryName;
 }

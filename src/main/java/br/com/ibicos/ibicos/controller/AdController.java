@@ -1,10 +1,15 @@
 package br.com.ibicos.ibicos.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import javax.persistence.Tuple;
 import javax.validation.Valid;
 
+import br.com.ibicos.ibicos.mapper.AdWithProviderStatisticsMapper;
+import br.com.ibicos.ibicos.view.AdView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +64,7 @@ public class AdController {
 	
 	@Autowired
 	private AdRepository adRepository;
+
 	@GetMapping("/list/ad/filter/test")
 	public ResponseEntity<?> listAdsByFiltersTest(
 			@RequestParam(defaultValue = "") String categoryName,
@@ -71,10 +77,45 @@ public class AdController {
 		List<AdWithProviderStatisticsDTO> awpsDTO =	adService.listAdWithFiltersTest(categoryName, stateName, cityName, areaName);
 		return ResponseEntity.ok(awpsDTO);
 	}
+
+
+	@GetMapping("/list/ad/filter/embed")
+	public ResponseEntity<?> listAdsByFiltersTestEmbedded(
+			@RequestParam(defaultValue = "") String categoryName,
+			@RequestParam(defaultValue = "") String stateName,
+			@RequestParam(defaultValue = "") String cityName,
+			@RequestParam(defaultValue = "") String areaName,
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "8") int size) {
+
+		List<Tuple> awpsDTO =	adService.listAdWithFiltersTestEmbedded(categoryName, stateName, cityName, areaName);
+
+		return ResponseEntity.ok(awpsDTO);
+	}
 	
 	@DeleteMapping("/ad/delete/{id}")
 	public ResponseEntity<?> deleteAd(@PathVariable Integer id) {
 		adRepository.deleteById(id);
 		return ResponseEntity.ok(Map.of("message", "ad deleted"));
+	}
+
+
+	@Autowired
+	private AdWithProviderStatisticsMapper adWithProviderStatisticsMapper;
+
+	@GetMapping("/testProjection")
+	public ResponseEntity<?> listProjection(@RequestParam(defaultValue = "") String categoryName,
+											@RequestParam(defaultValue = "") String stateName,
+											@RequestParam(defaultValue = "") String cityName,
+											@RequestParam(defaultValue = "") String areaName) {
+//		return ResponseEntity.ok(Map.of("a", adRepository.listAdProjections()));
+		List<AdView> adViews = adRepository.listAdProjections(categoryName, stateName, cityName, areaName);
+
+
+		List<AdWithProviderStatisticsDTO> adWithProviderStatisticsDTOS =
+				adViews.stream().map(adView -> adWithProviderStatisticsMapper.AdViewToAdWithProviderStatisticsDTO(adView))
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(Map.of("mappedAdAndProviderStatistics", adWithProviderStatisticsDTOS));
 	}
 }

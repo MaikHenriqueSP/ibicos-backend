@@ -5,12 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class AdWithProviderStatisticsDTO {
-    private AdDTO adDTO;
-    private ProviderStatisticsDTO providerStatisticsDTO;
+public class AdRegionAreaDTO {
+    private Integer idArea;
+    private String areaName;
 }

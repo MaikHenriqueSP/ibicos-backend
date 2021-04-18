@@ -5,12 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class AdWithProviderStatisticsDTO {
-    private AdDTO adDTO;
-    private ProviderStatisticsDTO providerStatisticsDTO;
+public class AdCityDTO {
+    private Integer idCity;
+    private String cityName;
+    private String stateAbb;
+    private List<AdRegionAreaDTO> regionArea;
 }

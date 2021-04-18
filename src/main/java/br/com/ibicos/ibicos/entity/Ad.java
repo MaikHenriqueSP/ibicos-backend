@@ -2,16 +2,7 @@ package br.com.ibicos.ibicos.entity;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.Valid;
@@ -26,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.PrePersist;
 
 @Data
 @Entity
@@ -54,21 +44,26 @@ public class Ad {
 	private ServiceCategory serviceCategory;
 
 	@NotNull
-	@NotEmpty	
+	@NotEmpty
 	@JsonIgnoreProperties(value = "ad")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private List<@Valid AdCity> cities;
 	
-//	@ManyToOne
-//	@JoinColumn(name = "fk_id_service_category", insertable = false, updatable = false)
-//	private ProviderStatistics providerStatistics;
-	
-	@PrePersist	
+
+	@PrePersist
 	private void prePersist() {
 	    if(cities != null && cities.size() > 0) {
 	    	for(AdCity city: cities) {
 	    		city.setAd(this);
 	    	}
 	    };
+	}
+
+	public String getAdDescription() {
+		return adDescription;
+	}
+
+	public void setAdDescription(String adDescription) {
+		this.adDescription = adDescription;
 	}
 }

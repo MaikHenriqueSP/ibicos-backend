@@ -3,6 +3,7 @@ package br.com.ibicos.ibicos.service;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.ibicos.ibicos.mapper.AdWithProviderStatisticsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,8 @@ import br.com.ibicos.ibicos.entity.ServiceCategory;
 import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.repository.AdRepository;
 
+import javax.persistence.Tuple;
+
 @Service
 public class AdService {
 
@@ -24,6 +27,9 @@ public class AdService {
 	
 	@Autowired
 	private ProviderStatisticsService providerStatisticsService;
+
+	@Autowired
+	private AdWithProviderStatisticsMapper adWithProviderStatisticsMapper;
 	
 	public Iterable<Ad> listAds() {
 		return adRepository.findAll();
@@ -82,5 +88,9 @@ public class AdService {
 	public List<AdWithProviderStatisticsDTO> listAdWithFiltersTest(String categoryName, String stateName, String cityName, String areaName) {
 		List<AdWithProviderStatisticsDTO> awpsDTO = adRepository.listAdWithFilters(categoryName, stateName, cityName, areaName);
 		return awpsDTO;
+	}
+
+	public List<Tuple> listAdWithFiltersTestEmbedded(String categoryName, String stateName, String cityName, String areaName) {
+		return adRepository.findByAndSortByMultiQueryFilterEmbedded(categoryName, stateName, cityName, areaName);
 	}
 }
