@@ -17,6 +17,6 @@ import lombok.NoArgsConstructor;
 public class AdWithProviderStatisticsDTO {
     @JsonProperty("ad")
     private AdDTO adDTO;
-    @JsonProperty("providerStatistics")
+    @JsonProperty("provider_statistics")
     private ProviderStatisticsDTO providerStatisticsDTO;
 }
