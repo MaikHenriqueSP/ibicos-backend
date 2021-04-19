@@ -36,10 +36,7 @@ import br.com.ibicos.ibicos.service.ProviderStatisticsService;
 public class AdController {
 	@Autowired
 	private AdService adService;
-	
-	@Autowired
-	private ProviderStatisticsService providerStatisticsService;
-	
+
 	@GetMapping("/list/ad")
 	public ResponseEntity<?> listAllAds(){
 		Iterable<Ad> ads = adService.listAds();
@@ -54,7 +51,7 @@ public class AdController {
 			@RequestParam(defaultValue = "") String areaName,
 			@RequestParam(defaultValue = "0") int page,
 	        @RequestParam(defaultValue = "8") int size) {
-		Page<Ad> pageableAdsList = adService.listAdsByFilters(categoryName, stateName, cityName, areaName, page, size);
+		Page<AdWithProviderStatisticsDTO> pageableAdsList = adService.listAdsByFilters(categoryName, stateName, cityName, areaName, page, size);
 		return ResponseEntity.ok(pageableAdsList);
 	}
 	
@@ -64,41 +61,10 @@ public class AdController {
 		return ResponseEntity.ok(savedAd);
 	}
 	
-	
-	@Autowired
-	private AdRepository adRepository;
-
-	@GetMapping("/list/ad/filter/test")
-	public ResponseEntity<?> listAdsByFiltersTest(
-			@RequestParam(defaultValue = "") String categoryName,
-			@RequestParam(defaultValue = "") String stateName,
-			@RequestParam(defaultValue = "") String cityName,
-			@RequestParam(defaultValue = "") String areaName,
-			@RequestParam(defaultValue = "0") int page,
-	        @RequestParam(defaultValue = "8") int size) {
-
-		List<AdWithProviderStatisticsDTO> awpsDTO =	adService.listAdWithFiltersTest(categoryName, stateName, cityName, areaName);
-		return ResponseEntity.ok(awpsDTO);
-	}
-
-
-	@GetMapping("/list/ad/filter/embed")
-	public ResponseEntity<?> listAdsByFiltersTestEmbedded(
-			@RequestParam(defaultValue = "") String categoryName,
-			@RequestParam(defaultValue = "") String stateName,
-			@RequestParam(defaultValue = "") String cityName,
-			@RequestParam(defaultValue = "") String areaName,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "8") int size) {
-
-		List<Tuple> awpsDTO =	adService.listAdWithFiltersTestEmbedded(categoryName, stateName, cityName, areaName);
-
-		return ResponseEntity.ok(awpsDTO);
-	}
 
 	@DeleteMapping("/ad/delete/{id}")
 	public ResponseEntity<?> deleteAd(@PathVariable Integer id) {
-		adRepository.deleteById(id);
+		adService.deleteAdById(id);
 		return ResponseEntity.ok(Map.of("message", "ad deleted"));
 	}
 
@@ -106,27 +72,4 @@ public class AdController {
 	@Autowired
 	private AdWithProviderStatisticsMapper adWithProviderStatisticsMapper;
 
-	@GetMapping("/testProjection")
-	public ResponseEntity<?> listProjection(@RequestParam(defaultValue = "") String categoryName,
-											@RequestParam(defaultValue = "") String stateName,
-											@RequestParam(defaultValue = "") String cityName,
-											@RequestParam(defaultValue = "") String areaName,
-											@RequestParam(defaultValue = "0") int page,
-											@RequestParam(defaultValue = "8") int size) {
-//		return ResponseEntity.ok(Map.of("a", adRepository.listAdProjections()));
-		List<AdView> adViews = adRepository.listAdProjections(categoryName, stateName, cityName, areaName);
-
-		Pageable pr = PageRequest.of(page, size);
-
-
-		List<AdWithProviderStatisticsDTO> adWithProviderStatisticsDTOS =
-				adViews.stream().map(adView -> adWithProviderStatisticsMapper.AdViewToAdWithProviderStatisticsDTO(adView))
-				.collect(Collectors.toList());
-		Page<AdWithProviderStatisticsDTO> pagedAds = new PageImpl<>(adWithProviderStatisticsDTOS, pr, adWithProviderStatisticsDTOS.size());
-
-
-
-
-		return ResponseEntity.ok(pagedAds);
-	}
 }

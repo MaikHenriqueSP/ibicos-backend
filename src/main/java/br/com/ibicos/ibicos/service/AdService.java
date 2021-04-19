@@ -2,10 +2,13 @@ package br.com.ibicos.ibicos.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import br.com.ibicos.ibicos.mapper.AdWithProviderStatisticsMapper;
+import br.com.ibicos.ibicos.view.AdView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,7 +33,7 @@ public class AdService {
 
 	@Autowired
 	private AdWithProviderStatisticsMapper adWithProviderStatisticsMapper;
-	
+
 	public Iterable<Ad> listAds() {
 		return adRepository.findAll();
 	}
@@ -62,13 +65,22 @@ public class AdService {
 		return updatedAd;
 	}
 	
-	public Page<Ad> listAdsByFilters(String categoryName, String stateName, String cityName, String areaName, int page, int size) {
-		Pageable pagingSort = PageRequest.of(page, size);
-		Page<Ad> pageableAdsList = adRepository.findByAndSortByMultiQueryFilter(categoryName, stateName, cityName, areaName, pagingSort);
-		
-		return pageableAdsList;
+	public Page<AdWithProviderStatisticsDTO> listAdsByFilters(String categoryName, String stateName, String cityName, String areaName, int page, int size) {
+		List<AdView> adViews = adRepository.listAdProjections(categoryName, stateName, cityName, areaName);
+		List<AdWithProviderStatisticsDTO> adWithProviderStatisticsDTOS = getAdWithProviderStatisticsDTOS(adViews);
+		Pageable pr = PageRequest.of(page, size);
+		Page<AdWithProviderStatisticsDTO> pagedAds = new PageImpl<>(adWithProviderStatisticsDTOS, pr, adWithProviderStatisticsDTOS.size());
+
+		return pagedAds;
 	}
-	
+
+	private List<AdWithProviderStatisticsDTO> getAdWithProviderStatisticsDTOS(List<AdView> adViews) {
+		return adViews.stream().map(adView -> adWithProviderStatisticsMapper.AdViewToAdWithProviderStatisticsDTO(adView))
+						.collect(Collectors.toList());
+
+	}
+
+
 	@Transactional(rollbackFor = { RuntimeException.class})
 	public Ad createAd(Ad ad) {
 		Ad savedAd =  adRepository.save(ad);		
@@ -85,12 +97,5 @@ public class AdService {
 		adRepository.deleteById(id);
 	}
 	
-	public List<AdWithProviderStatisticsDTO> listAdWithFiltersTest(String categoryName, String stateName, String cityName, String areaName) {
-		List<AdWithProviderStatisticsDTO> awpsDTO = adRepository.listAdWithFilters(categoryName, stateName, cityName, areaName);
-		return awpsDTO;
-	}
 
-	public List<Tuple> listAdWithFiltersTestEmbedded(String categoryName, String stateName, String cityName, String areaName) {
-		return adRepository.findByAndSortByMultiQueryFilterEmbedded(categoryName, stateName, cityName, areaName);
-	}
 }
