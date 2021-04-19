@@ -12,6 +12,9 @@ import br.com.ibicos.ibicos.mapper.AdWithProviderStatisticsMapper;
 import br.com.ibicos.ibicos.view.AdView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -92,7 +95,7 @@ public class AdController {
 
 		return ResponseEntity.ok(awpsDTO);
 	}
-	
+
 	@DeleteMapping("/ad/delete/{id}")
 	public ResponseEntity<?> deleteAd(@PathVariable Integer id) {
 		adRepository.deleteById(id);
@@ -107,15 +110,23 @@ public class AdController {
 	public ResponseEntity<?> listProjection(@RequestParam(defaultValue = "") String categoryName,
 											@RequestParam(defaultValue = "") String stateName,
 											@RequestParam(defaultValue = "") String cityName,
-											@RequestParam(defaultValue = "") String areaName) {
+											@RequestParam(defaultValue = "") String areaName,
+											@RequestParam(defaultValue = "0") int page,
+											@RequestParam(defaultValue = "8") int size) {
 //		return ResponseEntity.ok(Map.of("a", adRepository.listAdProjections()));
 		List<AdView> adViews = adRepository.listAdProjections(categoryName, stateName, cityName, areaName);
+
+		Pageable pr = PageRequest.of(page, size);
 
 
 		List<AdWithProviderStatisticsDTO> adWithProviderStatisticsDTOS =
 				adViews.stream().map(adView -> adWithProviderStatisticsMapper.AdViewToAdWithProviderStatisticsDTO(adView))
 				.collect(Collectors.toList());
+		Page<AdWithProviderStatisticsDTO> pagedAds = new PageImpl<>(adWithProviderStatisticsDTOS, pr, adWithProviderStatisticsDTOS.size());
 
-		return ResponseEntity.ok(Map.of("mappedAdAndProviderStatistics", adWithProviderStatisticsDTOS));
+
+
+
+		return ResponseEntity.ok(pagedAds);
 	}
 }

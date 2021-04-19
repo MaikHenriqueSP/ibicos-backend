@@ -4,7 +4,7 @@ import br.com.ibicos.ibicos.entity.Ad;
 import br.com.ibicos.ibicos.entity.ProviderStatistics;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
+
 
 @AllArgsConstructor
 @Data
