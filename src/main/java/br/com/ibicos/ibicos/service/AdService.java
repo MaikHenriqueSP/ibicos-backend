@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import br.com.ibicos.ibicos.mapper.AdWithProviderStatisticsMapper;
 import br.com.ibicos.ibicos.view.AdView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -66,12 +67,15 @@ public class AdService {
 	}
 	
 	public Page<AdWithProviderStatisticsDTO> listAdsByFilters(String categoryName, String stateName, String cityName, String areaName, int page, int size) {
-		List<AdView> adViews = adRepository.listAdProjections(categoryName, stateName, cityName, areaName);
-		List<AdWithProviderStatisticsDTO> adWithProviderStatisticsDTOS = getAdWithProviderStatisticsDTOS(adViews);
-		Pageable pr = PageRequest.of(page, size);
-		Page<AdWithProviderStatisticsDTO> pagedAds = new PageImpl<>(adWithProviderStatisticsDTOS, pr, adWithProviderStatisticsDTOS.size());
+		PageRequest pageRequest= PageRequest.of(page, size);
+		Page<AdView> adViews = adRepository.listAdProjections(categoryName, stateName, cityName, areaName, pageRequest);
 
-		return pagedAds;
+		List<AdView> adViewsList = adViews.getContent();
+		List<AdWithProviderStatisticsDTO> adWithProviderStatisticsDTOS = getAdWithProviderStatisticsDTOS(adViewsList);
+
+		Page<AdWithProviderStatisticsDTO> adWithProviderStatisticsDTOPage = new PageImpl<>(adWithProviderStatisticsDTOS, pageRequest, adViews.getTotalElements());
+
+		return adWithProviderStatisticsDTOPage;
 	}
 
 	private List<AdWithProviderStatisticsDTO> getAdWithProviderStatisticsDTOS(List<AdView> adViews) {

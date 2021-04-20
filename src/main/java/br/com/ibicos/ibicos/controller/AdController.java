@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import br.com.ibicos.ibicos.mapper.AdWithProviderStatisticsMapper;
 import br.com.ibicos.ibicos.view.AdView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
