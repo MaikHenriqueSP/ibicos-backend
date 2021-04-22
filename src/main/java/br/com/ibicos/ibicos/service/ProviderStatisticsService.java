@@ -3,6 +3,7 @@ package br.com.ibicos.ibicos.service;
 import java.util.List;
 import java.util.Optional;
 
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,9 +32,8 @@ public class ProviderStatisticsService {
 
 	@Transactional(rollbackFor = { RuntimeException.class})
 	public ProviderStatistics createProviderStatisticsIfItNotExists(User adCreator, ServiceCategory adCategory) {
-		Optional<ProviderStatistics> providerStatisticsOptional =   
-				providerStatisticsRepository.findByServiceCategoryIdAndUserId(adCategory.getId(), adCreator.getId());
-		
+		Optional<ProviderStatistics> providerStatisticsOptional = getProviderStatisticsOptional(adCreator, adCategory);
+
 		if(providerStatisticsOptional.isEmpty()) {
 			Statistics statistics = Statistics.builder()
 					.evaluation(0f)
@@ -53,6 +53,16 @@ public class ProviderStatisticsService {
 		
 		return providerStatisticsOptional.get();		
 	}
-	
-	
+
+	private Optional<ProviderStatistics> getProviderStatisticsOptional(User user, ServiceCategory serviceCategory) {
+		return providerStatisticsRepository.findByServiceCategoryIdAndUserId(serviceCategory.getId(), user.getId());
+	}
+
+	public Optional<ProviderStatistics> getProviderStatisticsOptional(Integer userId, Integer serviceCategoryId) {
+		return providerStatisticsRepository.findByServiceCategoryIdAndUserId(serviceCategoryId, userId);
+	}
+
+	public void save(ProviderStatistics providerStatistics) {
+		providerStatisticsRepository.save(providerStatistics);
+	}
 }

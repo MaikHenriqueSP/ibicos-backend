@@ -3,6 +3,7 @@ package br.com.ibicos.ibicos.controller;
 import java.util.List;
 import java.util.Map;
 
+import br.com.ibicos.ibicos.dto.IncrementViewsRequestDTO;
 import br.com.ibicos.ibicos.entity.Evaluate;
 import br.com.ibicos.ibicos.service.*;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -97,5 +98,11 @@ public class ProviderController {
 				"message", "Provider successfully evaluated",
 				"status", HttpStatus.OK.value()
 		));
+	}
+
+	@PutMapping("/evaluate/views/increment-counter")
+	public ResponseEntity<?> incrementProviderViews(@RequestBody IncrementViewsRequestDTO incrementViewsRequestDTO) {
+		evaluateService.incrementProviderVisualizations(incrementViewsRequestDTO);
+		return ResponseEntity.ok().build();
 	}
 }

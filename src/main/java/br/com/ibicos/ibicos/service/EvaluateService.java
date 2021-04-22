@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
-import br.com.ibicos.ibicos.entity.ServiceCategory;
-import br.com.ibicos.ibicos.entity.User;
+import br.com.ibicos.ibicos.dto.IncrementViewsRequestDTO;
+import br.com.ibicos.ibicos.dto.ServiceCategoryDTO;
+import br.com.ibicos.ibicos.dto.UserDTO;
+import br.com.ibicos.ibicos.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.ibicos.ibicos.entity.Evaluate;
-import br.com.ibicos.ibicos.entity.Statistics;
 import br.com.ibicos.ibicos.exception.ResourceNotFoundException;
 import br.com.ibicos.ibicos.repository.EvaluateRepository;
 
@@ -26,6 +26,9 @@ public class EvaluateService {
 
 	@Autowired
 	private ServiceCategoryService serviceCategoryService;
+
+	@Autowired
+	private ProviderStatisticsService providerStatisticsService;
 
 	private Evaluate findEvaluateStatisticsByIdEvaluateOrElseThrowRuntimeException(Integer idEvaluate) {
 		Optional<Evaluate> evaluateOptional = evaluateRepository.findById(idEvaluate);
@@ -162,5 +165,22 @@ public class EvaluateService {
 
     private boolean isEvaluateDeletable(Evaluate evaluate) {
 		return evaluate.isProviderEvaluated() && evaluate.isCustomerEvaluated();
+	}
+
+	public void incrementProviderVisualizations(IncrementViewsRequestDTO incrementViewsRequestDTO) {
+		UserDTO providerUser = incrementViewsRequestDTO.getProviderUser();
+		ServiceCategoryDTO serviceCategoryDTO = incrementViewsRequestDTO.getServiceCategory();
+
+		ServiceCategory serviceCategory = serviceCategoryService
+				.getServiceCategoryByServiceCategoryDTO(serviceCategoryDTO);
+
+		Optional<ProviderStatistics> providerStatisticsOptional = providerStatisticsService
+				.getProviderStatisticsOptional(providerUser.getId(), serviceCategory.getId());
+
+		if (providerStatisticsOptional.isPresent()) {
+			ProviderStatistics providerStatistics = providerStatisticsOptional.get();
+			providerStatistics.setVisualizations(providerStatistics.getVisualizations() + 1);
+			providerStatisticsService.save(providerStatistics);
+		}
 	}
 }
