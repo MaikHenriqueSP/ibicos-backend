@@ -2,6 +2,7 @@ package br.com.ibicos.ibicos.service;
 
 import java.util.List;
 
+import br.com.ibicos.ibicos.dto.ServiceCategoryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,10 @@ public class ServiceCategoryService {
 	
 	public List<ServiceCategory> listAllServicesCategories() {
 		return serviceCategoryRepository.findAll();
+	}
+
+	public ServiceCategory getServiceCategoryByServiceCategoryDTO(ServiceCategoryDTO serviceCategoryDTO) {
+		return serviceCategoryRepository.findByCategoryName(serviceCategoryDTO.getCategoryName());
 	}
 
 }

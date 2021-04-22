@@ -1,7 +1,10 @@
 package br.com.ibicos.ibicos.service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
+import br.com.ibicos.ibicos.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
@@ -18,6 +21,12 @@ public class CustomerService {
 	
 	@Autowired
 	private EmailService emailService;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private EvaluateService evaluateService;
 	
 	public Statistics showCustomerStatistics(Integer customerId) {
 		Optional<Statistics> optionalStatistic = statisticsRepository
@@ -31,8 +40,24 @@ public class CustomerService {
 	}
 
 	public void sendEmailToProvider(CustomerEmailToProviderDTO customerEmailToProviderDTO) {
-		emailService.sendEmailToProvider(customerEmailToProviderDTO);
+		User customer =  userService.findUserById(customerEmailToProviderDTO.getCustomerId());
+		User provider =  userService.findUserById(customerEmailToProviderDTO.getProviderId());
 
+		Map<String, Object> contextEmailMapVariables = createEmailContextVariablesMap(customer, provider, customerEmailToProviderDTO);
+
+		emailService.sendEmailToProvider(provider, contextEmailMapVariables);
+		evaluateService.registerPendingEvaluation(customerEmailToProviderDTO, customer, provider);
 	}
-	
+
+	private Map<String, Object> createEmailContextVariablesMap(User customer, User provider, CustomerEmailToProviderDTO customerEmailToProviderDTO) {
+		Map<String, Object> contextVariablesMap = new HashMap<>();
+		contextVariablesMap.put("customerName", customer.getPerson().getNamePerson());
+		contextVariablesMap.put("providerName", provider.getPerson().getNamePerson());
+		contextVariablesMap.put("customerEmailAddress", customer.getEmail());
+		contextVariablesMap.put("providerEmailAddress", provider.getEmail());
+		contextVariablesMap.put("message", customerEmailToProviderDTO.getMessage());
+		return contextVariablesMap;
+	}
+
+
 }

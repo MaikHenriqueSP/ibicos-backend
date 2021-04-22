@@ -24,6 +24,9 @@ public class EvaluateService {
 	@Autowired
 	private StatisticsService statisticsService;
 
+	@Autowired
+	private ServiceCategoryService serviceCategoryService;
+
 	private Evaluate findEvaluateStatisticsByIdEvaluateOrElseThrowRuntimeException(Integer idEvaluate) {
 		Optional<Evaluate> evaluateOptional = evaluateRepository.findById(idEvaluate);
 
@@ -102,16 +105,15 @@ public class EvaluateService {
 
 	private Float calculateNewEvaluation(Float evaluation, Statistics statistics) {
 		Integer evaluationCounter = statistics.getEvaluationsCounter();
-		Float newProviderEvaluation = ((statistics.getEvaluation() * evaluationCounter) + evaluation)
+		return ((statistics.getEvaluation() * evaluationCounter) + evaluation)
 				/ (evaluationCounter + 1);
-		return newProviderEvaluation;
 	}
 
-	public void registerPendingEvaluation(CustomerEmailToProviderDTO customerEmailToProviderDTO) {
-		User customer = customerEmailToProviderDTO.getCustomer();
-		User provider = customerEmailToProviderDTO.getProvider();
+	public void registerPendingEvaluation(CustomerEmailToProviderDTO customerEmailToProviderDTO, User customer, User provider) {
+		serviceCategoryService.getServiceCategoryByServiceCategoryDTO(customerEmailToProviderDTO.getServiceCategoryDTO());
 
-		ServiceCategory serviceCategory = customerEmailToProviderDTO.getServiceCategory();
+		ServiceCategory serviceCategory = serviceCategoryService
+				.getServiceCategoryByServiceCategoryDTO(customerEmailToProviderDTO.getServiceCategoryDTO());
 
 		Evaluate pendingEvaluation = Evaluate.builder()
 				.client(customer)
