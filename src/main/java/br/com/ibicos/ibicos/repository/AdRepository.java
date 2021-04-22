@@ -26,16 +26,17 @@ public interface AdRepository extends PagingAndSortingRepository<Ad, Integer>{
 			" JOIN ServiceCategory sc ON ad.serviceCategory.id = sc.id  WHERE" +
 			" ad.user.id = pr.statistics.user.id " +
 			" AND pr.category.id = ad.serviceCategory.id " +
-
 			" AND adra.adCity.idCity = ac.idCity" +
 			" AND ac.cityName LIKE %:cityName% " +
 			" AND sc.categoryName LIKE %:categoryName% " +
 			" AND ad.serviceCategory.id = sc.id" +
 			" AND adra.areaName LIKE %:areaName% " +
-			" AND ac.stateAbb LIKE %:stateName% " )
+			" AND ac.stateAbb LIKE %:stateName% " +
+			"")
 	Page<AdView> listAdProjections(@Param("categoryName") String categoryName,
 								   @Param("stateName") String stateName,
 								   @Param("cityName") String cityName,
-								   @Param("areaName") String areaName, Pageable pageable);
+								   @Param("areaName") String areaName,
+								   Pageable pageable);
 
 }
