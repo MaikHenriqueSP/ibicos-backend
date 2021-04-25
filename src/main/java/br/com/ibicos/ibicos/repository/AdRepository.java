@@ -31,8 +31,7 @@ public interface AdRepository extends PagingAndSortingRepository<Ad, Integer>{
 			" AND sc.categoryName LIKE %:categoryName% " +
 			" AND ad.serviceCategory.id = sc.id" +
 			" AND adra.areaName LIKE %:areaName% " +
-			" AND ac.stateAbb LIKE %:stateName% " +
-			"")
+			" AND ac.stateAbb LIKE %:stateName% ")
 	Page<AdView> listAdProjections(@Param("categoryName") String categoryName,
 								   @Param("stateName") String stateName,
 								   @Param("cityName") String cityName,

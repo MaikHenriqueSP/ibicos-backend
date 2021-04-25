@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.com.ibicos.ibicos.dto.IncrementViewsRequestDTO;
+import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
 import br.com.ibicos.ibicos.entity.Evaluate;
 import br.com.ibicos.ibicos.service.*;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -12,12 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.ibicos.ibicos.entity.Ad;
 import br.com.ibicos.ibicos.entity.Statistics;
@@ -104,5 +100,13 @@ public class ProviderController {
 	public ResponseEntity<?> incrementProviderViews(@RequestBody IncrementViewsRequestDTO incrementViewsRequestDTO) {
 		evaluateService.incrementProviderVisualizations(incrementViewsRequestDTO);
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/statistics/{providerId}/user-data")
+	public ResponseEntity<?> getProviderSelfStatistics(@PathVariable Integer providerId) {
+
+		ProviderSelfStatisticsDTO providerSelfStatistics = providerService.getProviderSelfStatisticsById(providerId);
+
+		return ResponseEntity.ok().body(Map.of("provider_statistics", providerSelfStatistics));
 	}
 }
