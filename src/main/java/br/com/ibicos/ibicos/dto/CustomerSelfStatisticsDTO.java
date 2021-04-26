@@ -17,6 +17,6 @@ public class CustomerSelfStatisticsDTO {
     private Double averageEvaluation;
     private Long totalEvaluations;
     private Long totalHiredServices;
-    private Long totalMessagesSent;
+    private Long totalMessages;
 
 }

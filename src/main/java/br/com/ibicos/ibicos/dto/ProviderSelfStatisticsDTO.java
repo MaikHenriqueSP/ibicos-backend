@@ -19,7 +19,7 @@ public class ProviderSelfStatisticsDTO {
     private Double averageEvaluation;
     private Long totalEvaluations;
     private Long totalHiredServices;
-    private Long totalMessagesReceived;
+    private Long totalMessages;
     private Long totalAdsVisualizations;
 
 }
