@@ -18,7 +18,9 @@ import javax.persistence.Tuple;
 
 @Repository
 public interface AdRepository extends PagingAndSortingRepository<Ad, Integer>{
-	Page<Ad> findByUserId(Integer userId, Pageable pageable);
+	@Query(value = "SELECT new br.com.ibicos.ibicos.view.AdView(ad, pr) FROM Ad ad, ProviderStatistics pr, Statistics st " +
+			"WHERE ad.user.id = ?1 AND ad.serviceCategory.id = pr.category.id AND st.id = pr.statistics.id")
+	Page<AdView> findByUserId(Integer userId, Pageable pageable);
 	Optional<Ad> findByIdAndUserId(Integer adId, Integer userId);
 
 	@Query(value = "SELECT DISTINCT new br.com.ibicos.ibicos.view.AdView(ad, pr) FROM Ad ad, ProviderStatistics pr, AdRegionArea adra  " +

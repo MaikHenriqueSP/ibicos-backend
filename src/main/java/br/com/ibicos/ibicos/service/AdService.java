@@ -36,8 +36,11 @@ public class AdService {
 		return adRepository.findAll();
 	}
 	
-	public Page<Ad> listProviderAds(Integer providerId, Pageable pageable) {
-		return adRepository.findByUserId(providerId, pageable);
+	public Page<AdWithProviderStatisticsDTO> listProviderAds(Integer providerId, Pageable pageable) {
+		Page<AdView> adViews = adRepository.findByUserId(providerId, pageable);
+		List<AdView> adViewsList = adViews.getContent();
+		List<AdWithProviderStatisticsDTO> adWithProviderStatisticsDTOList = getAdWithProviderStatisticsDTOS(adViewsList);
+		return new PageImpl<>(adWithProviderStatisticsDTOList, pageable, adViewsList.size());
 	}
 	
 	public Optional<Ad> showAdByIdAndProviderId(Integer adId, Integer providerId) {
