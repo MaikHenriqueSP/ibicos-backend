@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO;
 import br.com.ibicos.ibicos.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,4 +61,8 @@ public class CustomerService {
 	}
 
 
+	public CustomerSelfStatisticsDTO getCustomerSelfStatisticsById(Integer customerId) {
+		Optional<CustomerSelfStatisticsDTO> selfCustomerStatistics = statisticsRepository.findSelfCustomerStatisticsById(customerId);
+		return selfCustomerStatistics.orElseThrow(() -> new RuntimeException("There is not customer with the given id"));
+	}
 }

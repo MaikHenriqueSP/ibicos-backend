@@ -32,10 +32,6 @@ public class ProviderService {
     public ProviderSelfStatisticsDTO getProviderSelfStatisticsById(Integer providerId) {
 		Optional<ProviderSelfStatisticsDTO> providerSelfStatistics = providerStatisticsRepository.findSelfStatisticsById(providerId);
 
-		if (providerSelfStatistics.isEmpty()) {
-			throw new RuntimeException("There is not provider with the given id");
-		}
-
-		return providerSelfStatistics.get();
+		return providerSelfStatistics.orElseThrow(() -> new RuntimeException("There is not provider with the given id"));
 	}
 }

@@ -3,6 +3,8 @@ package br.com.ibicos.ibicos.controller;
 import java.util.List;
 import java.util.Map;
 
+import br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO;
+import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
 import br.com.ibicos.ibicos.entity.Evaluate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -76,6 +78,13 @@ public class CustomerController {
 		evaluateService.deleteEvaluationById(idEvaluate);
 		return ResponseEntity.ok(Map.of("message", "pending evaluation successfully deleted"));
 	}
-	
+
+	@GetMapping("/statistics/{customerId}/user-data")
+	public ResponseEntity<?> getProviderSelfStatistics(@PathVariable Integer customerId) {
+
+		CustomerSelfStatisticsDTO providerSelfStatistics = customerService.getCustomerSelfStatisticsById(customerId);
+
+		return ResponseEntity.ok().body(Map.of("customer_statistics", providerSelfStatistics));
+	}
 	
 }

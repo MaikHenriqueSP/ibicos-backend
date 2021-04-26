@@ -17,8 +17,7 @@ public interface ProviderStatisticsRepository extends JpaRepository<ProviderStat
 	Page<ProviderStatistics> findByCategoryId(Integer serviceCategoryId, Pageable pageable);
 	Optional<ProviderStatistics> findByIdAndCategoryId(Integer providerStatisticsId, Integer serviceCategoryId);
 	Optional<ProviderStatistics> findByIdAndStatisticsId(Integer providerStatisticsId, Integer statisticsId);
-	
-	
+
 	@Query(value = "SELECT DISTINCT ps.* FROM provider_statistics as ps, statistics "
 			+ "WHERE ps.fk_id_service_category = ?1 "
 			+ "AND ps.fk_id_statistics = statistics.id_statistics "
