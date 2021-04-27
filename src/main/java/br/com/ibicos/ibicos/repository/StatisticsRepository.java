@@ -2,6 +2,8 @@ package br.com.ibicos.ibicos.repository;
 
 import java.util.Optional;
 
+import br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO;
+import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,8 +18,9 @@ public interface StatisticsRepository extends JpaRepository<Statistics, Integer>
 
 	Optional<Statistics> findByIdAndUserId(Integer statisticsId, Integer userId);
 
-	@Query(value = "SELECT s.* FROM statistics as s, provider_statistics as p" + " WHERE s.fk_id_user = ?1"
-			+ " AND s.id_statistics != p.fk_id_statistics", nativeQuery = true)
+	@Query(value = "SELECT DISTINCT s.* FROM statistics as s WHERE s.fk_id_user = ?1 AND " +
+			"s.id_statistics NOT IN (SELECT p.fk_id_statistics FROM provider_statistics as p WHERE \n" +
+			"p.fk_id_statistics = s.id_statistics);", nativeQuery = true)
 	Optional<Statistics> findCustomerStatistic(Integer customerId);
 
 	
@@ -25,4 +28,9 @@ public interface StatisticsRepository extends JpaRepository<Statistics, Integer>
 			+ "WHERE s.fk_id_user = ?1 AND s.id_statistics = p.fk_id_statistics AND p.fk_id_service_category = ?2", nativeQuery = true)
 	Optional<Statistics> findProviderStatisticByProviderIdAndCategoryId(Integer providerId,
 			Integer categoryId);
+
+	@Query(value = "SELECT new br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO(AVG(st.evaluation), " +
+			"SUM(st.evaluationsCounter), SUM(st.hiredServicesCounter), SUM(st.messagesCounter)) " +
+			"FROM Statistics st JOIN ProviderStatistics pr ON st.id = pr.statistics.id WHERE st.user.id = ?1 GROUP BY st.user")
+	Optional<CustomerSelfStatisticsDTO> findSelfCustomerStatisticsById(Integer customerId);
 }

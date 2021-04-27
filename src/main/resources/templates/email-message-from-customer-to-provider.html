@@ -1,0 +1,32 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+</head>
+
+<body style="margin: 0; padding: 0; font-family: sans-serif; color: #262626;">
+    <h3>Olá <span th:text="${providerName}" />, tudo bem?</h3>
+    <br>
+    <p>Trazemos boas notícias, você recebeu uma mensagem de um cliente em potencial</p>
+    <p>Segue a mensagem que <strong><span th:text="${customerName}" /></strong> te enviou!
+    
+    <br>
+    <br>
+    	<div style="margin-left:50px;">    
+    		<em>"<span th:text="${message}" />"</em>
+    	</div>  
+    <br>
+    
+    	<p>O email do cliente é: <a th:href="'mailto:' + ${customerEmailAddress}"><span th:text="${customerEmailAddress}" /></a>,</p>
+    	<p>Sinta-se à vontade para entrar em contato com e tentar fechar negócio</p>    
+    <br>
+    
+    <h4>Abraços,</h4>
+    <h4>Equipe iBicos</h4>
+</body>
+
+</html>

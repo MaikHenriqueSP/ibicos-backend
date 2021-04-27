@@ -8,4 +8,5 @@ import br.com.ibicos.ibicos.entity.ServiceCategory;
 @Repository
 public interface ServiceCategoryRepository extends JpaRepository<ServiceCategory, Integer> {
 
+    ServiceCategory findByCategoryName(String categoryName);
 }

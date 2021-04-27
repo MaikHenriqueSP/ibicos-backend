@@ -15,6 +15,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -43,6 +44,7 @@ public class Person {
 	private String namePerson;
 	
 	@NotNull
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate birthday;
 	
 	@NotBlank(message = "{org.hibernate.validator.constraints.br.CPF.message}")

@@ -1,14 +1,13 @@
 package br.com.ibicos.ibicos.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import java.util.List;
+
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProviderStatistics {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +23,12 @@ public class ProviderStatistics {
 	private Integer id;
 	private Integer visualizations;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_id_statistics")
 	private Statistics statistics;
-	
+
 	@OneToOne
 	@JoinColumn(name= "fk_id_service_category")
 	private ServiceCategory category;
+
 }

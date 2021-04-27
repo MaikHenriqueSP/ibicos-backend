@@ -3,6 +3,7 @@ package br.com.ibicos.ibicos.exception;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -18,7 +19,8 @@ import lombok.NoArgsConstructor;
 public class ExceptionPayload {
 
 	private int statusCode;
-	private String title;
+	private String title;	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime timestamp;
 	private String description;	
     @JsonInclude(Include.NON_NULL)

@@ -16,4 +16,8 @@ public interface IUserService {
 	User findUserById(Integer idUser);
 	
 	User updateUser(User user);
+	
+	Boolean isEmailInUse(String email);
+	
+	User findUserByEmail(String email);
 }

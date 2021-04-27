@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import br.com.ibicos.ibicos.dto.CredentialsDTO;
-import br.com.ibicos.ibicos.dto.EmailDTO;
 import br.com.ibicos.ibicos.dto.RecoveryDTO;
-import br.com.ibicos.ibicos.dto.TokenDTO;
 import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.service.IUserService;
 import br.com.ibicos.ibicos.service.JwtService;
@@ -44,8 +44,20 @@ public class UserController {
 
 		Map<String, Object> responseMap = Map.of("message",
 				"Your account was successfully signed up, but before using it you need to confirm it using your email so please check it!",
-				"savedUser", savedUser);
+				"savedUser", savedUser,
+				"statusCode", HttpStatus.CREATED.value());
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseMap);
+	}
+	
+	@GetMapping("/checkEmailInUser")
+	public ResponseEntity<?> isEmailInUse(@RequestBody ObjectNode objectNode) {
+		String email = objectNode.asText("email");
+		Boolean isEmailInUse = userService.isEmailInUse(email);
+		return isEmailInUse ? ResponseEntity.status(HttpStatus.CONFLICT)
+				.body(Map.of("message", "Email already in use")) : 
+					ResponseEntity.status(HttpStatus.OK)
+					.body(Map.of("message", "Email free to use"));
+		
 	}
 
 	@PostMapping("/login")
@@ -53,7 +65,7 @@ public class UserController {
 		userDetailsServiceImpl.authenticate(credentials);
 		String token = jwtService.generateToken(credentials);
 
-		return ResponseEntity.ok(new TokenDTO(credentials.getEmail(), token));
+		return ResponseEntity.ok(Map.of("token", token));
 	}
 
 	@GetMapping("/verify")
@@ -63,15 +75,16 @@ public class UserController {
 	}
 
 	@PostMapping("/resetPassword/request")
-	public ResponseEntity<?> resetPasswordRequestHandler(@RequestBody EmailDTO emailDTO) {
+	public ResponseEntity<?> resetPasswordRequestHandler(@RequestBody ObjectNode objectNode) {
+		String email = objectNode.get("email").asText();
 
-		userService.resetPasswordRequestHandler(emailDTO.getEmail());
+		userService.resetPasswordRequestHandler(email);
 		return ResponseEntity.ok().body(
-				Map.of("message", "An email with the reset password instructions was sent to: '" + emailDTO.getEmail()
+				Map.of("message", "An email with the reset password instructions was sent to: '" + email
 						+ "', please check it and follow the provided instructions to reset your email!"));
 	}
 
-	@PutMapping("/resetPassword/change")
+	@PostMapping("/resetPassword/change")
 	public ResponseEntity<?> changeUserPassword(@RequestBody RecoveryDTO recoveryDTO) {
 		userService.changeUserPassword(recoveryDTO.getAccountRecoveryToken(), recoveryDTO.getNewPassword());
 		return ResponseEntity.ok().body(Map.of("message", "Password successfully changed"));
@@ -90,6 +103,13 @@ public class UserController {
 	@PutMapping("api/v1/user/profile/update")
 	public ResponseEntity<?> updateUserProfile(@RequestBody User user) {
 		return ResponseEntity.ok(userService.updateUser(user));
+	}
+	
+	@PostMapping("api/v1/user/findUserByEmail")
+	public ResponseEntity<?> getUserByEmail(@RequestBody ObjectNode objectNode) {
+		String email = objectNode.get("email").asText();
+		User user = userService.findUserByEmail(email);
+		return ResponseEntity.ok(user);
 	}
 
 }

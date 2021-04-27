@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ServiceCategory {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	@Column(name = "id_service_category")

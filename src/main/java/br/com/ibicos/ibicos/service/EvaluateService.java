@@ -1,12 +1,17 @@
 package br.com.ibicos.ibicos.service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
+import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
+import br.com.ibicos.ibicos.dto.IncrementViewsRequestDTO;
+import br.com.ibicos.ibicos.dto.ServiceCategoryDTO;
+import br.com.ibicos.ibicos.dto.UserDTO;
+import br.com.ibicos.ibicos.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.ibicos.ibicos.entity.Evaluate;
-import br.com.ibicos.ibicos.entity.Statistics;
 import br.com.ibicos.ibicos.exception.ResourceNotFoundException;
 import br.com.ibicos.ibicos.repository.EvaluateRepository;
 
@@ -18,6 +23,12 @@ public class EvaluateService {
 
 	@Autowired
 	private StatisticsService statisticsService;
+
+	@Autowired
+	private ServiceCategoryService serviceCategoryService;
+
+	@Autowired
+	private ProviderStatisticsService providerStatisticsService;
 
 	private Evaluate findEvaluateStatisticsByIdEvaluateOrElseThrowRuntimeException(Integer idEvaluate) {
 		Optional<Evaluate> evaluateOptional = evaluateRepository.findById(idEvaluate);
@@ -35,7 +46,7 @@ public class EvaluateService {
 				.findProviderStatisticsByIdProviderAndIdServiceCategory(idProvider, idCategory);
 
 		if (optionalStatistics.isEmpty()) {
-			throw new RuntimeException("There is not such provider statistics for the given parameters");
+			throw new RuntimeException("There is no such provider statistics for the given parameters");
 		}
 
 		return optionalStatistics.get();
@@ -45,7 +56,7 @@ public class EvaluateService {
 		Optional<Statistics> optionalStatistics = statisticsService.findCustomerStatistic(idClient);
 
 		if (optionalStatistics.isEmpty()) {
-			throw new RuntimeException("There is not such customer statistics for the given parameters");
+			throw new RuntimeException("There is no such customer statistics for the given parameters");
 		}
 
 		return optionalStatistics.get();
@@ -58,11 +69,7 @@ public class EvaluateService {
 		Integer idProvider = evaluate.getProvider().getId();
 		Integer idClient = evaluate.getClient().getId();
 
-		System.out.println(idProvider);
-		System.out.println(idClient);
-		System.out.println(idServiceCategory);
 		Statistics customerStatistics = findCustomerStatisticsOrElseThrowRuntimeException(idClient);
-		System.out.println(customerStatistics);
 		Statistics providerStatistics = findProviderStatisticsByIdProviderAndIdServiceCategoryOrElseThrowRuntimeException(
 				idProvider, idServiceCategory);
 
@@ -88,15 +95,92 @@ public class EvaluateService {
 			throw new RuntimeException("The provider was already evaluated");
 		}
 
-		Integer evaluationCounter = providerStatistics.getEvaluationsCounter();
-		Float newProviderEvaluation = ((providerStatistics.getEvaluation() * evaluationCounter) + evaluation)
-				/ (evaluationCounter + 1);
+
+		Float newProviderEvaluation = calculateNewEvaluation(evaluation, providerStatistics);
 
 		providerStatistics.setEvaluation(newProviderEvaluation);
-		providerStatistics.setEvaluationsCounter(evaluationCounter + 1);
+		providerStatistics.setEvaluationsCounter(providerStatistics.getEvaluationsCounter() + 1);
 
 		evaluate.setProviderEvaluated(true);
 		statisticsService.save(providerStatistics);
-		evaluateRepository.save(evaluate);
+		updateEvaluate(evaluate);
+	}
+
+	private Float calculateNewEvaluation(Float evaluation, Statistics statistics) {
+		Integer evaluationCounter = statistics.getEvaluationsCounter();
+		return ((statistics.getEvaluation() * evaluationCounter) + evaluation)
+				/ (evaluationCounter + 1);
+	}
+
+	public void registerPendingEvaluation(CustomerEmailToProviderDTO customerEmailToProviderDTO, User customer, User provider) {
+		serviceCategoryService.getServiceCategoryByServiceCategoryDTO(customerEmailToProviderDTO.getServiceCategoryDTO());
+
+		ServiceCategory serviceCategory = serviceCategoryService
+				.getServiceCategoryByServiceCategoryDTO(customerEmailToProviderDTO.getServiceCategoryDTO());
+
+		Evaluate pendingEvaluation = Evaluate.builder()
+				.client(customer)
+				.provider(provider)
+				.messageDate(LocalDate.now())
+				.serviceCategory(serviceCategory)
+				.build();
+
+		evaluateRepository.save(pendingEvaluation);
+	}
+
+    public List<Evaluate> listEvaluationsByCustomerId(Integer customerId) {
+		return evaluateRepository.findByCustomerId(customerId);
+    }
+
+	public void deleteEvaluationById(Integer idEvaluate) {
+		evaluateRepository.deleteById(idEvaluate);
+	}
+
+	public List<Evaluate> listEvaluationsByProviderId(Integer providerId) {
+		return evaluateRepository.findByProviderIdNotEvaluatedAndHired(providerId);
+	}
+
+    public void evaluateCustomer(Integer idEvaluate, Float evaluation) {
+		Evaluate evaluate = findEvaluateStatisticsByIdEvaluateOrElseThrowRuntimeException(idEvaluate);
+		Integer customerId = evaluate.getClient().getId();
+
+		Statistics customerStatistics = findCustomerStatisticsOrElseThrowRuntimeException(customerId);
+
+		Float newCustomerEvaluation = calculateNewEvaluation(evaluation, customerStatistics);
+		customerStatistics.setEvaluationsCounter(customerStatistics.getEvaluationsCounter() + 1);
+		customerStatistics.setEvaluation(newCustomerEvaluation);
+		evaluate.setCustomerEvaluated(true);
+		updateEvaluate(evaluate);
+		statisticsService.save(customerStatistics);
+    }
+
+    private void updateEvaluate(Evaluate evaluate) {
+		if (isEvaluateDeletable(evaluate)) {
+			Integer idEvaluate = evaluate.getIdEvaluate();
+			evaluateRepository.deleteById(idEvaluate);
+		} else {
+			evaluateRepository.save(evaluate);
+		}
+	}
+
+    private boolean isEvaluateDeletable(Evaluate evaluate) {
+		return evaluate.isProviderEvaluated() && evaluate.isCustomerEvaluated();
+	}
+
+	public void incrementProviderVisualizations(IncrementViewsRequestDTO incrementViewsRequestDTO) {
+		UserDTO providerUser = incrementViewsRequestDTO.getProviderUser();
+		ServiceCategoryDTO serviceCategoryDTO = incrementViewsRequestDTO.getServiceCategory();
+
+		ServiceCategory serviceCategory = serviceCategoryService
+				.getServiceCategoryByServiceCategoryDTO(serviceCategoryDTO);
+
+		Optional<ProviderStatistics> providerStatisticsOptional = providerStatisticsService
+				.getProviderStatisticsOptional(providerUser.getId(), serviceCategory.getId());
+
+		if (providerStatisticsOptional.isPresent()) {
+			ProviderStatistics providerStatistics = providerStatisticsOptional.get();
+			providerStatistics.setVisualizations(providerStatistics.getVisualizations() + 1);
+			providerStatisticsService.save(providerStatistics);
+		}
 	}
 }

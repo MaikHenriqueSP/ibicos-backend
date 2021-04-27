@@ -3,6 +3,7 @@ package br.com.ibicos.ibicos.service;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.ibicos.ibicos.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,5 +43,14 @@ public class StatisticsService {
 	
 	public Statistics save(Statistics statistics) {
 		return statisticsRepository.save(statistics);
+	}
+
+	public Statistics createCustomerStatistics(User user) {
+		Statistics customerStatistics = Statistics.builder().user(user).evaluation(0.0f)
+				.evaluationsCounter(0)
+				.hiredServicesCounter(0)
+				.messagesCounter(0)
+				.viewsCounter(0).build();
+		return statisticsRepository.save(customerStatistics);
 	}
 }
