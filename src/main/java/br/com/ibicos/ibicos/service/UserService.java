@@ -1,7 +1,10 @@
 package br.com.ibicos.ibicos.service;
 
+import java.util.Map;
 import java.util.Optional;
 
+import br.com.ibicos.ibicos.dto.EmailDataDTO;
+import br.com.ibicos.ibicos.dto.EmailTokenConfigDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.DisabledException;
@@ -21,6 +24,7 @@ import br.com.ibicos.ibicos.exception.ResourceNotFoundException;
 import br.com.ibicos.ibicos.exception.UserAlreadyExistsException;
 import br.com.ibicos.ibicos.repository.UserRepository;
 import net.bytebuddy.utility.RandomString;
+import org.thymeleaf.context.Context;
 
 @Service
 public class UserService implements IUserService {
@@ -47,14 +51,11 @@ public class UserService implements IUserService {
 		encodeUserPassword(user);
 		String userEmail = user.getEmail();
 		boolean isUserPresent = userRepository.findByEmail(userEmail).isPresent();
-
 		try {
 			User savedUser = userRepository.save(user);
 			String validationToken = savedUser.getValidationToken();
 
-			emailService.sendValidationToken(savedUser.getPerson().getNamePerson(), validationToken,
-					savedUser.getEmail());
-
+			sendVerificationTokenEmail(savedUser, validationToken);
 			return savedUser;
 		} catch (DataIntegrityViolationException e) {
 			if (isUserPresent) {
@@ -63,6 +64,18 @@ public class UserService implements IUserService {
 			throw new InvalidInsertionObjectException("The received object is in an invalid format"
 					+ ", please check the documentation for the correct one");
 		}
+	}
+
+	private void sendVerificationTokenEmail(User savedUser, String validationToken) {
+		EmailDataDTO emailData = EmailDataDTO.builder()
+				.to(savedUser.getEmail())
+				.from("ibicos.classificados@gmail.com")
+				.subject("iBicos - Confirmação de cadastro")
+				.templateName("email-validation")
+				.build();
+
+		emailService.sendEmail(emailData, Map.of("nome", savedUser.getPerson().getNamePerson() ,
+				"token", validationToken));
 	}
 
 	@Override

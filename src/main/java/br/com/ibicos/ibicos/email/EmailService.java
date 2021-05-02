@@ -83,7 +83,7 @@ public class EmailService {
 		
 		sendEmailTokenTemplate(emailTokenConfigDTO);
 	}
-	
+
 	@Async
 	public void sendEmail(EmailDataDTO emailData, Map<String, Object> contextEmailMapVariables) {
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -117,8 +117,5 @@ public class EmailService {
 		context.setVariables(contextMapVariables);
 		return context;
 	}
-
-
-
 
 }
