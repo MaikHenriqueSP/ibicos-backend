@@ -32,58 +32,6 @@ public class EmailService {
 	@Autowired
 	private SpringTemplateEngine springTemplateEngine;
 
-	public void sendEmailTokenTemplate(EmailTokenConfigDTO emailTokenConfigDTO) {
-		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-		MimeMessageHelper mimeMessageHelper;
-		try {
-			mimeMessageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-					StandardCharsets.UTF_8.name());
-
-			Context context = getContext(Map.of("nome", emailTokenConfigDTO.getReceiverName(),
-					"token", emailTokenConfigDTO.getToken()));
-
-			String html = springTemplateEngine.process(emailTokenConfigDTO.getHtmlTemplateName(), context);
-
-			mimeMessageHelper.setTo(emailTokenConfigDTO.getToEmail());
-
-			mimeMessageHelper.setText(html, true);
-			mimeMessageHelper.setSubject(emailTokenConfigDTO.getSubject());
-			mimeMessageHelper.setFrom(emailTokenConfigDTO.getFromEmail(), emailTokenConfigDTO.getFromTitle());
-		} catch (MessagingException | UnsupportedEncodingException e) {
-			throw new EmailSendingException("An error occurred while sending email, please try again");
-		}
-
-		javaMailSender.send(mimeMessage);
-	}
-
-	public void sendValidationToken(String name, String validationToken, String email) {
-		EmailTokenConfigDTO emailTokenConfigDTO = EmailTokenConfigDTO.builder().receiverName(name)
-				.toEmail(email)
-				.token(validationToken)
-				.fromEmail("ibicos.classificados@gmail.com")
-				.fromTitle("iBicos - Suporte")
-				.htmlTemplateName("email-validation")
-				.receiverName(name)
-				.subject("iBicos - Confirmação de cadastro")
-				.build();
-		
-		sendEmailTokenTemplate(emailTokenConfigDTO);
-	}
-	
-	public void sendRecoveryEmail(String name, String email, String accountRecoveryToken) {
-		EmailTokenConfigDTO emailTokenConfigDTO = EmailTokenConfigDTO.builder().receiverName(name)
-				.toEmail(email)
-				.token(accountRecoveryToken)
-				.fromEmail("ibicos.classificados@gmail.com")
-				.fromTitle("iBicos - Suporte")
-				.htmlTemplateName("email-recover")
-				.receiverName(name)
-				.subject("iBicos - Redefinição de senha")
-				.build();
-		
-		sendEmailTokenTemplate(emailTokenConfigDTO);
-	}
-
 	@Async
 	public void sendEmail(EmailDataDTO emailData, Map<String, Object> contextEmailMapVariables) {
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();

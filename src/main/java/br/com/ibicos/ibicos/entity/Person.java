@@ -48,7 +48,7 @@ public class Person {
 	private LocalDate birthday;
 	
 	@NotBlank(message = "{org.hibernate.validator.constraints.br.CPF.message}")
-	@Size(min = 11, max =11, message = "CPF sizes needs to be equal to 11 characters without any special character")
+	@Size(min = 11, max =11, message = "CPF size needs to be equal to 11 characters without any special character")
 	@Column(updatable = false)
 	private String cpf;
 	

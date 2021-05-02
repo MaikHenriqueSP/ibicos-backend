@@ -50,7 +50,12 @@ public class UserService implements IUserService {
 	public User save(User user) {
 		encodeUserPassword(user);
 		String userEmail = user.getEmail();
+
 		boolean isUserPresent = userRepository.findByEmail(userEmail).isPresent();
+		if (isUserPresent) {
+			throw new UserAlreadyExistsException(userEmail);
+		}
+
 		try {
 			User savedUser = userRepository.save(user);
 			String validationToken = savedUser.getValidationToken();
@@ -58,9 +63,6 @@ public class UserService implements IUserService {
 			sendVerificationTokenEmail(savedUser, validationToken);
 			return savedUser;
 		} catch (DataIntegrityViolationException e) {
-			if (isUserPresent) {
-				throw new UserAlreadyExistsException(userEmail);
-			}
 			throw new InvalidInsertionObjectException("The received object is in an invalid format"
 					+ ", please check the documentation for the correct one");
 		}
@@ -74,15 +76,17 @@ public class UserService implements IUserService {
 				.templateName("email-validation")
 				.build();
 
-		emailService.sendEmail(emailData, Map.of("nome", savedUser.getPerson().getNamePerson() ,
-				"token", validationToken));
+		Map<String, Object> mapContext = Map.of("nome", savedUser.getPerson().getNamePerson(),
+				"token", validationToken);
+
+		emailService.sendEmail(emailData, mapContext);
 	}
 
 	@Override
 	public void verifyAccountRequestHandler(String validationToken) {
 		Optional<User> optUser = userRepository.findUserByValidationToken(validationToken);
 
-		if (!optUser.isPresent()) {
+		if (optUser.isEmpty()) {
 			throw new InvalidTokenException("Invalid verification token, please contact the support team");
 		}
 
@@ -105,13 +109,21 @@ public class UserService implements IUserService {
 
 		if (!user.getIsAccountConfirmed()) {
 			throw new DisabledException("Account is not yet confirmed,"
-					+ " please validate it firt through your email, before trying to change it's password");
+					+ " please validate it first through your email, before trying to change it's password");
 		}
 
-		emailService.sendRecoveryEmail(user.getPerson().getNamePerson(), user.getEmail(),
-				user.getAccountRecoveryToken());
-	}
+		EmailDataDTO emailData = EmailDataDTO.builder()
+				.subject("iBicos - Redefinição de senha")
+				.to(user.getEmail())
+				.from("ibicos.classificados@gmail.com")
+				.templateName("email-recover")
+				.build();
 
+		Map<String, Object> mapContext = Map.of("nome", user.getPerson().getNamePerson(),"token",
+				user.getAccountRecoveryToken());
+
+		emailService.sendEmail(emailData, mapContext);
+	}
 
 	@Override
 	public void changeUserPassword(String accountRecoveryToken, String newPassword) {
