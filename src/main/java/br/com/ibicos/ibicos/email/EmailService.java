@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import br.com.ibicos.ibicos.dto.EmailDataDTO;
 import br.com.ibicos.ibicos.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,9 +39,8 @@ public class EmailService {
 			mimeMessageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
 					StandardCharsets.UTF_8.name());
 
-			Context context = new Context();
-			context.setVariable("nome", emailTokenConfigDTO.getReceiverName());
-			context.setVariable("token", emailTokenConfigDTO.getToken());
+			Context context = getContext(Map.of("nome", emailTokenConfigDTO.getReceiverName(),
+					"token", emailTokenConfigDTO.getToken()));
 
 			String html = springTemplateEngine.process(emailTokenConfigDTO.getHtmlTemplateName(), context);
 
@@ -83,29 +83,33 @@ public class EmailService {
 		
 		sendEmailTokenTemplate(emailTokenConfigDTO);
 	}
-
+	
 	@Async
-	public void sendEmailToProvider(User provider, Map<String, Object> contextEmailMapVariables) {
+	public void sendEmail(EmailDataDTO emailData, Map<String, Object> contextEmailMapVariables) {
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-		MimeMessageHelper mimeMessageHelper;
+		configureMimeMessage(emailData, contextEmailMapVariables, mimeMessage);
+		javaMailSender.send(mimeMessage);
+	}
 
-		String providerEmailAddress = provider.getEmail();
-
+	private void configureMimeMessage(EmailDataDTO emailData, Map<String, Object> contextEmailMapVariables, MimeMessage mimeMessage) {
 		try {
-			mimeMessageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
 					StandardCharsets.UTF_8.name());
 
 			Context context = getContext(contextEmailMapVariables);
-			String html = springTemplateEngine.process("email-message-from-customer-to-provider", context);
-			mimeMessageHelper.setTo(providerEmailAddress);
-			mimeMessageHelper.setText(html, true);
-			mimeMessageHelper.setSubject("iBicos - Mensagem do cliente");
-			mimeMessageHelper.setFrom("ibicos.classificados@gmail.com", "iBicos - Suporte");
+			String html = springTemplateEngine.process(emailData.getTemplateName(), context);
+			configureMimeMessageHelper(mimeMessageHelper, html, emailData);
 		} catch (MessagingException | UnsupportedEncodingException e) {
 			throw new EmailSendingException("An error occurred while sending email, please try again");
 		}
+	}
 
-		javaMailSender.send(mimeMessage);
+	private void configureMimeMessageHelper(MimeMessageHelper mimeMessageHelper, String html, EmailDataDTO emailData)
+			throws MessagingException, UnsupportedEncodingException {
+		mimeMessageHelper.setTo(emailData.getTo());
+		mimeMessageHelper.setText(html, true);
+		mimeMessageHelper.setSubject(emailData.getSubject());
+		mimeMessageHelper.setFrom(emailData.getFrom(), emailData.getSubject());
 	}
 
 	private Context getContext(Map<String, Object> contextMapVariables) {

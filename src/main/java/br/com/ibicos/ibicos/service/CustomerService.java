@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO;
+import br.com.ibicos.ibicos.dto.EmailDataDTO;
 import br.com.ibicos.ibicos.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,14 @@ public class CustomerService {
 
 		Map<String, Object> contextEmailMapVariables = createEmailContextVariablesMap(customer, provider, customerEmailToProviderDTO);
 
-		emailService.sendEmailToProvider(provider, contextEmailMapVariables);
+		EmailDataDTO emailDataDTO = EmailDataDTO.builder().
+				subject("iBicos - Mensagem do cliente")
+				.from("ibicos.classificados@gmail.com")
+				.to(provider.getEmail())
+				.templateName("email-message-from-customer-to-provider")
+				.build();
+
+		emailService.sendEmail(emailDataDTO, contextEmailMapVariables);
 		evaluateService.registerPendingEvaluation(customerEmailToProviderDTO, customer, provider);
 	}
 
