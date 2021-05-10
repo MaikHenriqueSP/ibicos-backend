@@ -19,11 +19,13 @@ import java.util.Map;
 @Service
 public class EmailService {
 
-	@Autowired
-	private JavaMailSender javaMailSender;
+	private final JavaMailSender javaMailSender;
+	private final SpringTemplateEngine springTemplateEngine;
 
-	@Autowired
-	private SpringTemplateEngine springTemplateEngine;
+	public EmailService(JavaMailSender javaMailSender, SpringTemplateEngine springTemplateEngine) {
+		this.javaMailSender = javaMailSender;
+		this.springTemplateEngine = springTemplateEngine;
+	}
 
 	@Async
 	public void sendEmail(EmailDataDTO emailData, Map<String, Object> contextEmailMapVariables) {
