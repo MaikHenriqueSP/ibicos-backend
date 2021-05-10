@@ -18,18 +18,19 @@ import br.com.ibicos.ibicos.repository.StatisticsRepository;
 
 @Service
 public class CustomerService {
-	@Autowired
-	private StatisticsRepository statisticsRepository;
-	
-	@Autowired
-	private EmailService emailService;
 
-	@Autowired
-	private UserService userService;
+	private final StatisticsRepository statisticsRepository;
+	private final EmailService emailService;
+	private final UserService userService;
+	private final EvaluateService evaluateService;
 
-	@Autowired
-	private EvaluateService evaluateService;
-	
+	public CustomerService(StatisticsRepository statisticsRepository, EmailService emailService, UserService userService, EvaluateService evaluateService) {
+		this.statisticsRepository = statisticsRepository;
+		this.emailService = emailService;
+		this.userService = userService;
+		this.evaluateService = evaluateService;
+	}
+
 	public Statistics showCustomerStatistics(Integer customerId) {
 		Optional<Statistics> optionalStatistic = statisticsRepository
 				.findCustomerStatistic(customerId);

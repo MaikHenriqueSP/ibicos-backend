@@ -22,17 +22,17 @@ import java.util.Optional;
 @Service
 public class UserService implements IUserService {
 
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final EmailService emailService;
+	private final StatisticsService statisticsService;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
-	@Autowired
-	private EmailService emailService;
-
-	@Autowired
-	private StatisticsService statisticsService;
+	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService, StatisticsService statisticsService) {
+		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
+		this.emailService = emailService;
+		this.statisticsService = statisticsService;
+	}
 
 	private void encodeUserPassword(User user) {
 		String encodedPassword = passwordEncoder.encode(user.getPasswordUser());

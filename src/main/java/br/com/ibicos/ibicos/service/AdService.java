@@ -23,14 +23,15 @@ import br.com.ibicos.ibicos.repository.AdRepository;
 @Service
 public class AdService {
 
-	@Autowired
-	private AdRepository adRepository;
-	
-	@Autowired
-	private ProviderStatisticsService providerStatisticsService;
+	private final AdRepository adRepository;
+	private final ProviderStatisticsService providerStatisticsService;
+	private final AdWithProviderStatisticsMapper adWithProviderStatisticsMapper;
 
-	@Autowired
-	private AdWithProviderStatisticsMapper adWithProviderStatisticsMapper;
+	public AdService(AdRepository adRepository, ProviderStatisticsService providerStatisticsService, AdWithProviderStatisticsMapper adWithProviderStatisticsMapper) {
+		this.adRepository = adRepository;
+		this.providerStatisticsService = providerStatisticsService;
+		this.adWithProviderStatisticsMapper = adWithProviderStatisticsMapper;
+	}
 
 	public Iterable<Ad> listAds() {
 		return adRepository.findAll();

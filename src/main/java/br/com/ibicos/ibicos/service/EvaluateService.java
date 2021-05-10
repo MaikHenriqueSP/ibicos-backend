@@ -18,17 +18,17 @@ import br.com.ibicos.ibicos.repository.EvaluateRepository;
 @Service
 public class EvaluateService {
 
-	@Autowired
-	private EvaluateRepository evaluateRepository;
+	private final EvaluateRepository evaluateRepository;
+	private final StatisticsService statisticsService;
+	private final ServiceCategoryService serviceCategoryService;
+	private final ProviderStatisticsService providerStatisticsService;
 
-	@Autowired
-	private StatisticsService statisticsService;
-
-	@Autowired
-	private ServiceCategoryService serviceCategoryService;
-
-	@Autowired
-	private ProviderStatisticsService providerStatisticsService;
+	public EvaluateService(EvaluateRepository evaluateRepository, StatisticsService statisticsService, ServiceCategoryService serviceCategoryService, ProviderStatisticsService providerStatisticsService) {
+		this.evaluateRepository = evaluateRepository;
+		this.statisticsService = statisticsService;
+		this.serviceCategoryService = serviceCategoryService;
+		this.providerStatisticsService = providerStatisticsService;
+	}
 
 	private Evaluate findEvaluateStatisticsByIdEvaluateOrElseThrowRuntimeException(Integer idEvaluate) {
 		Optional<Evaluate> evaluateOptional = evaluateRepository.findById(idEvaluate);
