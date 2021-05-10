@@ -5,10 +5,12 @@ import br.com.ibicos.ibicos.email.EmailService;
 import br.com.ibicos.ibicos.entity.Address;
 import br.com.ibicos.ibicos.entity.Person;
 import br.com.ibicos.ibicos.entity.User;
+import br.com.ibicos.ibicos.event.PasswordResetRequestEvent;
 import br.com.ibicos.ibicos.exception.*;
 import br.com.ibicos.ibicos.repository.UserRepository;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,14 +26,16 @@ public class UserService implements IUserService {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
-	private final EmailService emailService;
 	private final StatisticsService statisticsService;
+	private final ApplicationEventPublisher applicationEventPublisher;
 
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService, StatisticsService statisticsService) {
+	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, StatisticsService statisticsService,
+					   ApplicationEventPublisher applicationEventPublisher) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
-		this.emailService = emailService;
 		this.statisticsService = statisticsService;
+		this.applicationEventPublisher = applicationEventPublisher;
+
 	}
 
 	private void encodeUserPassword(User user) {
@@ -49,11 +53,13 @@ public class UserService implements IUserService {
 			throw new UserAlreadyExistsException(userEmail);
 		}
 
+		return saveAndReturnNewUser(user);
+	}
+
+	private User saveAndReturnNewUser(User user) {
 		try {
 			User savedUser = userRepository.save(user);
-			String validationToken = savedUser.getValidationToken();
-
-			sendVerificationTokenEmail(savedUser, validationToken);
+			applicationEventPublisher.publishEvent(user);
 			return savedUser;
 		} catch (DataIntegrityViolationException e) {
 			throw new InvalidInsertionObjectException("The received object is in an invalid format"
@@ -61,19 +67,6 @@ public class UserService implements IUserService {
 		}
 	}
 
-	private void sendVerificationTokenEmail(User savedUser, String validationToken) {
-		EmailDataDTO emailData = EmailDataDTO.builder()
-				.to(savedUser.getEmail())
-				.from("ibicos.classificados@gmail.com")
-				.subject("iBicos - Confirmação de cadastro")
-				.templateName("email-validation")
-				.build();
-
-		Map<String, Object> mapContext = Map.of("nome", savedUser.getPerson().getNamePerson(),
-				"token", validationToken);
-
-		emailService.sendEmail(emailData, mapContext);
-	}
 
 	@Override
 	public void verifyAccountRequestHandler(String validationToken) {
@@ -105,17 +98,8 @@ public class UserService implements IUserService {
 					+ " please validate it first through your email, before trying to change it's password");
 		}
 
-		EmailDataDTO emailData = EmailDataDTO.builder()
-				.subject("iBicos - Redefinição de senha")
-				.to(user.getEmail())
-				.from("ibicos.classificados@gmail.com")
-				.templateName("email-recover")
-				.build();
+		applicationEventPublisher.publishEvent(new PasswordResetRequestEvent(user));
 
-		Map<String, Object> mapContext = Map.of("nome", user.getPerson().getNamePerson(),"token",
-				user.getAccountRecoveryToken());
-
-		emailService.sendEmail(emailData, mapContext);
 	}
 
 	@Override
