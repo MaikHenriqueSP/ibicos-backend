@@ -16,9 +16,12 @@ import br.com.ibicos.ibicos.service.ServiceCategoryService;
 @RequestMapping("/api/v1/service-category")
 public class ServiceCategoryController {
 	
-	@Autowired
-	private ServiceCategoryService serviceCategoryService;
-	
+	private final ServiceCategoryService serviceCategoryService;
+
+	public ServiceCategoryController(ServiceCategoryService serviceCategoryService) {
+		this.serviceCategoryService = serviceCategoryService;
+	}
+
 	@GetMapping
 	public ResponseEntity<?> listAllServicesCategories() {
 		List<ServiceCategory> servicesCategories = serviceCategoryService.listAllServicesCategories();
