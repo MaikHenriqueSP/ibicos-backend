@@ -15,9 +15,12 @@ import br.com.ibicos.ibicos.repository.StatisticsRepository;
 @Service
 public class StatisticsService {
 
-	@Autowired
-	private StatisticsRepository statisticsRepository;
-	
+	private final StatisticsRepository statisticsRepository;
+
+	public StatisticsService(StatisticsRepository statisticsRepository) {
+		this.statisticsRepository = statisticsRepository;
+	}
+
 	public List<Statistics> listStatistics() {
 		return statisticsRepository.findAll();
 	}

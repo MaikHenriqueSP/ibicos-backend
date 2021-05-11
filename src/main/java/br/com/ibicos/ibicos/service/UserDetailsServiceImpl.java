@@ -16,12 +16,14 @@ import br.com.ibicos.ibicos.repository.UserRepository;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private UserRepository userRepository;
-		
+	private final PasswordEncoder passwordEncoder;
+	private final UserRepository userRepository;
+
+	public UserDetailsServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+		this.passwordEncoder = passwordEncoder;
+		this.userRepository = userRepository;
+	}
+
 	public UserDetails authenticate(CredentialsDTO credentials) {
 		UserDetails userDetails = loadUserByUsername(credentials.getEmail());
 		

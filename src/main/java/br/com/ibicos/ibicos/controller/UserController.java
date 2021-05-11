@@ -29,14 +29,15 @@ import br.com.ibicos.ibicos.service.UserDetailsServiceImpl;
 @RequestMapping
 public class UserController {
 
-	@Autowired
-	private UserDetailsServiceImpl userDetailsServiceImpl;
+	private final UserDetailsServiceImpl userDetailsServiceImpl;
+	private final JwtService jwtService;
+	private final IUserService userService;
 
-	@Autowired
-	private JwtService jwtService;
-
-	@Autowired
-	private IUserService userService;
+	public UserController(UserDetailsServiceImpl userDetailsServiceImpl, JwtService jwtService, IUserService userService) {
+		this.userDetailsServiceImpl = userDetailsServiceImpl;
+		this.jwtService = jwtService;
+		this.userService = userService;
+	}
 
 	@PostMapping("/signUp")
 	public ResponseEntity<?> save(@Valid @RequestBody User user) {

@@ -25,23 +25,17 @@ import br.com.ibicos.ibicos.repository.AdRepository;
 @RequestMapping("/api/v1/provider")
 public class ProviderController {
 
-	@Autowired
-	private ProviderService providerService;
+	private final ProviderService providerService;
+	private final StatisticsService statisticsService;
+	private final AdService adService;
+	private final EvaluateService evaluateService;
 
-	@Autowired
-	private StatisticsService statisticsService;
-
-	@Autowired
-	private ProviderStatisticsService providerStatisticsService;
-
-	@Autowired
-	private AdService adService;
-	
-	@Autowired
-	private AdRepository adRepository;
-
-	@Autowired
-	private EvaluateService evaluateService;
+	public ProviderController(ProviderService providerService, StatisticsService statisticsService, AdService adService, EvaluateService evaluateService) {
+		this.providerService = providerService;
+		this.statisticsService = statisticsService;
+		this.adService = adService;
+		this.evaluateService = evaluateService;
+	}
 
 	@GetMapping
 	public ResponseEntity<?> listProviders() {

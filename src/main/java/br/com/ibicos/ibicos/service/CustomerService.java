@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO;
+import br.com.ibicos.ibicos.dto.EmailDataDTO;
 import br.com.ibicos.ibicos.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,18 +18,19 @@ import br.com.ibicos.ibicos.repository.StatisticsRepository;
 
 @Service
 public class CustomerService {
-	@Autowired
-	private StatisticsRepository statisticsRepository;
-	
-	@Autowired
-	private EmailService emailService;
 
-	@Autowired
-	private UserService userService;
+	private final StatisticsRepository statisticsRepository;
+	private final EmailService emailService;
+	private final UserService userService;
+	private final EvaluateService evaluateService;
 
-	@Autowired
-	private EvaluateService evaluateService;
-	
+	public CustomerService(StatisticsRepository statisticsRepository, EmailService emailService, UserService userService, EvaluateService evaluateService) {
+		this.statisticsRepository = statisticsRepository;
+		this.emailService = emailService;
+		this.userService = userService;
+		this.evaluateService = evaluateService;
+	}
+
 	public Statistics showCustomerStatistics(Integer customerId) {
 		Optional<Statistics> optionalStatistic = statisticsRepository
 				.findCustomerStatistic(customerId);
@@ -46,7 +48,14 @@ public class CustomerService {
 
 		Map<String, Object> contextEmailMapVariables = createEmailContextVariablesMap(customer, provider, customerEmailToProviderDTO);
 
-		emailService.sendEmailToProvider(provider, contextEmailMapVariables);
+		EmailDataDTO emailDataDTO = EmailDataDTO.builder().
+				subject("iBicos - Mensagem do cliente")
+				.from("ibicos.classificados@gmail.com")
+				.to(provider.getEmail())
+				.templateName("email-message-from-customer-to-provider")
+				.build();
+
+		emailService.sendEmail(emailDataDTO, contextEmailMapVariables);
 		evaluateService.registerPendingEvaluation(customerEmailToProviderDTO, customer, provider);
 	}
 

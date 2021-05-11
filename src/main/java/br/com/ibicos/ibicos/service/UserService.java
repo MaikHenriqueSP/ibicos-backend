@@ -1,8 +1,16 @@
 package br.com.ibicos.ibicos.service;
 
-import java.util.Optional;
-
+import br.com.ibicos.ibicos.dto.EmailDataDTO;
+import br.com.ibicos.ibicos.email.EmailService;
+import br.com.ibicos.ibicos.entity.Address;
+import br.com.ibicos.ibicos.entity.Person;
+import br.com.ibicos.ibicos.entity.User;
+import br.com.ibicos.ibicos.event.PasswordResetRequestEvent;
+import br.com.ibicos.ibicos.exception.*;
+import br.com.ibicos.ibicos.repository.UserRepository;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,32 +18,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.ibicos.ibicos.email.EmailService;
-import br.com.ibicos.ibicos.entity.Address;
-import br.com.ibicos.ibicos.entity.Person;
-import br.com.ibicos.ibicos.entity.User;
-import br.com.ibicos.ibicos.exception.EmailSendingException;
-import br.com.ibicos.ibicos.exception.InvalidInsertionObjectException;
-import br.com.ibicos.ibicos.exception.InvalidTokenException;
-import br.com.ibicos.ibicos.exception.ResourceNotFoundException;
-import br.com.ibicos.ibicos.exception.UserAlreadyExistsException;
-import br.com.ibicos.ibicos.repository.UserRepository;
-import net.bytebuddy.utility.RandomString;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
 
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final StatisticsService statisticsService;
+	private final ApplicationEventPublisher applicationEventPublisher;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, StatisticsService statisticsService,
+					   ApplicationEventPublisher applicationEventPublisher) {
+		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
+		this.statisticsService = statisticsService;
+		this.applicationEventPublisher = applicationEventPublisher;
 
-	@Autowired
-	private EmailService emailService;
-
-	@Autowired
-	private StatisticsService statisticsService;
+	}
 
 	private void encodeUserPassword(User user) {
 		String encodedPassword = passwordEncoder.encode(user.getPasswordUser());
@@ -46,30 +47,32 @@ public class UserService implements IUserService {
 	public User save(User user) {
 		encodeUserPassword(user);
 		String userEmail = user.getEmail();
-		boolean isUserPresent = userRepository.findByEmail(userEmail).isPresent();
 
+		boolean isUserPresent = userRepository.findByEmail(userEmail).isPresent();
+		if (isUserPresent) {
+			throw new UserAlreadyExistsException(userEmail);
+		}
+
+		return saveAndReturnNewUser(user);
+	}
+
+	private User saveAndReturnNewUser(User user) {
 		try {
 			User savedUser = userRepository.save(user);
-			String validationToken = savedUser.getValidationToken();
-
-			emailService.sendValidationToken(savedUser.getPerson().getNamePerson(), validationToken,
-					savedUser.getEmail());
-
+			applicationEventPublisher.publishEvent(user);
 			return savedUser;
 		} catch (DataIntegrityViolationException e) {
-			if (isUserPresent) {
-				throw new UserAlreadyExistsException(userEmail);
-			}
 			throw new InvalidInsertionObjectException("The received object is in an invalid format"
 					+ ", please check the documentation for the correct one");
 		}
 	}
 
+
 	@Override
 	public void verifyAccountRequestHandler(String validationToken) {
 		Optional<User> optUser = userRepository.findUserByValidationToken(validationToken);
 
-		if (!optUser.isPresent()) {
+		if (optUser.isEmpty()) {
 			throw new InvalidTokenException("Invalid verification token, please contact the support team");
 		}
 
@@ -92,13 +95,12 @@ public class UserService implements IUserService {
 
 		if (!user.getIsAccountConfirmed()) {
 			throw new DisabledException("Account is not yet confirmed,"
-					+ " please validate it firt through your email, before trying to change it's password");
+					+ " please validate it first through your email, before trying to change it's password");
 		}
 
-		emailService.sendRecoveryEmail(user.getPerson().getNamePerson(), user.getEmail(),
-				user.getAccountRecoveryToken());
-	}
+		applicationEventPublisher.publishEvent(new PasswordResetRequestEvent(user));
 
+	}
 
 	@Override
 	public void changeUserPassword(String accountRecoveryToken, String newPassword) {

@@ -11,9 +11,13 @@ import br.com.ibicos.ibicos.repository.ServiceCategoryRepository;
 
 @Service
 public class ServiceCategoryService {
-	@Autowired
-	private ServiceCategoryRepository serviceCategoryRepository;
-	
+
+	private final ServiceCategoryRepository serviceCategoryRepository;
+
+	public ServiceCategoryService(ServiceCategoryRepository serviceCategoryRepository) {
+		this.serviceCategoryRepository = serviceCategoryRepository;
+	}
+
 	public List<ServiceCategory> listAllServicesCategories() {
 		return serviceCategoryRepository.findAll();
 	}

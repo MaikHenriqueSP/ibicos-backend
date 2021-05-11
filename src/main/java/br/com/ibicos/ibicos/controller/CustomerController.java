@@ -21,12 +21,15 @@ import br.com.ibicos.ibicos.service.EvaluateService;
 @RestController
 @RequestMapping("/api/v1/customer")
 public class CustomerController {
-	
-	@Autowired
-	private CustomerService customerService; 
-	
-	@Autowired
-	private EvaluateService evaluateService;
+
+	private final CustomerService customerService;
+
+	private final EvaluateService evaluateService;
+
+	public CustomerController(CustomerService customerService, EvaluateService evaluateService) {
+		this.customerService = customerService;
+		this.evaluateService = evaluateService;
+	}
 	
 	@GetMapping("/myNumbers/{customerId}")
 	public ResponseEntity<?> showCustomerStatistics(@PathVariable Integer customerId) {

@@ -15,12 +15,14 @@ import br.com.ibicos.ibicos.repository.UserRepository;
 @Service
 public class ProviderService {
 
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
+	private final ProviderStatisticsRepository providerStatisticsRepository;
 
-	@Autowired
-	private ProviderStatisticsRepository providerStatisticsRepository;
-	
+	public ProviderService(UserRepository userRepository, ProviderStatisticsRepository providerStatisticsRepository) {
+		this.userRepository = userRepository;
+		this.providerStatisticsRepository = providerStatisticsRepository;
+	}
+
 	public List<User> listProviders() {
 		return userRepository.findAll();
 	}

@@ -24,8 +24,12 @@ import br.com.ibicos.ibicos.service.AdService;
 @RestController
 @RequestMapping("/api/v1/ad")
 public class AdController {
-	@Autowired
-	private AdService adService;
+
+	private final AdService adService;
+
+	public AdController(AdService adService) {
+		this.adService = adService;
+	}
 
 	@GetMapping("/list/ad")
 	public ResponseEntity<?> listAllAds(){
