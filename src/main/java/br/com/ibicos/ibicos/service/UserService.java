@@ -28,14 +28,15 @@ public class UserService implements IUserService {
 	private final PasswordEncoder passwordEncoder;
 	private final StatisticsService statisticsService;
 	private final ApplicationEventPublisher applicationEventPublisher;
+	private final PersonService personService;
 
 	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, StatisticsService statisticsService,
-					   ApplicationEventPublisher applicationEventPublisher) {
+					   ApplicationEventPublisher applicationEventPublisher, PersonService personService) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.statisticsService = statisticsService;
 		this.applicationEventPublisher = applicationEventPublisher;
-
+		this.personService = personService;
 	}
 
 	private void encodeUserPassword(User user) {
@@ -48,8 +49,7 @@ public class UserService implements IUserService {
 		encodeUserPassword(user);
 		String userEmail = user.getEmail();
 
-		boolean isUserPresent = userRepository.findByEmail(userEmail).isPresent();
-		if (isUserPresent) {
+		if (userRepository.findByEmail(userEmail).isPresent()) {
 			throw new UserAlreadyExistsException(userEmail);
 		}
 
@@ -141,27 +141,9 @@ public class UserService implements IUserService {
 		
 		Person newPerson = user.getPerson();
 		Person oldPerson = oldUser.getPerson();
-		
-		if (newPerson.getCnpj() != null) {
-			oldPerson.setCnpj(newPerson.getCnpj());
-		}
-		
-		Address oldAddress = oldPerson.getAddress();
-		Address newAddress = newPerson.getAddress();
-		
-		oldAddress.setCep(newAddress.getCep());
-		oldAddress.setCity(newAddress.getCity());
-		
-		if (newAddress.getComplement() != null) { 
-			oldAddress.setComplement(newAddress.getComplement());
-		}
-		
-		oldAddress.setNeighborhood(newAddress.getNeighborhood());
-		oldAddress.setNumberAddress(newAddress.getNumberAddress());
-		
-		oldAddress.setState(newAddress.getState());
-		oldAddress.setStreet(newAddress.getStreet());
-		
+
+		personService.updatePerson(oldPerson, newPerson);
+
 		return userRepository.save(oldUser);
 	}
 
