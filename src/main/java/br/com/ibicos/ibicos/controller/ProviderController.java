@@ -22,7 +22,7 @@ import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.repository.AdRepository;
 
 @RestController
-@RequestMapping("/api/v1/provider")
+@RequestMapping("/api/v1/providers")
 public class ProviderController {
 
 	private final ProviderService providerService;
@@ -44,7 +44,7 @@ public class ProviderController {
 		return ResponseEntity.status(HttpStatus.OK).body(providers);
 	}
 
-	@GetMapping(path = "/{providerId}/ad")
+	@GetMapping(path = "/{providerId}/ads")
 	public ResponseEntity<?> listAds(@PathVariable("providerId") Integer providerId, Pageable pageable) {
 		Page<AdWithProviderStatisticsDTO> providerAds = adService.listProviderAds(providerId, pageable);
 
@@ -58,7 +58,7 @@ public class ProviderController {
 		return ResponseEntity.status(HttpStatus.OK).body(userStatistics);
 	}
 
-	@PutMapping(path = "{providerId}/ad/{adId}")
+	@PutMapping(path = "{providerId}/ads/{adId}")
 	public ResponseEntity<?> changeProviderAd(@PathVariable("providerId") Integer providerId,
 			@PathVariable("adId") Integer adId, @RequestBody Ad ad) {
 		Ad oldAd = adService.showAdByIdAndProviderId(adId, providerId).orElse(null);
@@ -73,13 +73,13 @@ public class ProviderController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(adService.updateAd(oldAd, ad));
 	}
 
-	@GetMapping("/evaluate/{providerId}/pending/evaluation")
+	@GetMapping("/evaluate/{providerId}/pending-evaluation")
 	public ResponseEntity<?> listProviderPendingEvaluations(@PathVariable Integer providerId) {
 		List<Evaluate> pendingEvaluations = evaluateService.listEvaluationsByProviderId(providerId);
 		return ResponseEntity.ok(Map.of("pendingEvaluations", pendingEvaluations));
 	}
 
-	@PutMapping("/evaluate/customer")
+	@PutMapping("/evaluate/customers")
 	public ResponseEntity<?> evaluateCustomer(@RequestBody ObjectNode objectNode) {
 		Integer idEvaluate = objectNode.get("id_evaluate").asInt();
 		Float evaluation = objectNode.get("evaluation").floatValue();

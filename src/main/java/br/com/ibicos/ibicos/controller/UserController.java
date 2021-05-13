@@ -39,7 +39,7 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@PostMapping("/signUp")
+	@PostMapping("/sign-up")
 	public ResponseEntity<?> save(@Valid @RequestBody User user) {
 		User savedUser = userService.save(user);
 
@@ -50,7 +50,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseMap);
 	}
 	
-	@GetMapping("/checkEmailInUser")
+	@GetMapping("/check-email-in-use")
 	public ResponseEntity<?> isEmailInUse(@RequestBody ObjectNode objectNode) {
 		String email = objectNode.asText("email");
 		Boolean isEmailInUse = userService.isEmailInUse(email);
@@ -75,7 +75,7 @@ public class UserController {
 		return new ResponseEntity<>(Map.of("message", "The account is now verified and you are now able to login and use it"), HttpStatus.OK);
 	}
 
-	@PostMapping("/resetPassword/request")
+	@PostMapping("/reset-password/request")
 	public ResponseEntity<?> resetPasswordRequestHandler(@RequestBody ObjectNode objectNode) {
 		String email = objectNode.get("email").asText();
 
@@ -85,13 +85,13 @@ public class UserController {
 						+ "', please check it and follow the provided instructions to reset your email!"));
 	}
 
-	@PostMapping("/resetPassword/change")
+	@PostMapping("/reset-password/change")
 	public ResponseEntity<?> changeUserPassword(@RequestBody RecoveryDTO recoveryDTO) {
 		userService.changeUserPassword(recoveryDTO.getAccountRecoveryToken(), recoveryDTO.getNewPassword());
 		return ResponseEntity.ok().body(Map.of("message", "Password successfully changed"));
 	}
 	
-	@GetMapping("api/v1/user/profile/{idUser}")
+	@GetMapping("api/v1/users/profile/{idUser}")
 	public ResponseEntity<?> showUserProfile(@PathVariable Integer idUser) {
 		User user = userService.findUserById(idUser);
 		return ResponseEntity.ok().body(
@@ -101,12 +101,12 @@ public class UserController {
 				);		
 	} 
 	
-	@PutMapping("api/v1/user/profile/update")
+	@PutMapping("api/v1/users/profile/update")
 	public ResponseEntity<?> updateUserProfile(@RequestBody User user) {
 		return ResponseEntity.ok(userService.updateUser(user));
 	}
 	
-	@PostMapping("api/v1/user/findUserByEmail")
+	@GetMapping("api/v1/users/user-by-email")
 	public ResponseEntity<?> getUserByEmail(@RequestBody ObjectNode objectNode) {
 		String email = objectNode.get("email").asText();
 		User user = userService.findUserByEmail(email);
