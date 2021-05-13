@@ -1,0 +1,29 @@
+{
+  "name": "ibicos-backend",
+  "version": "1.0.0",
+  "description": "<a href=\"https://aimeos.org/\">     <img src=\"https://i.ibb.co/4SkShF8/mstile-150x150.png\" alt=\"iBicos\" title=\"iBicos\" align=\"right\" height=\"60\" /> </a>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaikHenriqueSP/ibicos-backend.git"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaikHenriqueSP/ibicos-backend/issues"
+  },
+  "homepage": "https://github.com/MaikHenriqueSP/ibicos-backend#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "husky": "^6.0.0"
+  }
+}
