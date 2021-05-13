@@ -1,7 +1,7 @@
 <img src="https://i.ibb.co/4SkShF8/mstile-150x150.png" alt="iBicos" title="iBicos" align="right" height="60" />
 
 
-# iBicos back-end
+# iBicos - back-end
 
 
 Bem vindo, este é o repositório back-end da plataforma  iBicos. O repositório do front-end está disponível [aqui](https://github.com/Classificantes-DH/ibicos-frontend).
