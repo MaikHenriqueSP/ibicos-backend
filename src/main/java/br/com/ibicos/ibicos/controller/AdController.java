@@ -22,7 +22,7 @@ import br.com.ibicos.ibicos.entity.Ad;
 import br.com.ibicos.ibicos.service.AdService;
 
 @RestController
-@RequestMapping("/api/v1/ad")
+@RequestMapping("/api/v1/ads")
 public class AdController {
 
 	private final AdService adService;
@@ -31,13 +31,8 @@ public class AdController {
 		this.adService = adService;
 	}
 
-	@GetMapping("/list/ad")
-	public ResponseEntity<?> listAllAds(){
-		Iterable<Ad> ads = adService.listAds();
-		return ResponseEntity.ok().body(ads);
-	}
-	
-	@GetMapping("/list/ad/filter")
+
+	@GetMapping
 	public ResponseEntity<?> listAdsByFilters(
 			@RequestParam(defaultValue = "") String categoryName,
 			@RequestParam(defaultValue = "") String stateName,
@@ -50,20 +45,18 @@ public class AdController {
 		return ResponseEntity.ok(pageableAdsList);
 	}
 	
-	@PostMapping("/create")
+	@PostMapping
 	public ResponseEntity<?> createAd(@Valid @RequestBody Ad ad) {
 		Ad savedAd = adService.createAd(ad);
 		return ResponseEntity.ok(savedAd);
 	}
 	
 
-	@DeleteMapping("/ad/delete/{id}")
-	public ResponseEntity<?> deleteAd(@PathVariable Integer id) {
-		adService.deleteAdById(id);
+	@DeleteMapping("/{adId}")
+	public ResponseEntity<?> deleteAd(@PathVariable Integer adId) {
+		adService.deleteAdById(adId);
 		return ResponseEntity.ok(Map.of("message", "ad deleted"));
 	}
 
-	@Autowired
-	private AdWithProviderStatisticsMapper adWithProviderStatisticsMapper;
 
 }

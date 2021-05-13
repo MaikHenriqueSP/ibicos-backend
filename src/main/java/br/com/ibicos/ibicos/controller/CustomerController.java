@@ -31,7 +31,7 @@ public class CustomerController {
 		this.evaluateService = evaluateService;
 	}
 	
-	@GetMapping("/myNumbers/{customerId}")
+	@GetMapping("{customerId}/statistics")
 	public ResponseEntity<?> showCustomerStatistics(@PathVariable Integer customerId) {
 		
 		Statistics customerStatistics = customerService
@@ -53,7 +53,7 @@ public class CustomerController {
 					));
 	}
 	
-	@PutMapping("/evaluate/provider/confirmHiring")
+	@PutMapping("/evaluate/provider/confirm-hiring")
 	public ResponseEntity<?> evaluateProviderJobConfirmation(@RequestBody ObjectNode objectNode) {
 		Integer idEvaluate = objectNode.get("id_evaluate").asInt();
 
@@ -64,19 +64,19 @@ public class CustomerController {
 				);
 	}
 
-	@PostMapping("/ad/sendMessage")
+	@PostMapping("/ad/send-message")
 	public ResponseEntity<?> sendEmailToProvider(@RequestBody CustomerEmailToProviderDTO customerEmailToProviderDTO ) {
 		customerService.sendEmailToProvider(customerEmailToProviderDTO);
 		return ResponseEntity.ok(Map.of("message", "email successfully sent"));
 	}
 
-	@GetMapping("/evaluate/{customerId}/pending/evaluation")
+	@GetMapping("/evaluate/{customerId}/pending-evaluations")
 	public ResponseEntity<?> listCustomerPendingEvaluations(@PathVariable Integer customerId ) {
 		List<Evaluate> pendingEvaluations = evaluateService.listEvaluationsByCustomerId(customerId);
 		return ResponseEntity.ok(Map.of("pendingEvaluations", pendingEvaluations));
 	}
 
-	@DeleteMapping("/evaluate/delete/{idEvaluate}")
+	@DeleteMapping("/evaluate/{idEvaluate}")
 	public ResponseEntity<?> deletePendingEvaluation(@PathVariable Integer idEvaluate) {
 		evaluateService.deleteEvaluationById(idEvaluate);
 		return ResponseEntity.ok(Map.of("message", "pending evaluation successfully deleted"));
