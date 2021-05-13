@@ -1,0 +1,32 @@
+{
+  "name": "ibicos-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaikHenriqueSP/ibicos-backend.git"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaikHenriqueSP/ibicos-backend/issues"
+  },
+  "homepage": "https://github.com/MaikHenriqueSP/ibicos-backend#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-angular": "^12.1.4",
+    "husky": "^4.3.8"
+  },
+  "dependencies": {
+    "@commitlint/config-conventional": "^11.0.0"
+  }
+}
