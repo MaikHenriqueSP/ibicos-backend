@@ -17,14 +17,14 @@ A plataforma visa integrar pessoas prestadores de serviços autônomos com poten
 - MySQL
 
 ### Como rodar a aplicação
-Configure as seguintes variáveis de ambiente:
-`IBICOS_EMAIL_USERNAME #Usado para autenticação no servidor SMPT`
-`IBICOS_EMAIL_PASSWORD #Usado para autenticação no servidor SMPT`
-`IBICOS_SIGNING_JWT_KEY #Chave de assinatura para tokens JWT`
+Configure as seguintes variáveis de ambiente:  
+`IBICOS_EMAIL_USERNAME #Usado para autenticação no servidor SMPT`  
+`IBICOS_EMAIL_PASSWORD #Usado para autenticação no servidor SMPT`  
+`IBICOS_SIGNING_JWT_KEY #Chave de assinatura para tokens JWT`  
 
-Execute os seguintes comandos na linha comando:
-`git clone git@github.com:MaikHenriqueSP/ibicos-backend.git #Clonar repositório`
-`mvn spring-boot:run `
+Execute os seguintes comandos na linha comando:  
+`git clone git@github.com:MaikHenriqueSP/ibicos-backend.git #Clonar repositório`  
+`mvn spring-boot:run `  
 
 **Obs**: Como a aplicação faz uso de variáveis ambiente para rodar, talvez seja necessário configurar sua IDE para que consiga capturar os valores, sendo então a linha de comando a maneira mais rápida de se ter a aplicação de pé.
 
