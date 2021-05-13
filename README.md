@@ -28,7 +28,7 @@ Execute os seguintes comandos na linha comando:
 `mvn spring-boot:run `  
 
 
-**Obs**: Como a aplicação faz uso de variáveis ambiente para rodar, talvez seja necessário configurar sua IDE para que consiga capturar os valores, sendo então a linha de comando a maneira mais rápida de se ter a aplicação de pé.
+**Obs**: Como a aplicação faz uso de variáveis ambiente para rodar, talvez seja necessário configurar sua IDE para que consiga capturar os valores, sendo então a linha de comando a maneira mais rápida de se ter a aplicação rodando.
 
 ## Contribuindo
 
