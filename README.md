@@ -18,8 +18,8 @@ A plataforma visa integrar pessoas prestadores de serviços autônomos com poten
 
 ### Como rodar a aplicação
 Configure as seguintes variáveis de ambiente:  
-`IBICOS_EMAIL_USERNAME #Usado para autenticação no servidor SMPT`  
-`IBICOS_EMAIL_PASSWORD #Usado para autenticação no servidor SMPT`  
+`IBICOS_EMAIL_USERNAME #Usado para autenticação no servidor SMTP`  
+`IBICOS_EMAIL_PASSWORD #Usado para autenticação no servidor SMTP`  
 `IBICOS_SIGNING_JWT_KEY #Chave de assinatura para tokens JWT`  
 
 Execute os seguintes comandos na linha comando:  
