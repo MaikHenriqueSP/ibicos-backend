@@ -66,7 +66,9 @@ public class ProviderController {
 		
 		if (provider == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Provider with provided id not found.");
-		} else if (oldAd == null) {
+		}
+
+		if (oldAd == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ad with provided id not found.");
 		}
 		
@@ -97,11 +99,4 @@ public class ProviderController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/statistics/{providerId}/user-data")
-	public ResponseEntity<?> getProviderSelfStatistics(@PathVariable Integer providerId) {
-
-		ProviderSelfStatisticsDTO providerSelfStatistics = providerService.getProviderSelfStatisticsById(providerId);
-
-		return ResponseEntity.ok().body(Map.of("provider_statistics", providerSelfStatistics));
-	}
 }

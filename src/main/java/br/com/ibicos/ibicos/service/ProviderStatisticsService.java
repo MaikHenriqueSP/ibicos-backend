@@ -3,6 +3,8 @@ package br.com.ibicos.ibicos.service;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
+import br.com.ibicos.ibicos.exception.ResourceNotFoundException;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -70,5 +72,12 @@ public class ProviderStatisticsService {
 
 	public void save(ProviderStatistics providerStatistics) {
 		providerStatisticsRepository.save(providerStatistics);
+	}
+
+
+	public ProviderSelfStatisticsDTO getProviderSelfStatisticsById(Integer providerId) {
+		Optional<ProviderSelfStatisticsDTO> providerSelfStatistics = providerStatisticsRepository.findSelfStatisticsById(providerId);
+
+		return providerSelfStatistics.orElseThrow(() -> new ResourceNotFoundException("There is not provider with the given id"));
 	}
 }

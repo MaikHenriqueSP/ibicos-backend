@@ -148,7 +148,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler  {
 		ExceptionPayload exceptionPayload = ExceptionPayload.builder()
 				.timestamp(LocalDateTime.now())
 				.title("Resource not found")
-				.statusCode(HttpStatus.NOT_FOUND.value())
+				.statusCode(HttpStatus.BAD_REQUEST.value())
 				.description(ex.getMessage()) 
 				.build();
 		
