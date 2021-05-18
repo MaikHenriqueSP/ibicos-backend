@@ -1,17 +1,16 @@
 package br.com.ibicos.ibicos.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Data
+@EqualsAndHashCode(callSuper=true)
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder(toBuilder = true)
 public class ProviderStatistics  extends Statistics{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,5 +21,6 @@ public class ProviderStatistics  extends Statistics{
 	@OneToOne
 	@JoinColumn(name= "fk_id_service_category")
 	private ServiceCategory category;
+
 
 }

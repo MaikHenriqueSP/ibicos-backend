@@ -1,8 +1,6 @@
 package br.com.ibicos.ibicos.controller;
 
 import br.com.ibicos.ibicos.entity.CustomerStatistics;
-import br.com.ibicos.ibicos.entity.Statistics;
-import br.com.ibicos.ibicos.service.CustomerService;
 import br.com.ibicos.ibicos.service.CustomerStatisticsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +22,10 @@ public class CustomerStatisticsController {
 
     @GetMapping("/{customerId}")
     public ResponseEntity<?> getCustomerStatistics(@PathVariable Integer customerId) {
-
-        Statistics customerStatistics = customerStatiticsService
+        System.out.println(customerId);
+        CustomerStatistics customerStatistics = customerStatiticsService
                 .getCustomerStatistics(customerId);
+        System.out.println(customerStatistics);
 
         return ResponseEntity.ok()
                 .body(Map.of("customer-statistics", customerStatistics));

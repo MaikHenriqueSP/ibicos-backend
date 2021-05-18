@@ -1,20 +1,21 @@
 package br.com.ibicos.ibicos.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Data
+@EqualsAndHashCode(callSuper=true)
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
+@SuperBuilder(toBuilder = true)
+@PrimaryKeyJoinColumn(name="fk_id_statistics")
 public class CustomerStatistics extends Statistics {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_customer_statistics")
     private Integer id;
+
 }

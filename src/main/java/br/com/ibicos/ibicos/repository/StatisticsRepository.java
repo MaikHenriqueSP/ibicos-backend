@@ -31,6 +31,6 @@ public interface StatisticsRepository extends JpaRepository<Statistics, Integer>
 
 	@Query(value = "SELECT new br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO(AVG(st.evaluation), " +
 			"SUM(st.evaluationsCounter), SUM(st.hiredServicesCounter), SUM(st.messagesCounter)) " +
-			"FROM Statistics st JOIN ProviderStatistics pr ON st.id = pr.statistics.id WHERE st.user.id = ?1 GROUP BY st.user")
+			"FROM Statistics st JOIN CustomerStatistics cs ON st.user.id = cs.user.id WHERE st.user.id = ?1 GROUP BY st.user")
 	Optional<CustomerSelfStatisticsDTO> findSelfCustomerStatisticsById(Integer customerId);
 }
