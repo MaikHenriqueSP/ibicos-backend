@@ -30,10 +30,9 @@ public class Statistics {
 	private Integer hiredServicesCounter;
 	private Integer messagesCounter;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="fk_id_user")
 	@ToString.Exclude
 	@JsonIgnore
 	private User user;
-
 }
