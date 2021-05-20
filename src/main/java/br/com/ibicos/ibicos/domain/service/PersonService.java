@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.service;
+package br.com.ibicos.ibicos.domain.service;
 
 import br.com.ibicos.ibicos.domain.entity.Address;
 import br.com.ibicos.ibicos.domain.entity.Person;

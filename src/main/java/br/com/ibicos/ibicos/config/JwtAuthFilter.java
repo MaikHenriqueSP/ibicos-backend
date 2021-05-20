@@ -1,7 +1,7 @@
 package br.com.ibicos.ibicos.config;
 
-import br.com.ibicos.ibicos.service.JwtService;
-import br.com.ibicos.ibicos.service.UserDetailsServiceImpl;
+import br.com.ibicos.ibicos.domain.service.JwtService;
+import br.com.ibicos.ibicos.domain.service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

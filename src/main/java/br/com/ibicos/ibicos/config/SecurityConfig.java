@@ -1,7 +1,7 @@
 package br.com.ibicos.ibicos.config;
 
-import br.com.ibicos.ibicos.service.JwtService;
-import br.com.ibicos.ibicos.service.UserDetailsServiceImpl;
+import br.com.ibicos.ibicos.domain.service.JwtService;
+import br.com.ibicos.ibicos.domain.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

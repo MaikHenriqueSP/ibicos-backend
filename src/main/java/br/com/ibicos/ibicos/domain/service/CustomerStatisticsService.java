@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.service;
+package br.com.ibicos.ibicos.domain.service;
 
 import br.com.ibicos.ibicos.domain.entity.CustomerStatistics;
 import br.com.ibicos.ibicos.domain.exception.ResourceNotFoundException;
