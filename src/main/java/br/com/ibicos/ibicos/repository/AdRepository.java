@@ -1,6 +1,6 @@
 package br.com.ibicos.ibicos.repository;
 
-import br.com.ibicos.ibicos.entity.Ad;
+import br.com.ibicos.ibicos.domain.entity.Ad;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

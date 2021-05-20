@@ -1,7 +1,7 @@
 package br.com.ibicos.ibicos.mapper;
 
 import br.com.ibicos.ibicos.dto.ProviderStatisticsDTO;
-import br.com.ibicos.ibicos.entity.ProviderStatistics;
+import br.com.ibicos.ibicos.domain.entity.ProviderStatistics;
 import org.mapstruct.Mapper;
 
 @Mapper

@@ -1,6 +1,6 @@
-package br.com.ibicos.ibicos.controller;
+package br.com.ibicos.ibicos.api.controller;
 
-import br.com.ibicos.ibicos.entity.CustomerStatistics;
+import br.com.ibicos.ibicos.domain.entity.CustomerStatistics;
 import br.com.ibicos.ibicos.service.CustomerStatisticsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

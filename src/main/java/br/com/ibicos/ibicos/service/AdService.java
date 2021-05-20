@@ -1,9 +1,9 @@
 package br.com.ibicos.ibicos.service;
 
 import br.com.ibicos.ibicos.dto.AdDTO;
-import br.com.ibicos.ibicos.entity.Ad;
-import br.com.ibicos.ibicos.entity.ServiceCategory;
-import br.com.ibicos.ibicos.entity.User;
+import br.com.ibicos.ibicos.domain.entity.Ad;
+import br.com.ibicos.ibicos.domain.entity.ServiceCategory;
+import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.enums.AdSortByValues;
 import br.com.ibicos.ibicos.mapper.AdMapper;
 import br.com.ibicos.ibicos.repository.AdRepository;

@@ -1,6 +1,6 @@
 package br.com.ibicos.ibicos.repository;
 
-import br.com.ibicos.ibicos.entity.Evaluate;
+import br.com.ibicos.ibicos.domain.entity.Evaluate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

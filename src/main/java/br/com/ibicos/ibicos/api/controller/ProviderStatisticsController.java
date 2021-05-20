@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.controller;
+package br.com.ibicos.ibicos.api.controller;
 
 import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
 import br.com.ibicos.ibicos.service.ProviderStatisticsService;

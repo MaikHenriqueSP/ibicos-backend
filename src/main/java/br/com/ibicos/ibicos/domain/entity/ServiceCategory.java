@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.entity;
+package br.com.ibicos.ibicos.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package br.com.ibicos.ibicos.service;
 
-import br.com.ibicos.ibicos.entity.Address;
+import br.com.ibicos.ibicos.domain.entity.Address;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,7 +1,7 @@
 package br.com.ibicos.ibicos.repository;
 
 import br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO;
-import br.com.ibicos.ibicos.entity.Statistics;
+import br.com.ibicos.ibicos.domain.entity.Statistics;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

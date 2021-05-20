@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.entity;
+package br.com.ibicos.ibicos.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

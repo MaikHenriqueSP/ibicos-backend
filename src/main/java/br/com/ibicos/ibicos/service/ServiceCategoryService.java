@@ -1,7 +1,7 @@
 package br.com.ibicos.ibicos.service;
 
 import br.com.ibicos.ibicos.dto.ServiceCategoryDTO;
-import br.com.ibicos.ibicos.entity.ServiceCategory;
+import br.com.ibicos.ibicos.domain.entity.ServiceCategory;
 import br.com.ibicos.ibicos.repository.ServiceCategoryRepository;
 import org.springframework.stereotype.Service;
 

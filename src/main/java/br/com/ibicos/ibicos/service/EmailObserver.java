@@ -2,7 +2,7 @@ package br.com.ibicos.ibicos.service;
 
 import br.com.ibicos.ibicos.dto.EmailDataDTO;
 import br.com.ibicos.ibicos.email.EmailService;
-import br.com.ibicos.ibicos.entity.User;
+import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.event.PasswordResetRequestEvent;
 import br.com.ibicos.ibicos.event.SignedUpUserEvent;
 import org.springframework.context.event.EventListener;

@@ -1,6 +1,6 @@
-package br.com.ibicos.ibicos.controller;
+package br.com.ibicos.ibicos.api.controller;
 
-import br.com.ibicos.ibicos.entity.ServiceCategory;
+import br.com.ibicos.ibicos.domain.entity.ServiceCategory;
 import br.com.ibicos.ibicos.service.ServiceCategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

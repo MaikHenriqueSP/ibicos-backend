@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.entity;
+package br.com.ibicos.ibicos.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;

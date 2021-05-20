@@ -1,7 +1,7 @@
 package br.com.ibicos.ibicos.service;
 
-import br.com.ibicos.ibicos.entity.Person;
-import br.com.ibicos.ibicos.entity.User;
+import br.com.ibicos.ibicos.domain.entity.Person;
+import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.event.PasswordResetRequestEvent;
 import br.com.ibicos.ibicos.exception.*;
 import br.com.ibicos.ibicos.repository.UserRepository;

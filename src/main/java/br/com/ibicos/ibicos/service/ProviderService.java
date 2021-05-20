@@ -1,7 +1,7 @@
 package br.com.ibicos.ibicos.service;
 
 import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
-import br.com.ibicos.ibicos.entity.User;
+import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.repository.ProviderStatisticsRepository;
 import br.com.ibicos.ibicos.repository.UserRepository;
 import org.springframework.stereotype.Service;

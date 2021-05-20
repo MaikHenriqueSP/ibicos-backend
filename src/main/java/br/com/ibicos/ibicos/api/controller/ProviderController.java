@@ -1,11 +1,11 @@
-package br.com.ibicos.ibicos.controller;
+package br.com.ibicos.ibicos.api.controller;
 
 import br.com.ibicos.ibicos.dto.AdDTO;
 import br.com.ibicos.ibicos.dto.IncrementViewsRequestDTO;
-import br.com.ibicos.ibicos.entity.Ad;
-import br.com.ibicos.ibicos.entity.Evaluate;
-import br.com.ibicos.ibicos.entity.Statistics;
-import br.com.ibicos.ibicos.entity.User;
+import br.com.ibicos.ibicos.domain.entity.Ad;
+import br.com.ibicos.ibicos.domain.entity.Evaluate;
+import br.com.ibicos.ibicos.domain.entity.Statistics;
+import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.service.AdService;
 import br.com.ibicos.ibicos.service.EvaluateService;
 import br.com.ibicos.ibicos.service.ProviderService;

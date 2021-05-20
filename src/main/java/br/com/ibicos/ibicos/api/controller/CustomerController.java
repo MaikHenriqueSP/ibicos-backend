@@ -1,8 +1,8 @@
-package br.com.ibicos.ibicos.controller;
+package br.com.ibicos.ibicos.api.controller;
 
 import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
 import br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO;
-import br.com.ibicos.ibicos.entity.Evaluate;
+import br.com.ibicos.ibicos.domain.entity.Evaluate;
 import br.com.ibicos.ibicos.service.CustomerService;
 import br.com.ibicos.ibicos.service.EvaluateService;
 import com.fasterxml.jackson.databind.node.ObjectNode;

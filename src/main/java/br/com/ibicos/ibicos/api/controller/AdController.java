@@ -1,7 +1,7 @@
-package br.com.ibicos.ibicos.controller;
+package br.com.ibicos.ibicos.api.controller;
 
 import br.com.ibicos.ibicos.dto.AdDTO;
-import br.com.ibicos.ibicos.entity.Ad;
+import br.com.ibicos.ibicos.domain.entity.Ad;
 import br.com.ibicos.ibicos.service.AdService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

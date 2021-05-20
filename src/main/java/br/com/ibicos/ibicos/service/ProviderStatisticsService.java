@@ -1,10 +1,10 @@
 package br.com.ibicos.ibicos.service;
 
 import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
-import br.com.ibicos.ibicos.entity.ProviderStatistics;
-import br.com.ibicos.ibicos.entity.ServiceCategory;
-import br.com.ibicos.ibicos.entity.Statistics;
-import br.com.ibicos.ibicos.entity.User;
+import br.com.ibicos.ibicos.domain.entity.ProviderStatistics;
+import br.com.ibicos.ibicos.domain.entity.ServiceCategory;
+import br.com.ibicos.ibicos.domain.entity.Statistics;
+import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.exception.ResourceNotFoundException;
 import br.com.ibicos.ibicos.repository.ProviderStatisticsRepository;
 import org.springframework.stereotype.Service;
