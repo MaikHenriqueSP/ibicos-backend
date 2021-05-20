@@ -6,7 +6,7 @@ import br.com.ibicos.ibicos.dto.EmailDataDTO;
 import br.com.ibicos.ibicos.email.EmailService;
 import br.com.ibicos.ibicos.domain.entity.Statistics;
 import br.com.ibicos.ibicos.domain.entity.User;
-import br.com.ibicos.ibicos.repository.StatisticsRepository;
+import br.com.ibicos.ibicos.domain.repository.StatisticsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 

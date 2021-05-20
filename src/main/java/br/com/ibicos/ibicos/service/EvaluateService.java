@@ -6,7 +6,7 @@ import br.com.ibicos.ibicos.dto.ServiceCategoryDTO;
 import br.com.ibicos.ibicos.dto.UserDTO;
 import br.com.ibicos.ibicos.domain.entity.*;
 import br.com.ibicos.ibicos.domain.exception.ResourceNotFoundException;
-import br.com.ibicos.ibicos.repository.EvaluateRepository;
+import br.com.ibicos.ibicos.domain.repository.EvaluateRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

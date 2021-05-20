@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.repository;
+package br.com.ibicos.ibicos.domain.repository;
 
 import br.com.ibicos.ibicos.domain.entity.Person;
 import org.springframework.data.jpa.repository.JpaRepository;

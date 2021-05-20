@@ -2,7 +2,7 @@ package br.com.ibicos.ibicos.service;
 
 import br.com.ibicos.ibicos.dto.CredentialsDTO;
 import br.com.ibicos.ibicos.domain.entity.User;
-import br.com.ibicos.ibicos.repository.UserRepository;
+import br.com.ibicos.ibicos.domain.repository.UserRepository;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;

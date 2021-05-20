@@ -4,7 +4,7 @@ import br.com.ibicos.ibicos.domain.entity.Person;
 import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.domain.event.PasswordResetRequestEvent;
 import br.com.ibicos.ibicos.domain.exception.*;
-import br.com.ibicos.ibicos.repository.UserRepository;
+import br.com.ibicos.ibicos.domain.repository.UserRepository;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;

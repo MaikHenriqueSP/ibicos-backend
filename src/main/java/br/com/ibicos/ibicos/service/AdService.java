@@ -6,7 +6,7 @@ import br.com.ibicos.ibicos.domain.entity.ServiceCategory;
 import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.enums.AdSortByValues;
 import br.com.ibicos.ibicos.mapper.AdMapper;
-import br.com.ibicos.ibicos.repository.AdRepository;
+import br.com.ibicos.ibicos.domain.repository.AdRepository;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
