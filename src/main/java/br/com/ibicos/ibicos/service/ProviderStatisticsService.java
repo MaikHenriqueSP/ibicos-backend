@@ -5,7 +5,7 @@ import br.com.ibicos.ibicos.domain.entity.ProviderStatistics;
 import br.com.ibicos.ibicos.domain.entity.ServiceCategory;
 import br.com.ibicos.ibicos.domain.entity.Statistics;
 import br.com.ibicos.ibicos.domain.entity.User;
-import br.com.ibicos.ibicos.exception.ResourceNotFoundException;
+import br.com.ibicos.ibicos.domain.exception.ResourceNotFoundException;
 import br.com.ibicos.ibicos.repository.ProviderStatisticsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

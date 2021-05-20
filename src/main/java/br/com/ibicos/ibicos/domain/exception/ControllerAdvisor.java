@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.exception;
+package br.com.ibicos.ibicos.domain.exception;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

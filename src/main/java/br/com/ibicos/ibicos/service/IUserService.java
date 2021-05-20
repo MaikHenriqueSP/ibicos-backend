@@ -1,7 +1,7 @@
 package br.com.ibicos.ibicos.service;
 
 import br.com.ibicos.ibicos.domain.entity.User;
-import br.com.ibicos.ibicos.exception.UserAlreadyExistsException;
+import br.com.ibicos.ibicos.domain.exception.UserAlreadyExistsException;
 
 public interface IUserService {
 

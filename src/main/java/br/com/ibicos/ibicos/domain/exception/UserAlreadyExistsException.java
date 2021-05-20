@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.exception;
+package br.com.ibicos.ibicos.domain.exception;
 
 public class UserAlreadyExistsException extends RuntimeException {
 

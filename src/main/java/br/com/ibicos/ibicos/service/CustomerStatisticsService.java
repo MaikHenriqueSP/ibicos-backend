@@ -1,7 +1,7 @@
 package br.com.ibicos.ibicos.service;
 
 import br.com.ibicos.ibicos.domain.entity.CustomerStatistics;
-import br.com.ibicos.ibicos.exception.ResourceNotFoundException;
+import br.com.ibicos.ibicos.domain.exception.ResourceNotFoundException;
 import br.com.ibicos.ibicos.repository.CustomerStatisticsRepository;
 import org.springframework.stereotype.Service;
 
