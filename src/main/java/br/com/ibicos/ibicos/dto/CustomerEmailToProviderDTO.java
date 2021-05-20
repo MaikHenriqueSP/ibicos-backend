@@ -1,7 +1,5 @@
 package br.com.ibicos.ibicos.dto;
 
-import br.com.ibicos.ibicos.entity.ServiceCategory;
-import br.com.ibicos.ibicos.entity.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

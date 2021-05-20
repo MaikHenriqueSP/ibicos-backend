@@ -1,19 +1,17 @@
 package br.com.ibicos.ibicos.service;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
 import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
 import br.com.ibicos.ibicos.dto.IncrementViewsRequestDTO;
 import br.com.ibicos.ibicos.dto.ServiceCategoryDTO;
 import br.com.ibicos.ibicos.dto.UserDTO;
 import br.com.ibicos.ibicos.entity.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import br.com.ibicos.ibicos.exception.ResourceNotFoundException;
 import br.com.ibicos.ibicos.repository.EvaluateRepository;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EvaluateService {

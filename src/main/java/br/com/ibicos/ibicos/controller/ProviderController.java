@@ -1,26 +1,24 @@
 package br.com.ibicos.ibicos.controller;
 
-import java.util.List;
-import java.util.Map;
-
 import br.com.ibicos.ibicos.dto.AdDTO;
-import br.com.ibicos.ibicos.dto.AdWithProviderStatisticsDTO;
 import br.com.ibicos.ibicos.dto.IncrementViewsRequestDTO;
-import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
+import br.com.ibicos.ibicos.entity.Ad;
 import br.com.ibicos.ibicos.entity.Evaluate;
-import br.com.ibicos.ibicos.service.*;
+import br.com.ibicos.ibicos.entity.Statistics;
+import br.com.ibicos.ibicos.entity.User;
+import br.com.ibicos.ibicos.service.AdService;
+import br.com.ibicos.ibicos.service.EvaluateService;
+import br.com.ibicos.ibicos.service.ProviderService;
+import br.com.ibicos.ibicos.service.StatisticsService;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import br.com.ibicos.ibicos.entity.Ad;
-import br.com.ibicos.ibicos.entity.Statistics;
-import br.com.ibicos.ibicos.entity.User;
-import br.com.ibicos.ibicos.repository.AdRepository;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/providers")

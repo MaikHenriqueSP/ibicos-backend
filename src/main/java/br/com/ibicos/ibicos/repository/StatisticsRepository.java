@@ -1,16 +1,14 @@
 package br.com.ibicos.ibicos.repository;
 
-import java.util.Optional;
-
 import br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO;
-import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
+import br.com.ibicos.ibicos.entity.Statistics;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import br.com.ibicos.ibicos.entity.Statistics;
+import java.util.Optional;
 
 @Repository
 public interface StatisticsRepository extends JpaRepository<Statistics, Integer> {

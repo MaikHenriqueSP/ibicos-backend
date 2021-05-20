@@ -2,7 +2,6 @@ package br.com.ibicos.ibicos.email;
 
 import br.com.ibicos.ibicos.dto.EmailDataDTO;
 import br.com.ibicos.ibicos.exception.EmailSendingException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;

@@ -1,20 +1,18 @@
 package br.com.ibicos.ibicos.service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
+import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
 import br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO;
 import br.com.ibicos.ibicos.dto.EmailDataDTO;
+import br.com.ibicos.ibicos.email.EmailService;
+import br.com.ibicos.ibicos.entity.Statistics;
 import br.com.ibicos.ibicos.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.ibicos.ibicos.repository.StatisticsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
-import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
-import br.com.ibicos.ibicos.email.EmailService;
-import br.com.ibicos.ibicos.entity.Statistics;
-import br.com.ibicos.ibicos.repository.StatisticsRepository;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class CustomerService {

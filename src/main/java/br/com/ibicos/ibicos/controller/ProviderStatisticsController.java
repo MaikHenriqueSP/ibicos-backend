@@ -1,12 +1,8 @@
 package br.com.ibicos.ibicos.controller;
 
 import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
-import br.com.ibicos.ibicos.entity.Statistics;
 import br.com.ibicos.ibicos.service.ProviderStatisticsService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

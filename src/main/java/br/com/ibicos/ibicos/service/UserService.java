@@ -1,15 +1,11 @@
 package br.com.ibicos.ibicos.service;
 
-import br.com.ibicos.ibicos.dto.EmailDataDTO;
-import br.com.ibicos.ibicos.email.EmailService;
-import br.com.ibicos.ibicos.entity.Address;
 import br.com.ibicos.ibicos.entity.Person;
 import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.event.PasswordResetRequestEvent;
 import br.com.ibicos.ibicos.exception.*;
 import br.com.ibicos.ibicos.repository.UserRepository;
 import net.bytebuddy.utility.RandomString;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.DisabledException;
@@ -18,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
 import java.util.Optional;
 
 @Service

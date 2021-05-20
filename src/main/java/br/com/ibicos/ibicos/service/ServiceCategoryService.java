@@ -1,13 +1,11 @@
 package br.com.ibicos.ibicos.service;
 
-import java.util.List;
-
 import br.com.ibicos.ibicos.dto.ServiceCategoryDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import br.com.ibicos.ibicos.entity.ServiceCategory;
 import br.com.ibicos.ibicos.repository.ServiceCategoryRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ServiceCategoryService {

@@ -1,6 +1,8 @@
 package br.com.ibicos.ibicos.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.ibicos.ibicos.dto.CredentialsDTO;
+import br.com.ibicos.ibicos.entity.User;
+import br.com.ibicos.ibicos.repository.UserRepository;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,10 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import br.com.ibicos.ibicos.dto.CredentialsDTO;
-import br.com.ibicos.ibicos.entity.User;
-import br.com.ibicos.ibicos.repository.UserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

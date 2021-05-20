@@ -1,14 +1,12 @@
 package br.com.ibicos.ibicos.entity;
 
-import java.time.LocalDate;
-
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import lombok.*;
+
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
 @Entity

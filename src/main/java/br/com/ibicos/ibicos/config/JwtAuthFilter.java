@@ -1,23 +1,21 @@
 package br.com.ibicos.ibicos.config;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import br.com.ibicos.ibicos.service.JwtService;
+import br.com.ibicos.ibicos.service.UserDetailsServiceImpl;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import br.com.ibicos.ibicos.service.JwtService;
-import br.com.ibicos.ibicos.service.UserDetailsServiceImpl;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
 
 @AllArgsConstructor
 @NoArgsConstructor

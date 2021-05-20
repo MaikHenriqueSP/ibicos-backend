@@ -1,22 +1,17 @@
 package br.com.ibicos.ibicos.controller;
 
-import java.util.List;
-import java.util.Map;
-
+import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
 import br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO;
-import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
 import br.com.ibicos.ibicos.entity.Evaluate;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.ibicos.ibicos.service.CustomerService;
+import br.com.ibicos.ibicos.service.EvaluateService;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
-import br.com.ibicos.ibicos.entity.Statistics;
-import br.com.ibicos.ibicos.service.CustomerService;
-import br.com.ibicos.ibicos.service.EvaluateService;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/customer")

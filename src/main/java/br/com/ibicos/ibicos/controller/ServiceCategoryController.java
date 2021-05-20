@@ -1,16 +1,14 @@
 package br.com.ibicos.ibicos.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.ibicos.ibicos.entity.ServiceCategory;
+import br.com.ibicos.ibicos.service.ServiceCategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ibicos.ibicos.entity.ServiceCategory;
-import br.com.ibicos.ibicos.service.ServiceCategoryService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/service-categories")
