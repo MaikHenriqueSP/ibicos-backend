@@ -3,6 +3,7 @@ package br.com.ibicos.ibicos.domain.service;
 import br.com.ibicos.ibicos.domain.entity.Statistics;
 import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.domain.repository.StatisticsRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,13 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class StatisticsService {
 
 	private final StatisticsRepository statisticsRepository;
-
-	public StatisticsService(StatisticsRepository statisticsRepository) {
-		this.statisticsRepository = statisticsRepository;
-	}
 
 	public List<Statistics> listStatistics() {
 		return statisticsRepository.findAll();

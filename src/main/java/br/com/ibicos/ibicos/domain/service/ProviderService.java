@@ -4,21 +4,18 @@ import br.com.ibicos.ibicos.api.dto.ProviderSelfStatisticsDTO;
 import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.domain.repository.ProviderStatisticsRepository;
 import br.com.ibicos.ibicos.domain.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class ProviderService {
 
 	private final UserRepository userRepository;
 	private final ProviderStatisticsRepository providerStatisticsRepository;
-
-	public ProviderService(UserRepository userRepository, ProviderStatisticsRepository providerStatisticsRepository) {
-		this.userRepository = userRepository;
-		this.providerStatisticsRepository = providerStatisticsRepository;
-	}
 
 	public List<User> listProviders() {
 		return userRepository.findAll();

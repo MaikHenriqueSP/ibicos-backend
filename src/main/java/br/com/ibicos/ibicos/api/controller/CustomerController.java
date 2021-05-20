@@ -6,6 +6,7 @@ import br.com.ibicos.ibicos.domain.entity.Evaluate;
 import br.com.ibicos.ibicos.domain.service.CustomerService;
 import br.com.ibicos.ibicos.domain.service.EvaluateService;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +16,11 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/customer")
+@AllArgsConstructor
 public class CustomerController {
 
 	private final CustomerService customerService;
-
 	private final EvaluateService evaluateService;
-
-	public CustomerController(CustomerService customerService, EvaluateService evaluateService) {
-		this.customerService = customerService;
-		this.evaluateService = evaluateService;
-	}
-	
 
 	@PutMapping("/evaluate/provider")
 	public ResponseEntity<?> evaluateProvider(@RequestBody ObjectNode objectNode) {

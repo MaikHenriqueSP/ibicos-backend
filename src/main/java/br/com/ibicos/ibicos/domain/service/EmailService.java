@@ -2,6 +2,7 @@ package br.com.ibicos.ibicos.domain.service;
 
 import br.com.ibicos.ibicos.api.dto.EmailDataDTO;
 import br.com.ibicos.ibicos.domain.exception.EmailSendingException;
+import lombok.AllArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -16,15 +17,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Service
+@AllArgsConstructor
 public class EmailService {
 
 	private final JavaMailSender javaMailSender;
 	private final SpringTemplateEngine springTemplateEngine;
-
-	public EmailService(JavaMailSender javaMailSender, SpringTemplateEngine springTemplateEngine) {
-		this.javaMailSender = javaMailSender;
-		this.springTemplateEngine = springTemplateEngine;
-	}
 
 	@Async
 	public void sendEmail(EmailDataDTO emailData, Map<String, Object> contextEmailMapVariables) {

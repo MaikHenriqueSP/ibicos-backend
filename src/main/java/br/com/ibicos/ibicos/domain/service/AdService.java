@@ -7,6 +7,7 @@ import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.domain.sort.AdValues;
 import br.com.ibicos.ibicos.api.mapper.AdMapper;
 import br.com.ibicos.ibicos.domain.repository.AdRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,17 +18,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class AdService {
 
 	private final AdRepository adRepository;
 	private final ProviderStatisticsService providerStatisticsService;
 	private final AdMapper adMapper;
-
-	public AdService(AdRepository adRepository, ProviderStatisticsService providerStatisticsService, AdMapper adMapper) {
-		this.adRepository = adRepository;
-		this.providerStatisticsService = providerStatisticsService;
-		this.adMapper = adMapper;
-	}
 
 	public Page<AdDTO> listProviderAds(Integer providerId, Pageable pageable) {
 		Page<Ad> adViews = adRepository.findByUserId(providerId, pageable);

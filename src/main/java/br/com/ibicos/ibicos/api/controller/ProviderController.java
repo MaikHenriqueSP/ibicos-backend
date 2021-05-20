@@ -11,6 +11,7 @@ import br.com.ibicos.ibicos.domain.service.EvaluateService;
 import br.com.ibicos.ibicos.domain.service.ProviderService;
 import br.com.ibicos.ibicos.domain.service.StatisticsService;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -22,19 +23,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/providers")
+@AllArgsConstructor
 public class ProviderController {
 
 	private final ProviderService providerService;
 	private final StatisticsService statisticsService;
 	private final AdService adService;
 	private final EvaluateService evaluateService;
-
-	public ProviderController(ProviderService providerService, StatisticsService statisticsService, AdService adService, EvaluateService evaluateService) {
-		this.providerService = providerService;
-		this.statisticsService = statisticsService;
-		this.adService = adService;
-		this.evaluateService = evaluateService;
-	}
 
 	@GetMapping
 	public ResponseEntity<?> listProviders() {

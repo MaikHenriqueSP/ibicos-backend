@@ -6,6 +6,7 @@ import br.com.ibicos.ibicos.api.dto.EmailDataDTO;
 import br.com.ibicos.ibicos.domain.entity.Statistics;
 import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.domain.repository.StatisticsRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class CustomerService {
 
@@ -20,13 +22,6 @@ public class CustomerService {
 	private final EmailService emailService;
 	private final UserService userService;
 	private final EvaluateService evaluateService;
-
-	public CustomerService(StatisticsRepository statisticsRepository, EmailService emailService, UserService userService, EvaluateService evaluateService) {
-		this.statisticsRepository = statisticsRepository;
-		this.emailService = emailService;
-		this.userService = userService;
-		this.evaluateService = evaluateService;
-	}
 
 	public Statistics showCustomerStatistics(Integer customerId) {
 		Optional<Statistics> optionalStatistic = statisticsRepository

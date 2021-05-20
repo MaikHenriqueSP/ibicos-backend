@@ -3,6 +3,7 @@ package br.com.ibicos.ibicos.api.controller;
 import br.com.ibicos.ibicos.api.dto.AdDTO;
 import br.com.ibicos.ibicos.domain.entity.Ad;
 import br.com.ibicos.ibicos.domain.service.AdService;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,14 +13,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/ads")
+@AllArgsConstructor
 public class AdController {
 
 	private final AdService adService;
-
-	public AdController(AdService adService) {
-		this.adService = adService;
-	}
-
 
 	@GetMapping
 	public ResponseEntity<?> listAdsByFilters(

@@ -7,6 +7,7 @@ import br.com.ibicos.ibicos.domain.entity.Statistics;
 import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.domain.exception.ResourceNotFoundException;
 import br.com.ibicos.ibicos.domain.repository.ProviderStatisticsRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,13 +15,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class ProviderStatisticsService {
 
 	private final ProviderStatisticsRepository providerStatisticsRepository;
-
-	public ProviderStatisticsService(ProviderStatisticsRepository providerStatisticsRepository) {
-		this.providerStatisticsRepository = providerStatisticsRepository;
-	}
 
 	public List<ProviderStatistics> listProviderStatistics() {
 		return providerStatisticsRepository.findAll();

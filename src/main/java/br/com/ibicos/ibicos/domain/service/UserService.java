@@ -5,6 +5,7 @@ import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.domain.event.PasswordResetRequestEvent;
 import br.com.ibicos.ibicos.domain.exception.*;
 import br.com.ibicos.ibicos.domain.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class UserService implements IUserService {
 
 	private final UserRepository userRepository;
@@ -24,15 +26,6 @@ public class UserService implements IUserService {
 	private final StatisticsService statisticsService;
 	private final ApplicationEventPublisher applicationEventPublisher;
 	private final PersonService personService;
-
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, StatisticsService statisticsService,
-					   ApplicationEventPublisher applicationEventPublisher, PersonService personService) {
-		this.userRepository = userRepository;
-		this.passwordEncoder = passwordEncoder;
-		this.statisticsService = statisticsService;
-		this.applicationEventPublisher = applicationEventPublisher;
-		this.personService = personService;
-	}
 
 	private void encodeUserPassword(User user) {
 		String encodedPassword = passwordEncoder.encode(user.getPasswordUser());

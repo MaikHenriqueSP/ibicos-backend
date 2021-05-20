@@ -7,6 +7,7 @@ import br.com.ibicos.ibicos.domain.service.IUserService;
 import br.com.ibicos.ibicos.domain.service.JwtService;
 import br.com.ibicos.ibicos.domain.service.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +17,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping
+@AllArgsConstructor
 public class UserController {
 
 	private final UserDetailsServiceImpl userDetailsServiceImpl;
 	private final JwtService jwtService;
 	private final IUserService userService;
-
-	public UserController(UserDetailsServiceImpl userDetailsServiceImpl, JwtService jwtService, IUserService userService) {
-		this.userDetailsServiceImpl = userDetailsServiceImpl;
-		this.jwtService = jwtService;
-		this.userService = userService;
-	}
 
 	@PostMapping("/sign-up")
 	public ResponseEntity<?> save(@Valid @RequestBody User user) {

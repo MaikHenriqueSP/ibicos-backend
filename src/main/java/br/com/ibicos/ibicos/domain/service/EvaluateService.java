@@ -7,6 +7,7 @@ import br.com.ibicos.ibicos.api.dto.UserDTO;
 import br.com.ibicos.ibicos.domain.entity.*;
 import br.com.ibicos.ibicos.domain.exception.ResourceNotFoundException;
 import br.com.ibicos.ibicos.domain.repository.EvaluateRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,19 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class EvaluateService {
 
 	private final EvaluateRepository evaluateRepository;
 	private final StatisticsService statisticsService;
 	private final ServiceCategoryService serviceCategoryService;
 	private final ProviderStatisticsService providerStatisticsService;
-
-	public EvaluateService(EvaluateRepository evaluateRepository, StatisticsService statisticsService, ServiceCategoryService serviceCategoryService, ProviderStatisticsService providerStatisticsService) {
-		this.evaluateRepository = evaluateRepository;
-		this.statisticsService = statisticsService;
-		this.serviceCategoryService = serviceCategoryService;
-		this.providerStatisticsService = providerStatisticsService;
-	}
 
 	private Evaluate findEvaluateStatisticsByIdEvaluateOrElseThrowRuntimeException(Integer idEvaluate) {
 		Optional<Evaluate> evaluateOptional = evaluateRepository.findById(idEvaluate);
