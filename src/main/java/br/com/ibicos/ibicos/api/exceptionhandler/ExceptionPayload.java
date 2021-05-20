@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.domain.exception;
+package br.com.ibicos.ibicos.api.exceptionhandler;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;

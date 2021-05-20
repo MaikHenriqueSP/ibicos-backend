@@ -1,5 +1,6 @@
-package br.com.ibicos.ibicos.domain.exception;
+package br.com.ibicos.ibicos.api.exceptionhandler;
 
+import br.com.ibicos.ibicos.domain.exception.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
