@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.config;
+package br.com.ibicos.ibicos.core.swagger;
 
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;

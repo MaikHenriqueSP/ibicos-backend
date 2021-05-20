@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.config;
+package br.com.ibicos.ibicos.core.security;
 
 import br.com.ibicos.ibicos.domain.service.JwtService;
 import br.com.ibicos.ibicos.domain.service.UserDetailsServiceImpl;

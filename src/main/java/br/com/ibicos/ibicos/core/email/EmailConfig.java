@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.config;
+package br.com.ibicos.ibicos.core.email;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
