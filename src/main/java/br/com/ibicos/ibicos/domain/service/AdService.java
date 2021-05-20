@@ -4,7 +4,7 @@ import br.com.ibicos.ibicos.api.dto.AdDTO;
 import br.com.ibicos.ibicos.domain.entity.Ad;
 import br.com.ibicos.ibicos.domain.entity.ServiceCategory;
 import br.com.ibicos.ibicos.domain.entity.User;
-import br.com.ibicos.ibicos.enums.AdSortByValues;
+import br.com.ibicos.ibicos.domain.sort.AdValues;
 import br.com.ibicos.ibicos.api.mapper.AdMapper;
 import br.com.ibicos.ibicos.domain.repository.AdRepository;
 import org.springframework.data.domain.*;
@@ -77,7 +77,7 @@ public class AdService {
 	}
 
 	private boolean isSortFieldNameValid(String sortByFieldName) {
-		return Arrays.stream(AdSortByValues.values()).anyMatch(AdSortEnum -> AdSortEnum.label.equals(sortByFieldName));
+		return Arrays.stream(AdValues.values()).anyMatch(AdSortEnum -> AdSortEnum.label.equals(sortByFieldName));
 	}
 
 	private List<AdDTO> getAdWithProviderStatisticsDTOS(List<Ad> ads) {

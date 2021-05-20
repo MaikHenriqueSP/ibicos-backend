@@ -1,12 +1,12 @@
-package br.com.ibicos.ibicos.enums;
+package br.com.ibicos.ibicos.domain.sort;
 
-public enum AdSortByValues {
+public enum AdValues {
     EVALUATION("evaluation"),
     EVALUATIONS_COUNTER("evaluationsCounter");
 
     public final String label;
 
-    AdSortByValues(String label) {
+    AdValues(String label) {
         this.label = label;
     }
 }
