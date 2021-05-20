@@ -1,7 +1,7 @@
 package br.com.ibicos.ibicos.api.controller;
 
-import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
-import br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO;
+import br.com.ibicos.ibicos.api.dto.CustomerEmailToProviderDTO;
+import br.com.ibicos.ibicos.api.dto.CustomerSelfStatisticsDTO;
 import br.com.ibicos.ibicos.domain.entity.Evaluate;
 import br.com.ibicos.ibicos.domain.service.CustomerService;
 import br.com.ibicos.ibicos.domain.service.EvaluateService;

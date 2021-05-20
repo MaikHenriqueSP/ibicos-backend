@@ -1,6 +1,6 @@
-package br.com.ibicos.ibicos.dto;
+package br.com.ibicos.ibicos.api.dto;
 
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
@@ -13,10 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class CustomerSelfStatisticsDTO {
-    private Double averageEvaluation;
-    private Long totalEvaluations;
-    private Long totalHiredServices;
-    private Long totalMessages;
-
+public class AdRegionAreaDTO {
+    @JsonProperty("id")
+    private Integer idArea;
+    private String areaName;
 }

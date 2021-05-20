@@ -2,7 +2,7 @@ package br.com.ibicos.ibicos.domain.listener;
 
 import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.domain.event.SignedUpUserEvent;
-import br.com.ibicos.ibicos.dto.EmailDataDTO;
+import br.com.ibicos.ibicos.api.dto.EmailDataDTO;
 import br.com.ibicos.ibicos.domain.service.EmailService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.event.EventListener;

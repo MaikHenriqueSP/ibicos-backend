@@ -1,7 +1,7 @@
 package br.com.ibicos.ibicos.api.controller;
 
-import br.com.ibicos.ibicos.dto.AdDTO;
-import br.com.ibicos.ibicos.dto.IncrementViewsRequestDTO;
+import br.com.ibicos.ibicos.api.dto.AdDTO;
+import br.com.ibicos.ibicos.api.dto.IncrementViewsRequestDTO;
 import br.com.ibicos.ibicos.domain.entity.Ad;
 import br.com.ibicos.ibicos.domain.entity.Evaluate;
 import br.com.ibicos.ibicos.domain.entity.Statistics;

@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.dto;
+package br.com.ibicos.ibicos.api.dto;
 
 import lombok.Builder;
 import lombok.Getter;

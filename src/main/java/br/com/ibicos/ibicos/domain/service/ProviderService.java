@@ -1,6 +1,6 @@
 package br.com.ibicos.ibicos.domain.service;
 
-import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
+import br.com.ibicos.ibicos.api.dto.ProviderSelfStatisticsDTO;
 import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.domain.repository.ProviderStatisticsRepository;
 import br.com.ibicos.ibicos.domain.repository.UserRepository;

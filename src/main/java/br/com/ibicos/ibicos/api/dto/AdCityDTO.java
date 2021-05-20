@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.dto;
+package br.com.ibicos.ibicos.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -8,15 +8,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class AdWithProviderStatisticsDTO {
-    @JsonProperty("ad")
-    private AdDTO adDTO;
-    @JsonProperty("provider_statistics")
-    private ProviderStatisticsDTO providerStatisticsDTO;
+public class AdCityDTO {
+    @JsonProperty("id")
+    private Integer idCity;
+    private String cityName;
+    @JsonProperty("state_name")
+    private String stateAbb;
+    private List<AdRegionAreaDTO> regionArea;
 }

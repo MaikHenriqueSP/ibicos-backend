@@ -1,6 +1,6 @@
 package br.com.ibicos.ibicos.api.controller;
 
-import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
+import br.com.ibicos.ibicos.api.dto.ProviderSelfStatisticsDTO;
 import br.com.ibicos.ibicos.domain.service.ProviderStatisticsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

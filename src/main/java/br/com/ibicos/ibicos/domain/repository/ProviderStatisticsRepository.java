@@ -1,6 +1,6 @@
 package br.com.ibicos.ibicos.domain.repository;
 
-import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
+import br.com.ibicos.ibicos.api.dto.ProviderSelfStatisticsDTO;
 import br.com.ibicos.ibicos.domain.entity.ProviderStatistics;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

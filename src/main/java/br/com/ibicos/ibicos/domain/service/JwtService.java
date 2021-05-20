@@ -1,6 +1,6 @@
 package br.com.ibicos.ibicos.domain.service;
 
-import br.com.ibicos.ibicos.dto.CredentialsDTO;
+import br.com.ibicos.ibicos.api.dto.CredentialsDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

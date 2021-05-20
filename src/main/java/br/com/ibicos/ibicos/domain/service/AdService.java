@@ -1,6 +1,6 @@
 package br.com.ibicos.ibicos.domain.service;
 
-import br.com.ibicos.ibicos.dto.AdDTO;
+import br.com.ibicos.ibicos.api.dto.AdDTO;
 import br.com.ibicos.ibicos.domain.entity.Ad;
 import br.com.ibicos.ibicos.domain.entity.ServiceCategory;
 import br.com.ibicos.ibicos.domain.entity.User;

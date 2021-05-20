@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.dto;
+package br.com.ibicos.ibicos.api.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class ServiceCategoryDTO {
-
-    private String categoryName;
+public class UserDTO {
+    private Integer id;
 }

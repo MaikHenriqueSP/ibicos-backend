@@ -1,9 +1,9 @@
 package br.com.ibicos.ibicos.domain.service;
 
-import br.com.ibicos.ibicos.dto.CustomerEmailToProviderDTO;
-import br.com.ibicos.ibicos.dto.IncrementViewsRequestDTO;
-import br.com.ibicos.ibicos.dto.ServiceCategoryDTO;
-import br.com.ibicos.ibicos.dto.UserDTO;
+import br.com.ibicos.ibicos.api.dto.CustomerEmailToProviderDTO;
+import br.com.ibicos.ibicos.api.dto.IncrementViewsRequestDTO;
+import br.com.ibicos.ibicos.api.dto.ServiceCategoryDTO;
+import br.com.ibicos.ibicos.api.dto.UserDTO;
 import br.com.ibicos.ibicos.domain.entity.*;
 import br.com.ibicos.ibicos.domain.exception.ResourceNotFoundException;
 import br.com.ibicos.ibicos.domain.repository.EvaluateRepository;

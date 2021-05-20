@@ -1,7 +1,7 @@
 package br.com.ibicos.ibicos.api.controller;
 
-import br.com.ibicos.ibicos.dto.CredentialsDTO;
-import br.com.ibicos.ibicos.dto.RecoveryDTO;
+import br.com.ibicos.ibicos.api.dto.CredentialsDTO;
+import br.com.ibicos.ibicos.api.dto.RecoveryDTO;
 import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.domain.service.IUserService;
 import br.com.ibicos.ibicos.domain.service.JwtService;

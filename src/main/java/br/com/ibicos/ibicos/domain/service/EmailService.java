@@ -1,6 +1,6 @@
 package br.com.ibicos.ibicos.domain.service;
 
-import br.com.ibicos.ibicos.dto.EmailDataDTO;
+import br.com.ibicos.ibicos.api.dto.EmailDataDTO;
 import br.com.ibicos.ibicos.domain.exception.EmailSendingException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
