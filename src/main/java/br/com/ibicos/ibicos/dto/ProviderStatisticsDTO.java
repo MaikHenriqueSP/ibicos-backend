@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @SuperBuilder(toBuilder = true)
 public class ProviderStatisticsDTO extends StatisticsDTO{
-    private Integer id;
+
     private Integer visualizations;
     private ServiceCategoryDTO category;
 }

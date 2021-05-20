@@ -2,15 +2,7 @@ package br.com.ibicos.ibicos.entity;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -40,7 +32,7 @@ public class AdCity {
 	@NotBlank
 	private String stateAbb;
 	
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name="fk_id_ad")
 	@JsonIgnoreProperties(value = "cities")
 	private Ad ad;
@@ -48,7 +40,7 @@ public class AdCity {
 	
 	@NotNull
 	@NotEmpty
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "adCity")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "adCity", fetch = FetchType.EAGER)
 	@JsonIgnoreProperties(value = "adCity")
 	private List<@Valid AdRegionArea> regionArea;
 	

@@ -167,6 +167,17 @@
 				</configuration>
 			</plugin>
 
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>5.2.4</version>
+				<configuration>
+					<url>jdbc:mysql://localhost:3306/classificados_db</url>
+					<user>root</user>
+					<password></password>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 

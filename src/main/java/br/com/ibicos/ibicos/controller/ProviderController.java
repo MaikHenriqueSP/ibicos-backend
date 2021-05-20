@@ -3,6 +3,7 @@ package br.com.ibicos.ibicos.controller;
 import java.util.List;
 import java.util.Map;
 
+import br.com.ibicos.ibicos.dto.AdDTO;
 import br.com.ibicos.ibicos.dto.AdWithProviderStatisticsDTO;
 import br.com.ibicos.ibicos.dto.IncrementViewsRequestDTO;
 import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
@@ -46,7 +47,7 @@ public class ProviderController {
 
 	@GetMapping(path = "/{providerId}/ads")
 	public ResponseEntity<?> listAds(@PathVariable("providerId") Integer providerId, Pageable pageable) {
-		Page<AdWithProviderStatisticsDTO> providerAds = adService.listProviderAds(providerId, pageable);
+		Page<AdDTO> providerAds = adService.listProviderAds(providerId, pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(providerAds);
 	}

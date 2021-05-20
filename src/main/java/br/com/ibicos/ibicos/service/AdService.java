@@ -1,46 +1,39 @@
 package br.com.ibicos.ibicos.service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
+import br.com.ibicos.ibicos.dto.AdDTO;
+import br.com.ibicos.ibicos.entity.Ad;
+import br.com.ibicos.ibicos.entity.ServiceCategory;
+import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.enums.AdSortByValues;
-import br.com.ibicos.ibicos.mapper.AdWithProviderStatisticsMapper;
-import br.com.ibicos.ibicos.view.AdView;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.ibicos.ibicos.mapper.AdMapper;
+import br.com.ibicos.ibicos.repository.AdRepository;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.ibicos.ibicos.dto.AdWithProviderStatisticsDTO;
-import br.com.ibicos.ibicos.entity.Ad;
-import br.com.ibicos.ibicos.entity.ServiceCategory;
-import br.com.ibicos.ibicos.entity.User;
-import br.com.ibicos.ibicos.repository.AdRepository;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AdService {
 
 	private final AdRepository adRepository;
 	private final ProviderStatisticsService providerStatisticsService;
-	private final AdWithProviderStatisticsMapper adWithProviderStatisticsMapper;
+	private final AdMapper adMapper;
 
-	public AdService(AdRepository adRepository, ProviderStatisticsService providerStatisticsService, AdWithProviderStatisticsMapper adWithProviderStatisticsMapper) {
+	public AdService(AdRepository adRepository, ProviderStatisticsService providerStatisticsService, AdMapper adMapper) {
 		this.adRepository = adRepository;
 		this.providerStatisticsService = providerStatisticsService;
-		this.adWithProviderStatisticsMapper = adWithProviderStatisticsMapper;
+		this.adMapper = adMapper;
 	}
 
-	public Iterable<Ad> listAds() {
-		return adRepository.findAll();
-	}
-	
-	public Page<AdWithProviderStatisticsDTO> listProviderAds(Integer providerId, Pageable pageable) {
-		Page<AdView> adViews = adRepository.findByUserId(providerId, pageable);
-		List<AdView> adViewsList = adViews.getContent();
-		List<AdWithProviderStatisticsDTO> adWithProviderStatisticsDTOList = getAdWithProviderStatisticsDTOS(adViewsList);
+	public Page<AdDTO> listProviderAds(Integer providerId, Pageable pageable) {
+		Page<Ad> adViews = adRepository.findByUserId(providerId, pageable);
+		List<Ad> adViewsList = adViews.getContent();
+		List<AdDTO> adWithProviderStatisticsDTOList = getAdWithProviderStatisticsDTOS(adViewsList);
 		return new PageImpl<>(adWithProviderStatisticsDTOList, pageable, adViewsList.size());
 	}
 	
@@ -64,40 +57,32 @@ public class AdService {
 		return adRepository.save(oldAd);
 	}
 
-	public Page<AdWithProviderStatisticsDTO> listAdsByFilters(String categoryName, String stateName, String cityName, String areaName, String sortByFieldName, int page, int size) {
-		JpaSort providerStatisticsJpaSort = getJpaSortProviderStatistics(sortByFieldName);
-		PageRequest pageRequest= getPageRequest(page, size, providerStatisticsJpaSort);
-		Page<AdView> adViews = adRepository.listAdProjections(categoryName, stateName, cityName, areaName, pageRequest);
+	public Page<AdDTO> listAdsByFilters(String categoryName, String stateName, String cityName, String areaName,
+										String sortByFieldName, int page, int size) {
 
-		List<AdView> adViewsList = adViews.getContent();
-		List<AdWithProviderStatisticsDTO> adWithProviderStatisticsDTOS = getAdWithProviderStatisticsDTOS(adViewsList);
+		PageRequest pageRequest = getProviderStatisticsPageRequest(page, size, sortByFieldName);
+		Page<Ad> adViews = adRepository.listAdProjections(categoryName, stateName, cityName, areaName, pageRequest);
+
+		List<Ad> adViewsList = adViews.getContent();
+		List<AdDTO> adWithProviderStatisticsDTOS = getAdWithProviderStatisticsDTOS(adViewsList);
 
 		return new PageImpl<>(adWithProviderStatisticsDTOS, pageRequest, adViews.getTotalElements());
 	}
 
-	private PageRequest getPageRequest(int page, int size, JpaSort jpaSort) {
-		if (jpaSort == null) {
-			return PageRequest.of(page, size);
+	private PageRequest getProviderStatisticsPageRequest(int page, int size, String fieldName) {
+		if (isSortFieldNameValid(fieldName)) {
+			String providerStatisticsQueryAlias = "providerStatistics." + fieldName;
+			return PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, providerStatisticsQueryAlias));
 		}
-
-		return PageRequest.of(page, size, jpaSort);
-	}
-
-	private JpaSort getJpaSortProviderStatistics(String sortByFieldName) {
-		if (isSortFieldNameValid(sortByFieldName)) {
-			String providerStatisticsQueryAlias = "pr";
-			String sortByQueryComplement = "(" + providerStatisticsQueryAlias + ".statistics." + sortByFieldName + ")";
-			return JpaSort.unsafe(Sort.Direction.DESC, sortByQueryComplement);
-		}
-		return null;
+		return PageRequest.of(page, size);
 	}
 
 	private boolean isSortFieldNameValid(String sortByFieldName) {
 		return Arrays.stream(AdSortByValues.values()).anyMatch(AdSortEnum -> AdSortEnum.label.equals(sortByFieldName));
 	}
 
-	private List<AdWithProviderStatisticsDTO> getAdWithProviderStatisticsDTOS(List<AdView> adViews) {
-		return adViews.stream().map(adView -> adWithProviderStatisticsMapper.AdViewToAdWithProviderStatisticsDTO(adView))
+	private List<AdDTO> getAdWithProviderStatisticsDTOS(List<Ad> ads) {
+		return ads.stream().map(adMapper::AdToAdDTO)
 						.collect(Collectors.toList());
 	}
 

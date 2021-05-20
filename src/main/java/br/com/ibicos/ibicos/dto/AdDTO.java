@@ -25,5 +25,6 @@ public class AdDTO {
     private ServiceCategoryDTO serviceCategory;
     private List<AdCityDTO> cities;
     private UserDTO user;
+    private ProviderStatisticsDTO providerStatistics;
 
 }

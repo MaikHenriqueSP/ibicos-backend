@@ -22,10 +22,8 @@ public class CustomerStatisticsController {
 
     @GetMapping("/{customerId}")
     public ResponseEntity<?> getCustomerStatistics(@PathVariable Integer customerId) {
-        System.out.println(customerId);
         CustomerStatistics customerStatistics = customerStatiticsService
                 .getCustomerStatistics(customerId);
-        System.out.println(customerStatistics);
 
         return ResponseEntity.ok()
                 .body(Map.of("customer-statistics", customerStatistics));

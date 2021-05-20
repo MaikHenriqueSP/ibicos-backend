@@ -9,13 +9,8 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper=true)
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @SuperBuilder(toBuilder = true)
-@PrimaryKeyJoinColumn(name="fk_id_statistics")
+@PrimaryKeyJoinColumn(name="id_customer_statistics")
 public class CustomerStatistics extends Statistics {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_customer_statistics")
-    private Integer id;
 
 }

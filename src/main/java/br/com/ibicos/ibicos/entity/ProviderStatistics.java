@@ -11,12 +11,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder(toBuilder = true)
-@PrimaryKeyJoinColumn(name="fk_id_statistics")
+@PrimaryKeyJoinColumn(name="id_provider_statistics")
 public class ProviderStatistics  extends Statistics{
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_provider_statistics")
-	private Integer id;
+
 	private Integer visualizations;
 
 	@OneToOne
