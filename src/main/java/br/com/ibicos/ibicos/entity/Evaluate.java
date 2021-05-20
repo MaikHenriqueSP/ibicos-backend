@@ -2,12 +2,7 @@ package br.com.ibicos.ibicos.entity;
 
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -36,17 +31,17 @@ public class Evaluate {
 	private boolean customerEvaluated;
 	private boolean providerEvaluated;
 	
-	@OneToOne
+	@ManyToOne
 	@ToString.Exclude
 	@JoinColumn(name = "fk_id_client")
 	private User client;
 	
-	@OneToOne
+	@ManyToOne
 	@ToString.Exclude
 	@JoinColumn(name = "fk_id_provider")
 	private User provider;
 	
-	@OneToOne
+	@ManyToOne
 	@ToString.Exclude
 	@JoinColumn(name = "fk_id_service_category")
 	private ServiceCategory serviceCategory;

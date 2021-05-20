@@ -16,7 +16,7 @@ public class ProviderStatistics  extends Statistics{
 
 	private Integer visualizations;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name= "fk_id_service_category")
 	private ServiceCategory category;
 
