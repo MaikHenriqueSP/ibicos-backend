@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.email;
+package br.com.ibicos.ibicos.domain.service;
 
 import br.com.ibicos.ibicos.dto.EmailDataDTO;
 import br.com.ibicos.ibicos.domain.exception.EmailSendingException;
