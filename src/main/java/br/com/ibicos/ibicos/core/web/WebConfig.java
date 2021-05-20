@@ -1,4 +1,4 @@
-package br.com.ibicos.ibicos.config;
+package br.com.ibicos.ibicos.core.web;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
