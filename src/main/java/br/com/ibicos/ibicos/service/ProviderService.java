@@ -1,16 +1,13 @@
 package br.com.ibicos.ibicos.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
-import br.com.ibicos.ibicos.entity.ProviderStatistics;
+import br.com.ibicos.ibicos.entity.User;
 import br.com.ibicos.ibicos.repository.ProviderStatisticsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.ibicos.ibicos.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import br.com.ibicos.ibicos.entity.User;
-import br.com.ibicos.ibicos.repository.UserRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProviderService {
@@ -32,8 +29,9 @@ public class ProviderService {
 	}
 
     public ProviderSelfStatisticsDTO getProviderSelfStatisticsById(Integer providerId) {
-		Optional<ProviderSelfStatisticsDTO> providerSelfStatistics = providerStatisticsRepository.findSelfStatisticsById(providerId);
+//		Optional<ProviderSelfStatisticsDTO> providerSelfStatistics = providerStatisticsRepository.findSelfStatisticsById(providerId);
 
-		return providerSelfStatistics.orElseThrow(() -> new RuntimeException("There is not provider with the given id"));
+//		return providerSelfStatistics.orElseThrow(() -> new RuntimeException("There is not provider with the given id"));
+		return null;
 	}
 }

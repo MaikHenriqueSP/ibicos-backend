@@ -17,6 +17,8 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Data
 @Entity
@@ -33,23 +35,26 @@ public class Ad {
 	private String adDescription;	
 	
 	@NotNull	
-	@OneToOne()
+	@ManyToOne
 	@JoinColumn(name="fk_id_user")
 	private User user;
 
 	@Valid
 	@NotNull
-	@OneToOne()
+	@ManyToOne
 	@JoinColumn(name = "fk_id_service_category")
 	private ServiceCategory serviceCategory;
 
 	@NotNull
 	@NotEmpty
 	@JsonIgnoreProperties(value = "ad")
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad", fetch = FetchType.EAGER)
 	private List<@Valid AdCity> cities;
-	
 
+	@ManyToOne
+	@JoinColumn(name = "fk_id_provider_statistics")
+	private ProviderStatistics providerStatistics;
+	
 	@PrePersist
 	private void prePersist() {
 	    if(cities != null && cities.size() > 0) {

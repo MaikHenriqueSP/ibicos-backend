@@ -7,18 +7,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@SuperBuilder(toBuilder = true)
 public class StatisticsDTO {
     private Integer id;
     private Float evaluation;
-    private Integer viewsCounter;
     private Integer evaluationsCounter;
     private Integer hiredServicesCounter;
     private Integer messagesCounter;
-
 }

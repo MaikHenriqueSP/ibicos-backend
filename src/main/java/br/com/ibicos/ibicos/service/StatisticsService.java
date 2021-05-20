@@ -53,7 +53,7 @@ public class StatisticsService {
 				.evaluationsCounter(0)
 				.hiredServicesCounter(0)
 				.messagesCounter(0)
-				.viewsCounter(0).build();
+				.build();
 		return statisticsRepository.save(customerStatistics);
 	}
 }

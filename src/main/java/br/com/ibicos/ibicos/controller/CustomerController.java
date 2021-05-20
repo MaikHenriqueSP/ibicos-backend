@@ -31,16 +31,7 @@ public class CustomerController {
 		this.evaluateService = evaluateService;
 	}
 	
-	@GetMapping("{customerId}/statistics")
-	public ResponseEntity<?> showCustomerStatistics(@PathVariable Integer customerId) {
-		
-		Statistics customerStatistics = customerService
-				.showCustomerStatistics(customerId);
-		
-		return ResponseEntity.ok()
-				.body(Map.of("statistics", customerStatistics));
-	}
-	
+
 	@PutMapping("/evaluate/provider")
 	public ResponseEntity<?> evaluateProvider(@RequestBody ObjectNode objectNode) {
 		Integer idEvaluate = objectNode.get("id_evaluate").asInt();

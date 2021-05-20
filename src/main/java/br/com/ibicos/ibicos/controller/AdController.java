@@ -4,8 +4,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import br.com.ibicos.ibicos.mapper.AdWithProviderStatisticsMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.ibicos.ibicos.dto.AdDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ibicos.ibicos.dto.AdWithProviderStatisticsDTO;
 import br.com.ibicos.ibicos.entity.Ad;
 import br.com.ibicos.ibicos.service.AdService;
 
@@ -41,7 +39,8 @@ public class AdController {
 			@RequestParam(defaultValue = "", name = "sortBy") String sortByFieldName,
 			@RequestParam(defaultValue = "0") int page,
 	        @RequestParam(defaultValue = "8") int size) {
-		Page<AdWithProviderStatisticsDTO> pageableAdsList = adService.listAdsByFilters(categoryName, stateName, cityName, areaName, sortByFieldName, page, size);
+		Page<AdDTO> pageableAdsList = adService.listAdsByFilters(categoryName, stateName, cityName, areaName,
+				sortByFieldName, page, size);
 		return ResponseEntity.ok(pageableAdsList);
 	}
 	

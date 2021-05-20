@@ -3,6 +3,8 @@ package br.com.ibicos.ibicos.service;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
+import br.com.ibicos.ibicos.exception.ResourceNotFoundException;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,9 +31,9 @@ public class ProviderStatisticsService {
 		return providerStatisticsRepository.findAll();
 	}
 	
-	public Page<ProviderStatistics> listProviderStatisticsByStatisticsId(Integer statisticsId, Pageable pageable) {
-		return providerStatisticsRepository.findByStatisticsId(statisticsId, pageable);
-	}
+//	public Page<ProviderStatistics> listProviderStatisticsByStatisticsId(Integer statisticsId, Pageable pageable) {
+//		return providerStatisticsRepository.findByStatisticsId(statisticsId, pageable);
+//	}
 
 	@Transactional(rollbackFor = { RuntimeException.class})
 	public ProviderStatistics createProviderStatisticsIfItNotExists(User adCreator, ServiceCategory adCategory) {
@@ -43,11 +45,14 @@ public class ProviderStatisticsService {
 					.evaluationsCounter(0)
 					.hiredServicesCounter(0)
 					.messagesCounter(0)
-					.viewsCounter(0)
 					.user(adCreator).build();
 
-			ProviderStatistics providerStatistics = ProviderStatistics.builder().
-					statistics(statistics)
+			ProviderStatistics providerStatistics = ProviderStatistics.builder()
+					.evaluation(statistics.getEvaluation())
+					.evaluationsCounter(statistics.getEvaluationsCounter())
+					.hiredServicesCounter(statistics.getHiredServicesCounter())
+					.messagesCounter(statistics.getMessagesCounter())
+					.user(adCreator)
 					.visualizations(0)
 					.category(adCategory).build();
 			
@@ -67,5 +72,12 @@ public class ProviderStatisticsService {
 
 	public void save(ProviderStatistics providerStatistics) {
 		providerStatisticsRepository.save(providerStatistics);
+	}
+
+
+	public ProviderSelfStatisticsDTO getProviderSelfStatisticsById(Integer providerId) {
+		Optional<ProviderSelfStatisticsDTO> providerSelfStatistics = providerStatisticsRepository.findSelfStatisticsById(providerId);
+
+		return providerSelfStatistics.orElseThrow(() -> new ResourceNotFoundException("There is not provider with the given id"));
 	}
 }

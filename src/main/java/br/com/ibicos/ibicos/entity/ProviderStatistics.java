@@ -1,34 +1,24 @@
 package br.com.ibicos.ibicos.entity;
 
-import java.util.List;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Data
+@EqualsAndHashCode(callSuper=true)
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class ProviderStatistics {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_provider_statistics")
-	private Integer id;
-	private Integer visualizations;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fk_id_statistics")
-	private Statistics statistics;
+@SuperBuilder(toBuilder = true)
+@PrimaryKeyJoinColumn(name="id_provider_statistics")
+public class ProviderStatistics  extends Statistics{
 
-	@OneToOne
+	private Integer visualizations;
+
+	@ManyToOne
 	@JoinColumn(name= "fk_id_service_category")
 	private ServiceCategory category;
+
 
 }

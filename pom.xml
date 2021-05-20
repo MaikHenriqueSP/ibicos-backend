@@ -17,6 +17,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
+		<org.lombok.version>1.18.20</org.lombok.version>
 	</properties>
 
 	<dependencies>
@@ -45,7 +46,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<version>${org.lombok.version}</version>
 		</dependency>
 
 		<dependency>
@@ -149,7 +150,7 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-							<version>${lombok.version}</version>
+							<version>${org.lombok.version}</version>
 						</path>
 						<dependency>
 							<groupId>org.projectlombok</groupId>
@@ -163,6 +164,17 @@
 							-Amapstruct.defaultComponentModel=spring
 						</compilerArg>
 					</compilerArgs>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>5.2.4</version>
+				<configuration>
+					<url>jdbc:mysql://localhost:3306/classificados_db</url>
+					<user>root</user>
+					<password></password>
 				</configuration>
 			</plugin>
 

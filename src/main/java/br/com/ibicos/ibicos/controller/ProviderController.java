@@ -3,6 +3,7 @@ package br.com.ibicos.ibicos.controller;
 import java.util.List;
 import java.util.Map;
 
+import br.com.ibicos.ibicos.dto.AdDTO;
 import br.com.ibicos.ibicos.dto.AdWithProviderStatisticsDTO;
 import br.com.ibicos.ibicos.dto.IncrementViewsRequestDTO;
 import br.com.ibicos.ibicos.dto.ProviderSelfStatisticsDTO;
@@ -46,7 +47,7 @@ public class ProviderController {
 
 	@GetMapping(path = "/{providerId}/ads")
 	public ResponseEntity<?> listAds(@PathVariable("providerId") Integer providerId, Pageable pageable) {
-		Page<AdWithProviderStatisticsDTO> providerAds = adService.listProviderAds(providerId, pageable);
+		Page<AdDTO> providerAds = adService.listProviderAds(providerId, pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(providerAds);
 	}
@@ -66,7 +67,9 @@ public class ProviderController {
 		
 		if (provider == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Provider with provided id not found.");
-		} else if (oldAd == null) {
+		}
+
+		if (oldAd == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ad with provided id not found.");
 		}
 		
@@ -97,11 +100,4 @@ public class ProviderController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/statistics/{providerId}/user-data")
-	public ResponseEntity<?> getProviderSelfStatistics(@PathVariable Integer providerId) {
-
-		ProviderSelfStatisticsDTO providerSelfStatistics = providerService.getProviderSelfStatisticsById(providerId);
-
-		return ResponseEntity.ok().body(Map.of("provider_statistics", providerSelfStatistics));
-	}
 }
