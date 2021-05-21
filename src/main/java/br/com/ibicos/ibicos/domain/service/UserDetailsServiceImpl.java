@@ -4,6 +4,7 @@ import br.com.ibicos.ibicos.api.dto.CredentialsDTO;
 import br.com.ibicos.ibicos.domain.entity.User;
 import br.com.ibicos.ibicos.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,11 +14,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
+
+	public UserDetailsServiceImpl(@Lazy PasswordEncoder passwordEncoder, UserRepository userRepository) {
+		this.passwordEncoder = passwordEncoder;
+		this.userRepository = userRepository;
+	}
 
 	public UserDetails authenticate(CredentialsDTO credentials) {
 		UserDetails userDetails = loadUserByUsername(credentials.getEmail());

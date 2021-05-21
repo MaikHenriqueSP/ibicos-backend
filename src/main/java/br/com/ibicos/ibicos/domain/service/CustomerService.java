@@ -23,16 +23,16 @@ public class CustomerService {
 	private final UserService userService;
 	private final EvaluateService evaluateService;
 
-	public Statistics showCustomerStatistics(Integer customerId) {
-		Optional<Statistics> optionalStatistic = statisticsRepository
-				.findCustomerStatistic(customerId);
-		
-		if(optionalStatistic.isEmpty()) {
-			throw new ResourceAccessException("There's no customer statistic with the provided ID");
-		}
-		
-		return optionalStatistic.get();
-	}
+//	public Statistics showCustomerStatistics(Integer customerId) {
+//		Optional<Statistics> optionalStatistic = statisticsRepository
+//				.findCustomerStatistic(customerId);
+//
+//		if(optionalStatistic.isEmpty()) {
+//			throw new ResourceAccessException("There's no customer statistic with the provided ID");
+//		}
+//
+//		return optionalStatistic.get();
+//	}
 
 	public void sendEmailToProvider(CustomerEmailToProviderDTO customerEmailToProviderDTO) {
 		User customer =  userService.findUserById(customerEmailToProviderDTO.getCustomerId());
@@ -62,8 +62,8 @@ public class CustomerService {
 	}
 
 
-	public CustomerSelfStatisticsDTO getCustomerSelfStatisticsById(Integer customerId) {
-		Optional<CustomerSelfStatisticsDTO> selfCustomerStatistics = statisticsRepository.findSelfCustomerStatisticsById(customerId);
-		return selfCustomerStatistics.orElseThrow(() -> new RuntimeException("There is not customer with the given id"));
-	}
+//	public CustomerSelfStatisticsDTO getCustomerSelfStatisticsById(Integer customerId) {
+//		Optional<CustomerSelfStatisticsDTO> selfCustomerStatistics = statisticsRepository.findSelfCustomerStatisticsById(customerId);
+//		return selfCustomerStatistics.orElseThrow(() -> new RuntimeException("There is not customer with the given id"));
+//	}
 }

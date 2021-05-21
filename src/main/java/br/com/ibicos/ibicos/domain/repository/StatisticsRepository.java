@@ -21,14 +21,11 @@ public interface StatisticsRepository extends JpaRepository<Statistics, Integer>
 			"p.fk_id_statistics = s.id_statistics);", nativeQuery = true)
 	Optional<Statistics> findCustomerStatistic(Integer customerId);
 
-	
+
 	@Query(value = "SELECT s.* FROM statistics as s, provider_statistics as p "
 			+ "WHERE s.fk_id_user = ?1 AND s.id_statistics = p.fk_id_statistics AND p.fk_id_service_category = ?2", nativeQuery = true)
 	Optional<Statistics> findProviderStatisticByProviderIdAndCategoryId(Integer providerId,
 			Integer categoryId);
 
-	@Query(value = "SELECT new br.com.ibicos.ibicos.dto.CustomerSelfStatisticsDTO(AVG(st.evaluation), " +
-			"SUM(st.evaluationsCounter), SUM(st.hiredServicesCounter), SUM(st.messagesCounter)) " +
-			"FROM Statistics st JOIN CustomerStatistics cs ON st.user.id = cs.user.id WHERE st.user.id = ?1 GROUP BY st.user")
-	Optional<CustomerSelfStatisticsDTO> findSelfCustomerStatisticsById(Integer customerId);
+
 }

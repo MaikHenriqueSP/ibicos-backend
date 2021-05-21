@@ -34,16 +34,16 @@ public class UserController {
 				"statusCode", HttpStatus.CREATED.value());
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseMap);
 	}
-	
+
 	@GetMapping("/check-email-in-use")
 	public ResponseEntity<?> isEmailInUse(@RequestBody ObjectNode objectNode) {
 		String email = objectNode.asText("email");
 		Boolean isEmailInUse = userService.isEmailInUse(email);
 		return isEmailInUse ? ResponseEntity.status(HttpStatus.CONFLICT)
-				.body(Map.of("message", "Email already in use")) : 
+				.body(Map.of("message", "Email already in use")) :
 					ResponseEntity.status(HttpStatus.OK)
 					.body(Map.of("message", "Email free to use"));
-		
+
 	}
 
 	@PostMapping("/login")
@@ -75,22 +75,22 @@ public class UserController {
 		userService.changeUserPassword(recoveryDTO.getAccountRecoveryToken(), recoveryDTO.getNewPassword());
 		return ResponseEntity.ok().body(Map.of("message", "Password successfully changed"));
 	}
-	
+
 	@GetMapping("api/v1/users/profile/{idUser}")
 	public ResponseEntity<?> showUserProfile(@PathVariable Integer idUser) {
 		User user = userService.findUserById(idUser);
 		return ResponseEntity.ok().body(
 				Map.of("message", "User found with success",
 						"user", user,
-						"status", HttpStatus.OK.value())				
-				);		
-	} 
-	
+						"status", HttpStatus.OK.value())
+				);
+	}
+
 	@PutMapping("api/v1/users/profile/update")
 	public ResponseEntity<?> updateUserProfile(@RequestBody User user) {
 		return ResponseEntity.ok(userService.updateUser(user));
 	}
-	
+
 	@GetMapping("api/v1/users/user-by-email")
 	public ResponseEntity<?> getUserByEmail(@RequestBody ObjectNode objectNode) {
 		String email = objectNode.get("email").asText();

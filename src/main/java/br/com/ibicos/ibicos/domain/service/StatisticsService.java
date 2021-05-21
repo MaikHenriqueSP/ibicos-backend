@@ -20,26 +20,26 @@ public class StatisticsService {
 	public List<Statistics> listStatistics() {
 		return statisticsRepository.findAll();
 	}
-	
+
 	public Page<Statistics> listStatisticsByUserId(Integer userId, Pageable pageable) {
 		return statisticsRepository.findByUserId(userId, pageable);
 	}
-	
+
 	public Optional<Statistics> showStatistics(Integer id) {
 		return statisticsRepository.findById(id);
 	}
-	
-	
-	public Optional<Statistics> findProviderStatisticsByIdProviderAndIdServiceCategory(Integer idProvider, 
+
+
+	public Optional<Statistics> findProviderStatisticsByIdProviderAndIdServiceCategory(Integer idProvider,
 			Integer idCategory) {
 		return statisticsRepository.findProviderStatisticByProviderIdAndCategoryId(
 				idProvider, idCategory);
 	}
-	
+
 	public Optional<Statistics> findCustomerStatistic(Integer idCustomer) {
 		return statisticsRepository.findCustomerStatistic(idCustomer);
 	}
-	
+
 	public Statistics save(Statistics statistics) {
 		return statisticsRepository.save(statistics);
 	}

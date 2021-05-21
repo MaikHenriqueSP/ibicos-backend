@@ -27,6 +27,7 @@ public class UserService implements IUserService {
 	private final ApplicationEventPublisher applicationEventPublisher;
 	private final PersonService personService;
 
+
 	private void encodeUserPassword(User user) {
 		String encodedPassword = passwordEncoder.encode(user.getPasswordUser());
 		user.setPasswordUser(encodedPassword);
