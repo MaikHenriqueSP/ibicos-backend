@@ -93,7 +93,8 @@ public class AdService {
 		
 		return savedAd;
 	}
-	
+
+	@Transactional
 	public void deleteAdById(Integer id) {
 		adRepository.deleteById(id);
 	}
