@@ -1,38 +1,21 @@
 package br.com.ibicos.ibicos.domain.service;
 
 import br.com.ibicos.ibicos.api.dto.CustomerEmailToProviderDTO;
-import br.com.ibicos.ibicos.api.dto.CustomerSelfStatisticsDTO;
 import br.com.ibicos.ibicos.api.dto.EmailDataDTO;
-import br.com.ibicos.ibicos.domain.entity.Statistics;
 import br.com.ibicos.ibicos.domain.entity.User;
-import br.com.ibicos.ibicos.domain.repository.StatisticsRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
 public class CustomerService {
 
-	private final StatisticsRepository statisticsRepository;
 	private final EmailService emailService;
 	private final UserService userService;
 	private final EvaluateService evaluateService;
-
-//	public Statistics showCustomerStatistics(Integer customerId) {
-//		Optional<Statistics> optionalStatistic = statisticsRepository
-//				.findCustomerStatistic(customerId);
-//
-//		if(optionalStatistic.isEmpty()) {
-//			throw new ResourceAccessException("There's no customer statistic with the provided ID");
-//		}
-//
-//		return optionalStatistic.get();
-//	}
 
 	public void sendEmailToProvider(CustomerEmailToProviderDTO customerEmailToProviderDTO) {
 		User customer =  userService.findUserById(customerEmailToProviderDTO.getCustomerId());
@@ -61,9 +44,4 @@ public class CustomerService {
 		return contextVariablesMap;
 	}
 
-
-//	public CustomerSelfStatisticsDTO getCustomerSelfStatisticsById(Integer customerId) {
-//		Optional<CustomerSelfStatisticsDTO> selfCustomerStatistics = statisticsRepository.findSelfCustomerStatisticsById(customerId);
-//		return selfCustomerStatistics.orElseThrow(() -> new RuntimeException("There is not customer with the given id"));
-//	}
 }

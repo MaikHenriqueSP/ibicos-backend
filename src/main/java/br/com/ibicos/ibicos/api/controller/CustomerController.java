@@ -19,7 +19,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class CustomerController {
 
-//	private final CustomerService customerService;
+	private final CustomerService customerService;
 	private final EvaluateService evaluateService;
 
 	@PutMapping("/evaluate/provider")
@@ -45,11 +45,11 @@ public class CustomerController {
 				);
 	}
 
-//	@PostMapping("/ad/send-message")
-//	public ResponseEntity<?> sendEmailToProvider(@RequestBody CustomerEmailToProviderDTO customerEmailToProviderDTO ) {
-//		customerService.sendEmailToProvider(customerEmailToProviderDTO);
-//		return ResponseEntity.ok(Map.of("message", "email successfully sent"));
-//	}
+	@PostMapping("/ad/send-message")
+	public ResponseEntity<?> sendEmailToProvider(@RequestBody CustomerEmailToProviderDTO customerEmailToProviderDTO ) {
+		customerService.sendEmailToProvider(customerEmailToProviderDTO);
+		return ResponseEntity.ok(Map.of("message", "email successfully sent"));
+	}
 
 	@GetMapping("/evaluate/{customerId}/pending-evaluations")
 	public ResponseEntity<?> listCustomerPendingEvaluations(@PathVariable Integer customerId ) {
@@ -63,12 +63,4 @@ public class CustomerController {
 		return ResponseEntity.ok(Map.of("message", "pending evaluation successfully deleted"));
 	}
 
-//	@GetMapping("/statistics/{customerId}/user-data")
-//	public ResponseEntity<?> getProviderSelfStatistics(@PathVariable Integer customerId) {
-//
-//		CustomerSelfStatisticsDTO providerSelfStatistics = customerService.getCustomerSelfStatisticsById(customerId);
-//
-//		return ResponseEntity.ok().body(Map.of("customer_statistics", providerSelfStatistics));
-//	}
-	
 }
