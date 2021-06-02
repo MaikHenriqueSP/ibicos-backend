@@ -9,6 +9,7 @@ import br.com.ibicos.ibicos.domain.exception.ResourceNotFoundException;
 import br.com.ibicos.ibicos.domain.repository.EvaluateRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -55,6 +56,7 @@ public class EvaluateService {
 		return optionalStatistics.get();
 	}
 
+	@Transactional
 	public void evaluateProviderJobConfirmation(Integer idEvaluate) {
 		Evaluate evaluate = findEvaluateStatisticsByIdEvaluateOrElseThrowRuntimeException(idEvaluate);
 
@@ -67,12 +69,10 @@ public class EvaluateService {
 				idProvider, idServiceCategory);
 
 		evaluate.setHired(true);
+		
 		providerStatistics.setHiredServicesCounter(providerStatistics.getHiredServicesCounter() + 1);
 		customerStatistics.setHiredServicesCounter(customerStatistics.getHiredServicesCounter() + 1);
 
-		evaluateRepository.save(evaluate);
-		statisticsService.save(providerStatistics);
-		statisticsService.save(customerStatistics);
 	}
 
 	public void evaluateProvider(Integer idEvaluate, Float evaluation) {
