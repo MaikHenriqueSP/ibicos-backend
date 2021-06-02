@@ -25,8 +25,6 @@ public class UserService implements IUserService {
 	private final PasswordEncoder passwordEncoder;
 	private final StatisticsService statisticsService;
 	private final ApplicationEventPublisher applicationEventPublisher;
-	private final PersonService personService;
-
 
 	private void encodeUserPassword(User user) {
 		String encodedPassword = passwordEncoder.encode(user.getPasswordUser());
@@ -127,11 +125,6 @@ public class UserService implements IUserService {
 		
 		User oldUser = optionalUser.get();
 		oldUser.setNotice(user.getNotice());
-		
-		Person newPerson = user.getPerson();
-		Person oldPerson = oldUser.getPerson();
-
-		personService.updatePerson(oldPerson, newPerson);
 
 		return userRepository.save(oldUser);
 	}
