@@ -35,7 +35,8 @@ public class AdService {
 	public Optional<Ad> showAdByIdAndProviderId(Integer adId, Integer providerId) {
 		return adRepository.findByIdAndUserId(adId, providerId);
 	}
-	
+
+	@Transactional
 	public Ad updateAd(Ad oldAd, Ad ad) {
 		if (ad.getAdDescription() != null) {
 			oldAd.setAdDescription(ad.getAdDescription());
@@ -49,7 +50,7 @@ public class AdService {
 			oldAd.setServiceCategory(ad.getServiceCategory());
 		}
 
-		return adRepository.save(oldAd);
+		return oldAd;
 	}
 
 	public Page<AdDTO> listAdsByFilters(String categoryName, String stateName, String cityName, String areaName,
