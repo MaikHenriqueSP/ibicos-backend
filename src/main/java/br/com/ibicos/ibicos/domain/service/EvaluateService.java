@@ -69,12 +69,13 @@ public class EvaluateService {
 				idProvider, idServiceCategory);
 
 		evaluate.setHired(true);
-		
+
 		providerStatistics.setHiredServicesCounter(providerStatistics.getHiredServicesCounter() + 1);
 		customerStatistics.setHiredServicesCounter(customerStatistics.getHiredServicesCounter() + 1);
 
 	}
 
+	@Transactional
 	public void evaluateProvider(Integer idEvaluate, Float evaluation) {
 		Evaluate evaluate = findEvaluateStatisticsByIdEvaluateOrElseThrowRuntimeException(idEvaluate);
 
@@ -95,7 +96,6 @@ public class EvaluateService {
 		providerStatistics.setEvaluationsCounter(providerStatistics.getEvaluationsCounter() + 1);
 
 		evaluate.setProviderEvaluated(true);
-		statisticsService.save(providerStatistics);
 		updateEvaluate(evaluate);
 	}
 
