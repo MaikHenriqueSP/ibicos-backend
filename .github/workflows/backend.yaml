@@ -34,6 +34,5 @@ jobs:
       - name: Build with Maven
         run: mvn clean test
       - uses: codecov/codecov-action@v2
-        run: echo $(pwd)
         with:
           files: ./github/workflows/reports
