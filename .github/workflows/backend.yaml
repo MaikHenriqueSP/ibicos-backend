@@ -35,4 +35,4 @@ jobs:
         run: mvn clean test
       - uses: codecov/codecov-action@v2
         with:
-          files: ./github/workflows/reports
+          files: ./github/workflows/reports/jacoco.xml
