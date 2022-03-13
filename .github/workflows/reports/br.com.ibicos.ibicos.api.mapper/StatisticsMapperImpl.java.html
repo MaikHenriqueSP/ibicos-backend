@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StatisticsMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ibicos</a> &gt; <a href="index.source.html" class="el_package">br.com.ibicos.ibicos.api.mapper</a> &gt; <span class="el_source">StatisticsMapperImpl.java</span></div><h1>StatisticsMapperImpl.java</h1><pre class="source lang-java linenums">package br.com.ibicos.ibicos.api.mapper;
+
+import br.com.ibicos.ibicos.api.dto.StatisticsDTO;
+import br.com.ibicos.ibicos.api.dto.StatisticsDTO.StatisticsDTOBuilder;
+import br.com.ibicos.ibicos.domain.entity.Statistics;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2022-03-13T08:51:09-0300&quot;,
+    comments = &quot;version: 1.4.1.Final, compiler: javac, environment: Java 11.0.13 (Ubuntu)&quot;
+)
+@Component
+<span class="nc" id="L15">public class StatisticsMapperImpl implements StatisticsMapper {</span>
+
+    @Override
+    public StatisticsDTO statisticsToStatisticsDTO(Statistics statistics) {
+<span class="nc bnc" id="L19" title="All 2 branches missed.">        if ( statistics == null ) {</span>
+<span class="nc" id="L20">            return null;</span>
+        }
+
+<span class="nc" id="L23">        StatisticsDTOBuilder&lt;?, ?&gt; statisticsDTO = StatisticsDTO.builder();</span>
+
+<span class="nc" id="L25">        statisticsDTO.id( statistics.getId() );</span>
+<span class="nc" id="L26">        statisticsDTO.evaluation( statistics.getEvaluation() );</span>
+<span class="nc" id="L27">        statisticsDTO.evaluationsCounter( statistics.getEvaluationsCounter() );</span>
+<span class="nc" id="L28">        statisticsDTO.hiredServicesCounter( statistics.getHiredServicesCounter() );</span>
+<span class="nc" id="L29">        statisticsDTO.messagesCounter( statistics.getMessagesCounter() );</span>
+
+<span class="nc" id="L31">        return statisticsDTO.build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

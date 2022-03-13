@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ibicos</a> &gt; <a href="index.source.html" class="el_package">br.com.ibicos.ibicos.domain.service</a> &gt; <span class="el_source">UserService.java</span></div><h1>UserService.java</h1><pre class="source lang-java linenums">package br.com.ibicos.ibicos.domain.service;
+
+import br.com.ibicos.ibicos.domain.entity.Person;
+import br.com.ibicos.ibicos.domain.entity.User;
+import br.com.ibicos.ibicos.domain.event.PasswordResetRequestEvent;
+import br.com.ibicos.ibicos.domain.exception.*;
+import br.com.ibicos.ibicos.domain.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import net.bytebuddy.utility.RandomString;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+@Service
+<span class="nc" id="L21">@AllArgsConstructor</span>
+public class UserService implements IUserService {
+
+	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final StatisticsService statisticsService;
+	private final ApplicationEventPublisher applicationEventPublisher;
+	private final PersonService personService;
+
+
+	private void encodeUserPassword(User user) {
+<span class="nc" id="L32">		String encodedPassword = passwordEncoder.encode(user.getPasswordUser());</span>
+<span class="nc" id="L33">		user.setPasswordUser(encodedPassword);</span>
+<span class="nc" id="L34">	}</span>
+
+	@Transactional(rollbackFor = { DataIntegrityViolationException.class, EmailSendingException.class })
+	public User save(User user) {
+<span class="nc" id="L38">		encodeUserPassword(user);</span>
+<span class="nc" id="L39">		String userEmail = user.getEmail();</span>
+
+<span class="nc bnc" id="L41" title="All 2 branches missed.">		if (userRepository.findByEmail(userEmail).isPresent()) {</span>
+<span class="nc" id="L42">			throw new UserAlreadyExistsException(userEmail);</span>
+		}
+
+<span class="nc" id="L45">		return saveAndReturnNewUser(user);</span>
+	}
+
+	private User saveAndReturnNewUser(User user) {
+		try {
+<span class="nc" id="L50">			User savedUser = userRepository.save(user);</span>
+<span class="nc" id="L51">			applicationEventPublisher.publishEvent(user);</span>
+<span class="nc" id="L52">			return savedUser;</span>
+<span class="nc" id="L53">		} catch (DataIntegrityViolationException e) {</span>
+<span class="nc" id="L54">			throw new InvalidInsertionObjectException(&quot;The received object is in an invalid format&quot;</span>
+					+ &quot;, please check the documentation for the correct one&quot;);
+		}
+	}
+
+
+	@Override
+	public void verifyAccountRequestHandler(String validationToken) {
+<span class="nc" id="L62">		Optional&lt;User&gt; optUser = userRepository.findUserByValidationToken(validationToken);</span>
+
+<span class="nc bnc" id="L64" title="All 2 branches missed.">		if (optUser.isEmpty()) {</span>
+<span class="nc" id="L65">			throw new InvalidTokenException(&quot;Invalid verification token, please contact the support team&quot;);</span>
+		}
+
+<span class="nc" id="L68">		User user = optUser.get();</span>
+<span class="nc" id="L69">		user.setIsAccountConfirmed(true);</span>
+<span class="nc" id="L70">		statisticsService.createCustomerStatistics(user);</span>
+
+<span class="nc" id="L72">		userRepository.save(user);</span>
+<span class="nc" id="L73">	}</span>
+
+	@Override
+	public void resetPasswordRequestHandler(String email) {
+<span class="nc" id="L77">		Optional&lt;User&gt; userOptional = userRepository.findByEmail(email);</span>
+
+<span class="nc bnc" id="L79" title="All 2 branches missed.">		if (userOptional.isEmpty()) {</span>
+<span class="nc" id="L80">			throw new UsernameNotFoundException(&quot;The user with '&quot; + email + &quot;' was not found&quot;);</span>
+		}
+
+<span class="nc" id="L83">		User user = userOptional.get();</span>
+
+<span class="nc bnc" id="L85" title="All 2 branches missed.">		if (!user.getIsAccountConfirmed()) {</span>
+<span class="nc" id="L86">			throw new DisabledException(&quot;Account is not yet confirmed,&quot;</span>
+					+ &quot; please validate it first through your email, before trying to change it's password&quot;);
+		}
+
+<span class="nc" id="L90">		applicationEventPublisher.publishEvent(new PasswordResetRequestEvent(user));</span>
+
+<span class="nc" id="L92">	}</span>
+
+	@Override
+	public void changeUserPassword(String accountRecoveryToken, String newPassword) {
+<span class="nc" id="L96">		Optional&lt;User&gt; optionalUser = userRepository.findByAccountRecoveryToken(accountRecoveryToken);</span>
+
+<span class="nc bnc" id="L98" title="All 2 branches missed.">		if (optionalUser.isEmpty()) {</span>
+<span class="nc" id="L99">			throw new InvalidTokenException(&quot;Invalid token, please contact the support team&quot;);</span>
+		}
+
+<span class="nc" id="L102">		User user = optionalUser.get();</span>
+<span class="nc" id="L103">		user.setPasswordUser(newPassword);</span>
+<span class="nc" id="L104">		encodeUserPassword(user);</span>
+
+<span class="nc" id="L106">		user.setAccountRecoveryToken(RandomString.make(64));</span>
+<span class="nc" id="L107">		userRepository.save(user);</span>
+<span class="nc" id="L108">	}</span>
+
+	@Override
+	public User findUserById(Integer idUser) {
+<span class="nc" id="L112">		Optional&lt;User&gt; optionalUser = userRepository.findById(idUser);</span>
+		
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (optionalUser.isEmpty()) {</span>
+<span class="nc" id="L115">			throw new ResourceNotFoundException(&quot;We did not find any user with the provided ID&quot;);</span>
+		}		
+<span class="nc" id="L117">		return optionalUser.get();		</span>
+	}
+	
+	@Override
+	public User updateUser(User user) {			
+<span class="nc" id="L122">		Optional&lt;User&gt; optionalUser = userRepository.findById(user.getId());</span>
+		
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (optionalUser.isEmpty()) {</span>
+<span class="nc" id="L125">			throw new ResourceNotFoundException(&quot;We did not find any user with the provided ID&quot;);</span>
+		}
+		
+<span class="nc" id="L128">		User oldUser = optionalUser.get();</span>
+<span class="nc" id="L129">		oldUser.setNotice(user.getNotice());</span>
+		
+<span class="nc" id="L131">		Person newPerson = user.getPerson();</span>
+<span class="nc" id="L132">		Person oldPerson = oldUser.getPerson();</span>
+
+<span class="nc" id="L134">		personService.updatePerson(oldPerson, newPerson);</span>
+
+<span class="nc" id="L136">		return userRepository.save(oldUser);</span>
+	}
+
+	@Override
+	public Boolean isEmailInUse(String email) {
+<span class="nc" id="L141">		return userRepository.existsByEmail(email);</span>
+	}
+
+	@Override
+	public User findUserByEmail(String email) {
+<span class="nc" id="L146">		Optional&lt;User&gt; userOptional =  userRepository.findByEmail(email);</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (userOptional.isEmpty()) { </span>
+<span class="nc" id="L148">			throw new ResourceNotFoundException(&quot;There's no user with the given email&quot;);</span>
+		}
+<span class="nc" id="L150">		return userOptional.get();</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

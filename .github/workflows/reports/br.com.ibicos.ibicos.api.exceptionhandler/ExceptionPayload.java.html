@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExceptionPayload.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ibicos</a> &gt; <a href="index.source.html" class="el_package">br.com.ibicos.ibicos.api.exceptionhandler</a> &gt; <span class="el_source">ExceptionPayload.java</span></div><h1>ExceptionPayload.java</h1><pre class="source lang-java linenums">package br.com.ibicos.ibicos.api.exceptionhandler;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+@Getter
+<span class="nc" id="L15">@Builder</span>
+<span class="nc" id="L16">@AllArgsConstructor</span>
+<span class="nc" id="L17">@NoArgsConstructor</span>
+public class ExceptionPayload {
+
+<span class="nc" id="L20">	private int statusCode;</span>
+<span class="nc" id="L21">	private String title;	</span>
+	@JsonFormat(pattern=&quot;yyyy-MM-dd HH:mm:ss&quot;)
+<span class="nc" id="L23">	private LocalDateTime timestamp;</span>
+<span class="nc" id="L24">	private String description;	</span>
+    @JsonInclude(Include.NON_NULL)
+<span class="nc" id="L26">	Map&lt;String, String&gt; fieldToMessageMap;</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

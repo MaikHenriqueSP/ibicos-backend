@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ibicos</a> &gt; <a href="index.source.html" class="el_package">br.com.ibicos.ibicos.api.controller</a> &gt; <span class="el_source">AdController.java</span></div><h1>AdController.java</h1><pre class="source lang-java linenums">package br.com.ibicos.ibicos.api.controller;
+
+import br.com.ibicos.ibicos.api.dto.AdDTO;
+import br.com.ibicos.ibicos.domain.entity.Ad;
+import br.com.ibicos.ibicos.domain.service.AdService;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.Map;
+
+@RestController
+@RequestMapping(&quot;/api/v1/ads&quot;)
+<span class="nc" id="L16">@AllArgsConstructor</span>
+public class AdController {
+
+	private final AdService adService;
+
+	@GetMapping
+	public ResponseEntity&lt;?&gt; listAdsByFilters(
+			@RequestParam(defaultValue = &quot;&quot;) String categoryName,
+			@RequestParam(defaultValue = &quot;&quot;) String stateName,
+			@RequestParam(defaultValue = &quot;&quot;) String cityName,
+			@RequestParam(defaultValue = &quot;&quot;) String areaName,
+			@RequestParam(defaultValue = &quot;&quot;, name = &quot;sortBy&quot;) String sortByFieldName,
+			@RequestParam(defaultValue = &quot;0&quot;) int page,
+	        @RequestParam(defaultValue = &quot;8&quot;) int size) {
+<span class="nc" id="L30">		Page&lt;AdDTO&gt; pageableAdsList = adService.listAdsByFilters(categoryName, stateName, cityName, areaName,</span>
+				sortByFieldName, page, size);
+<span class="nc" id="L32">		return ResponseEntity.ok(pageableAdsList);</span>
+	}
+	
+	@PostMapping
+	public ResponseEntity&lt;?&gt; createAd(@Valid @RequestBody Ad ad) {
+<span class="nc" id="L37">		Ad savedAd = adService.createAd(ad);</span>
+<span class="nc" id="L38">		return ResponseEntity.ok(savedAd);</span>
+	}
+	
+
+	@DeleteMapping(&quot;/{adId}&quot;)
+	public ResponseEntity&lt;?&gt; deleteAd(@PathVariable Integer adId) {
+<span class="nc" id="L44">		adService.deleteAdById(adId);</span>
+<span class="nc" id="L45">		return ResponseEntity.ok(Map.of(&quot;message&quot;, &quot;ad deleted&quot;));</span>
+	}
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

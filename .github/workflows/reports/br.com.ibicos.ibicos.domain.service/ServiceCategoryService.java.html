@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServiceCategoryService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ibicos</a> &gt; <a href="index.source.html" class="el_package">br.com.ibicos.ibicos.domain.service</a> &gt; <span class="el_source">ServiceCategoryService.java</span></div><h1>ServiceCategoryService.java</h1><pre class="source lang-java linenums">package br.com.ibicos.ibicos.domain.service;
+
+import br.com.ibicos.ibicos.api.dto.ServiceCategoryDTO;
+import br.com.ibicos.ibicos.domain.entity.ServiceCategory;
+import br.com.ibicos.ibicos.domain.repository.ServiceCategoryRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+<span class="nc" id="L12">@AllArgsConstructor</span>
+public class ServiceCategoryService {
+
+	private final ServiceCategoryRepository serviceCategoryRepository;
+
+	public List&lt;ServiceCategory&gt; listAllServicesCategories() {
+<span class="nc" id="L18">		return serviceCategoryRepository.findAll();</span>
+	}
+
+	public ServiceCategory getServiceCategoryByServiceCategoryDTO(ServiceCategoryDTO serviceCategoryDTO) {
+<span class="nc" id="L22">		return serviceCategoryRepository.findByCategoryName(serviceCategoryDTO.getCategoryName());</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

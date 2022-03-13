@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ibicos</a> &gt; <a href="index.source.html" class="el_package">br.com.ibicos.ibicos.api.controller</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">package br.com.ibicos.ibicos.api.controller;
+
+import br.com.ibicos.ibicos.api.dto.CredentialsDTO;
+import br.com.ibicos.ibicos.api.dto.RecoveryDTO;
+import br.com.ibicos.ibicos.domain.entity.User;
+import br.com.ibicos.ibicos.domain.service.IUserService;
+import br.com.ibicos.ibicos.domain.service.JwtService;
+import br.com.ibicos.ibicos.domain.service.UserDetailsServiceImpl;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.Map;
+
+@RestController
+@RequestMapping
+<span class="nc" id="L20">@AllArgsConstructor</span>
+public class UserController {
+
+	private final UserDetailsServiceImpl userDetailsServiceImpl;
+	private final JwtService jwtService;
+	private final IUserService userService;
+
+	@PostMapping(&quot;/sign-up&quot;)
+	public ResponseEntity&lt;?&gt; save(@Valid @RequestBody User user) {
+<span class="nc" id="L29">		User savedUser = userService.save(user);</span>
+
+<span class="nc" id="L31">		Map&lt;String, Object&gt; responseMap = Map.of(&quot;message&quot;,</span>
+				&quot;Your account was successfully signed up, but before using it you need to confirm it using your email so please check it!&quot;,
+				&quot;savedUser&quot;, savedUser,
+<span class="nc" id="L34">				&quot;statusCode&quot;, HttpStatus.CREATED.value());</span>
+<span class="nc" id="L35">		return ResponseEntity.status(HttpStatus.CREATED).body(responseMap);</span>
+	}
+
+	@GetMapping(&quot;/check-email-in-use&quot;)
+	public ResponseEntity&lt;?&gt; isEmailInUse(@RequestBody ObjectNode objectNode) {
+<span class="nc" id="L40">		String email = objectNode.asText(&quot;email&quot;);</span>
+<span class="nc" id="L41">		Boolean isEmailInUse = userService.isEmailInUse(email);</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">		return isEmailInUse ? ResponseEntity.status(HttpStatus.CONFLICT)</span>
+<span class="nc" id="L43">				.body(Map.of(&quot;message&quot;, &quot;Email already in use&quot;)) :</span>
+<span class="nc" id="L44">					ResponseEntity.status(HttpStatus.OK)</span>
+<span class="nc" id="L45">					.body(Map.of(&quot;message&quot;, &quot;Email free to use&quot;));</span>
+
+	}
+
+	@PostMapping(&quot;/login&quot;)
+	public ResponseEntity&lt;?&gt; authenticate(@RequestBody CredentialsDTO credentials) {
+<span class="nc" id="L51">		userDetailsServiceImpl.authenticate(credentials);</span>
+<span class="nc" id="L52">		String token = jwtService.generateToken(credentials);</span>
+
+<span class="nc" id="L54">		return ResponseEntity.ok(Map.of(&quot;token&quot;, token));</span>
+	}
+
+	@GetMapping(&quot;/verify&quot;)
+	public ResponseEntity&lt;?&gt; verifyAccount(@RequestParam(&quot;token&quot;) String validationToken) {
+<span class="nc" id="L59">		userService.verifyAccountRequestHandler(validationToken);</span>
+<span class="nc" id="L60">		return new ResponseEntity&lt;&gt;(Map.of(&quot;message&quot;, &quot;The account is now verified and you are now able to login and use it&quot;), HttpStatus.OK);</span>
+	}
+
+	@PostMapping(&quot;/reset-password/request&quot;)
+	public ResponseEntity&lt;?&gt; resetPasswordRequestHandler(@RequestBody ObjectNode objectNode) {
+<span class="nc" id="L65">		String email = objectNode.get(&quot;email&quot;).asText();</span>
+
+<span class="nc" id="L67">		userService.resetPasswordRequestHandler(email);</span>
+<span class="nc" id="L68">		return ResponseEntity.ok().body(</span>
+<span class="nc" id="L69">				Map.of(&quot;message&quot;, &quot;An email with the reset password instructions was sent to: '&quot; + email</span>
+						+ &quot;', please check it and follow the provided instructions to reset your email!&quot;));
+	}
+
+	@PostMapping(&quot;/reset-password/change&quot;)
+	public ResponseEntity&lt;?&gt; changeUserPassword(@RequestBody RecoveryDTO recoveryDTO) {
+<span class="nc" id="L75">		userService.changeUserPassword(recoveryDTO.getAccountRecoveryToken(), recoveryDTO.getNewPassword());</span>
+<span class="nc" id="L76">		return ResponseEntity.ok().body(Map.of(&quot;message&quot;, &quot;Password successfully changed&quot;));</span>
+	}
+
+	@GetMapping(&quot;api/v1/users/profile/{idUser}&quot;)
+	public ResponseEntity&lt;?&gt; showUserProfile(@PathVariable Integer idUser) {
+<span class="nc" id="L81">		User user = userService.findUserById(idUser);</span>
+<span class="nc" id="L82">		return ResponseEntity.ok().body(</span>
+<span class="nc" id="L83">				Map.of(&quot;message&quot;, &quot;User found with success&quot;,</span>
+						&quot;user&quot;, user,
+<span class="nc" id="L85">						&quot;status&quot;, HttpStatus.OK.value())</span>
+				);
+	}
+
+	@PutMapping(&quot;api/v1/users/profile/update&quot;)
+	public ResponseEntity&lt;?&gt; updateUserProfile(@RequestBody User user) {
+<span class="nc" id="L91">		return ResponseEntity.ok(userService.updateUser(user));</span>
+	}
+
+	@GetMapping(&quot;api/v1/users/user-by-email&quot;)
+	public ResponseEntity&lt;?&gt; getUserByEmail(@RequestBody ObjectNode objectNode) {
+<span class="nc" id="L96">		String email = objectNode.get(&quot;email&quot;).asText();</span>
+<span class="nc" id="L97">		User user = userService.findUserByEmail(email);</span>
+<span class="nc" id="L98">		return ResponseEntity.ok(user);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdCity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ibicos</a> &gt; <a href="index.source.html" class="el_package">br.com.ibicos.ibicos.domain.entity</a> &gt; <span class="el_source">AdCity.java</span></div><h1>AdCity.java</h1><pre class="source lang-java linenums">package br.com.ibicos.ibicos.domain.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
+
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+<span class="nc bnc" id="L16" title="All 46 branches missed.">@Data</span>
+@Entity
+<span class="nc" id="L18">@NoArgsConstructor</span>
+<span class="nc" id="L19">@AllArgsConstructor</span>
+@DynamicUpdate
+public class AdCity {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+<span class="nc" id="L24">	private Integer idCity;</span>
+	
+	@NotBlank
+<span class="nc" id="L27">	private String cityName;</span>
+	
+	@NotBlank
+<span class="nc" id="L30">	private String stateAbb;</span>
+	
+	@ManyToOne
+	@JoinColumn(name=&quot;fk_id_ad&quot;)
+	@JsonIgnoreProperties(value = &quot;cities&quot;)
+<span class="nc" id="L35">	private Ad ad;</span>
+
+	
+	@NotNull
+	@NotEmpty
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = &quot;adCity&quot;, fetch = FetchType.EAGER)
+	@JsonIgnoreProperties(value = &quot;adCity&quot;)
+<span class="nc" id="L42">	private List&lt;@Valid AdRegionArea&gt; regionArea;</span>
+	
+	@PrePersist	
+	private void prePersist() {
+<span class="nc bnc" id="L46" title="All 4 branches missed.">	    if(regionArea != null &amp;&amp; regionArea.size() &gt; 0) {</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">	    	for(AdRegionArea region: regionArea) {</span>
+<span class="nc" id="L48">	    		region.setAdCity(this);</span>
+<span class="nc" id="L49">	    	}</span>
+	    };
+<span class="nc" id="L51">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

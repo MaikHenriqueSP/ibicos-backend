@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Address.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ibicos</a> &gt; <a href="index.source.html" class="el_package">br.com.ibicos.ibicos.domain.entity</a> &gt; <span class="el_source">Address.java</span></div><h1>Address.java</h1><pre class="source lang-java linenums">package br.com.ibicos.ibicos.domain.entity;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.*;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
+<span class="nc" id="L11">@Data</span>
+<span class="nc bnc" id="L12" title="All 70 branches missed.">@EqualsAndHashCode(exclude= {&quot;person&quot;})</span>
+@Entity
+<span class="nc" id="L14">@NoArgsConstructor</span>
+<span class="nc" id="L15">@AllArgsConstructor</span>
+@JsonIdentityInfo(
+		  generator = ObjectIdGenerators.PropertyGenerator.class, 
+		  property = &quot;idAddress&quot;,
+		  scope = Address.class)
+public class Address {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+<span class="nc" id="L23">	private Integer idAddress;</span>
+	
+	@NotBlank
+<span class="nc" id="L26">	private String cep;</span>
+	
+	@NotBlank
+<span class="nc" id="L29">	private String street;</span>
+	
+	@NotBlank
+<span class="nc" id="L32">	private String numberAddress;</span>
+	
+	@NotBlank
+<span class="nc" id="L35">	private String neighborhood;	</span>
+<span class="nc" id="L36">	private String complement;</span>
+	
+	@NotBlank
+<span class="nc" id="L39">	private String city;</span>
+	
+	@NotBlank
+<span class="nc" id="L42">	private String state;</span>
+	
+	@ToString.Exclude
+	@JoinColumn(name=&quot;fk_id_person&quot;)
+	@OneToOne
+	@JsonIgnoreProperties({&quot;hibernateLazyInitializer&quot;, &quot;handler&quot;})
+<span class="nc" id="L48">	private Person person;</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
