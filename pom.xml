@@ -189,9 +189,16 @@
 						<format>html</format>
 						<format>xml</format>
 					</formats>
-					<check />
-				</configuration>
+					<reportSets>
+						<reportSet>
+							<reports>
+								<report>cobertura</report>
+							</reports>
+						</reportSet>
+					</reportSets>
+				</configuration>     
 			</plugin>
+
 
 		</plugins>
 	</build>
