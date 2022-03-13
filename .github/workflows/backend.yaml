@@ -30,9 +30,6 @@ jobs:
         with:
           java-version: "11"
           distribution: "adopt"
-      - run: mvn -B verify -P coverage
-
+        run: mvn -B cobertura:cobertura --file pom.xml
       - uses: codecov/codecov-action@v1
-        with:
-          file: ./**/target/site/jacoco/jacoco.xml
-          name: codecov
+        run: mvn -B package --file pom.xml
